@@ -1,0 +1,6 @@
+{
+"RIGHT_THIGH": ["RKNE", "RKNM", "RTHI"],
+"LEFT_THIGH": ["LKNE", "LKNM", "LTHI"],
+"RIGHT_SHANK": ["RANK", "RANM", "RTIB"],
+"LEFT_SHANK": ["LANK", "LANM", "LTIB"]
+}
