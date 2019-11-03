@@ -101,7 +101,7 @@ def main():
 
     # Create virtual markers
     virtual_names = ['LVHI', 'LVKN', 'LVAN', 'RVHI', 'RVKN', 'RVAN']
-    indices = [(nam, ind + len(mkr_names)+1) for ind, nam in enumerate(virtual_names)]
+    indices = [(nam, ind + len(mkr_names)) for ind, nam in enumerate(virtual_names)]
     mkr_names.extend(virtual_names)
     dict_mkr_idx.update(indices)
     dict_mkr_coords['LVAN'] = (dict_mkr_coords['LANK'] + dict_mkr_coords['LANM']) / 2
@@ -158,14 +158,14 @@ def main():
     pts_obj = PointCloud('[MARKERS]', ax)
     pts_obj.set_point_names(mkr_names[:19])
     pts_obj.set_from_points(mkr_pts[:, :19, :])
-    pts_obj.set_marker_style(3, 'b', 'b')
+    pts_obj.set_marker_style(2, 'tab:blue', 'tab:blue')
     pts_obj.draw_vis_objs(fr=0)
     geom_objs.append(pts_obj)
 
     vpts_obj = PointCloud('[VMARKERS]', ax)
     vpts_obj.set_point_names(mkr_names[19:])
     vpts_obj.set_from_points(mkr_pts[:, 19:, :])
-    vpts_obj.set_marker_style(8, 'b', 'none')
+    vpts_obj.set_marker_style(8, 'tab:orange', 'none', )
     vpts_obj.draw_vis_objs(fr=0)
     geom_objs.append(vpts_obj)
 
@@ -177,48 +177,86 @@ def main():
             line_obj = Line(name='Line'+str(line_cnt), axes=ax)
             line_obj.set_point_names([mkr_names[mkr_idx[0]], mkr_names[mkr_idx[1]]])
             line_obj.set_from_2points(mkr_pts[:,mkr_idx[0],:], mkr_pts[:,mkr_idx[1],:])
+            line_obj.set_color((0,0,0,0.1))
             line_obj.draw_vis_objs(fr=0)
             geom_objs.append(line_obj)
             line_cnt = line_cnt+1
-    
+
+    line_obj = Line(name='RThigh' , axes=ax)
+    line_obj.set_point_names(['RVHI', 'RVKN'])
+    line_obj.set_from_2points(mkr_pts[:, dict_mkr_idx['RVHI'], :], mkr_pts[:, dict_mkr_idx['RVKN'], :])
+    line_obj.set_color((0, 0, 0, 0.5))
+    line_obj.draw_vis_objs(fr=0)
+    geom_objs.append(line_obj)
+
+    line_obj = Line(name='RShank', axes=ax)
+    line_obj.set_point_names(['RVKN', 'RVAN'])
+    line_obj.set_from_2points(mkr_pts[:, dict_mkr_idx['RVKN'], :], mkr_pts[:, dict_mkr_idx['RVAN'], :])
+    line_obj.set_color((0, 0, 0, 0.5))
+    line_obj.draw_vis_objs(fr=0)
+    geom_objs.append(line_obj)
+    #'''
     # Create a CoordSys class instance for the right thigh
     csys_r_thigh = CoordSys('Right_Thigh', ax)
     csys_r_thigh.set_from_3points(dict_mkr_coords["RKNE"], dict_mkr_coords["RKNM"], dict_mkr_coords["RTHI"])
     csys_r_thigh_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 180], degrees=True).as_dcm()
     csys_r_thigh.apply_intrinsic_rotation(csys_r_thigh_rot_mat)
     csys_r_thigh.update_axes_pos()
-    csys_r_thigh.draw_vis_objs(fr=0)
-    geom_objs.append(csys_r_thigh)
+    #csys_r_thigh.draw_vis_objs(fr=0)
+    #geom_objs.append(csys_r_thigh)
     # Create a CoordSys class instance for the right shank
     csys_r_shank = CoordSys('Right_Shank', ax)
     csys_r_shank.set_from_3points(dict_mkr_coords["RANK"], dict_mkr_coords["RANM"], dict_mkr_coords["RTIB"])
     csys_r_shank_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 180], degrees=True).as_dcm()
     csys_r_shank.apply_intrinsic_rotation(csys_r_shank_rot_mat)
     csys_r_shank.update_axes_pos()
-    csys_r_shank.draw_vis_objs(fr=0)
-    geom_objs.append(csys_r_shank)
+    #csys_r_shank.draw_vis_objs(fr=0)
+    #geom_objs.append(csys_r_shank)
     # Create a CoordSys class instace for the left thigh
     csys_l_thigh = CoordSys('Left_Thigh', ax)
     csys_l_thigh.set_from_3points(dict_mkr_coords["LKNE"], dict_mkr_coords["LKNM"], dict_mkr_coords["LTHI"])
     csys_l_thigh_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 0], degrees=True).as_dcm()
     csys_l_thigh.apply_intrinsic_rotation(csys_l_thigh_rot_mat)
     csys_l_thigh.update_axes_pos()
-    csys_l_thigh.draw_vis_objs(fr=0)
-    geom_objs.append(csys_l_thigh)
+    #csys_l_thigh.draw_vis_objs(fr=0)
+    #geom_objs.append(csys_l_thigh)
     # Create a CoordSys class instance for the left shank
     csys_l_shank = CoordSys('Left_Shank', ax)
     csys_l_shank.set_from_3points(dict_mkr_coords["LANK"], dict_mkr_coords["LANM"], dict_mkr_coords["LTIB"])
     csys_l_shank_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 0], degrees=True).as_dcm()
     csys_l_shank.apply_intrinsic_rotation(csys_l_shank_rot_mat)
     csys_l_shank.update_axes_pos()
-    csys_l_shank.draw_vis_objs(fr=0)
-    geom_objs.append(csys_l_shank)    
-    
+    #csys_l_shank.draw_vis_objs(fr=0)
+    #geom_objs.append(csys_l_shank)
+    #'''
+
     # Calcuation of the right knee flexion angles in two different ways
+    z_vect = (dict_mkr_coords['RVKN']-dict_mkr_coords['RVAN'])
+    z_vect = z_vect / np.linalg.norm(z_vect, axis=1)[:, None]
+    y_vect = np.cross(z_vect, dict_mkr_coords['RTIB']-dict_mkr_coords['RVKN'], axis=1)
+    y_vect = y_vect / np.linalg.norm(y_vect, axis = 1)[:, None]
+    x_vect = np.cross(y_vect, z_vect)
+    jcs_r_shank = np.dstack((z_vect, y_vect, -x_vect))
+
+    z_vect = (dict_mkr_coords['RVHI'] - dict_mkr_coords['RVKN'])
+    z_vect = z_vect / np.linalg.norm(z_vect, axis=1)[:, None]
+    y_vect = np.cross(z_vect, dict_mkr_coords['RTHI'] - dict_mkr_coords['RVHI'], axis=1)
+    y_vect = y_vect / np.linalg.norm(y_vect, axis=1)[:, None]
+    x_vect = np.cross(y_vect, z_vect)
+    jcs_r_thigh = np.dstack((z_vect, y_vect, -x_vect))
+    '''
+    csys_pelvis = CoordSys('Pelvis', ax)
+    csys_pelvis.set_from_3points(dict_mkr_coords["SACR"], dict_mkr_coords["RASI"], dict_mkr_coords["LAST"])
+    csys_pelvis_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 180], degrees=True).as_dcm()
+    csys_pelvis.apply_intrinsic_rotation(csys_pelvis_rot_mat)
+    csys_pelvis.update_axes_pos()
+    '''
     r_knee_ang_floating = np.zeros((cnt_frames, 3), dtype=np.float32)
     r_knee_ang_euler = np.zeros((cnt_frames, 3), dtype=np.float32)
+    r_knee_ang_jcs = np.zeros((cnt_frames, 3), dtype=np.float32)
     for i in range(cnt_frames):
         r_knee_ang_floating[i] = calc_floating_angles(csys_r_thigh.arr_rot[i], csys_r_shank.arr_rot[i], side='right')
+        r_knee_ang_jcs[i] = calc_floating_angles(jcs_r_thigh[i].transpose(), jcs_r_shank[i].transpose(), side='right')
         r_knee_ang_euler[i] = tf.calc_rot_angles_euler(csys_r_thigh.arr_rot[i], csys_r_shank.arr_rot[i])
 
     r_knee_flex_floating = r_knee_ang_floating[:,0]
@@ -227,6 +265,7 @@ def main():
     r_knee_add_euler = r_knee_ang_euler[:,1]
     r_knee_ext_rot_floating = r_knee_ang_floating[:,2]
     r_knee_ext_rot_euler = -r_knee_ang_euler[:,2]
+    r_knee_flex_jcs = r_knee_ang_jcs[:,0]
     
     # Calculation of the left knee flexion angle in two different ways
     l_knee_ang_floating = np.zeros((cnt_frames, 3), dtype=np.float32)
@@ -249,6 +288,7 @@ def main():
     title_2d_0 = ax_2d_0.set_title('Right Knee Flexion-Extension')
     ax_2d_0.plot(arr_frames, r_knee_flex_floating, linewidth=1.0, color='r', label='Floating', linestyle='--')
     ax_2d_0.plot(arr_frames, r_knee_flex_euler, linewidth=1.0, color='b', label='Euler', linestyle='-.')
+    ax_2d_0.plot(arr_frames, r_knee_flex_jcs, linewidth=1.0, color='g', label='JCS', linestyle=':')
     ax_2d_0.legend(loc='upper right', fontsize='small')
 
     ax_2d_1 = fig.add_axes([0.55, 0.15, 0.4, 0.3])

@@ -42,10 +42,11 @@ class Line(Geom):
         super().__init__(name, axes)
         self.pts_names = None
         self.n_pts = None
+        self.line_color = 'b'
         
     def set_point_names(self, point_names):
         self.pts_names = point_names        
-        
+
     def set_from_points(self, point_coords):
         self.n_pts = point_coords.shape[1]
         self.arr_pos = point_coords
@@ -59,13 +60,16 @@ class Line(Geom):
         self.arr_pos = np.empty((n_frames, 2, 3), dtype=np.float32)
         self.arr_pos[:,0,:] = arr_p0
         self.arr_pos[:,1,:] = arr_p1
-        
+
+    def set_color(self, color_in):
+        self.line_color = color_in
+
     def draw_vis_objs(self, fr):
         if self.ax is None:
             return None
         pts_pair = np.empty((2, 3), dtype=np.float32)
         pts_pair[:,:] = self.arr_pos[fr,:,:]
-        vis_obj = self.ax.plot3D(pts_pair[:,0], pts_pair[:,1], pts_pair[:,2], 'k-')[0]
+        vis_obj = self.ax.plot3D(pts_pair[:,0], pts_pair[:,1], pts_pair[:,2], color=self.line_color)[0]
         #vis_obj.set_label(self.pts_names[0]+"-"+self.pts_names[1])
         self.vis_objs.append(vis_obj)
         return self.vis_objs
