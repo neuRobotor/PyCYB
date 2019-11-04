@@ -33,7 +33,7 @@ def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
         sin_gamma = np.dot(axis, b_x)
         cos_gamma = np.dot(b_y, axis)
         
-    alpha = np.arctan(sin_alpha/cos_alpha)
+    alpha = np.arctan2(sin_alpha, cos_alpha)
     beta = np.arccos(cos_beta)
     gamma = np.arctan(sin_gamma/cos_gamma)
     
@@ -187,6 +187,13 @@ def main():
     line_obj.set_color((0.5, 0.05, 0.05, 0.5))
     line_obj.draw_vis_objs(fr=0)
     geom_objs.append(line_obj)
+
+    line_obj = Line(name='LFoot', axes=ax)
+    line_obj.set_point_names(['LHEE', 'LTOE'])
+    line_obj.set_from_2points(mkr_pts[:, dict_mkr_idx['LHEE'], :], mkr_pts[:, dict_mkr_idx['LTOE'], :])
+    line_obj.set_color((0.5, 0.05, 0.05, 0.5))
+    line_obj.draw_vis_objs(fr=0)
+    geom_objs.append(line_obj)
     # endregion
     # endregion
 
@@ -204,14 +211,16 @@ def main():
             j_vect = (-1 if side == 'L' else 1) * j_vect / np.linalg.norm(j_vect, axis=1)[:, None]
             i_vect = np.cross(j_vect, k_vect)
             reference_sys[side + cur_seg] = np.dstack((i_vect, j_vect, k_vect))
-            reference_sys[side + cur_seg] = np.rollaxis(reference_sys[side + cur_seg], 2, 1)
+            #reference_sys[side + cur_seg] = np.rollaxis(reference_sys[side + cur_seg], 2, 1)
+
+    # Pelvis local coordinate system
     i_vect = (dict_mkr_coords['RASI'] - dict_mkr_coords['LASI'])
     i_vect = i_vect / np.linalg.norm(i_vect, axis=1)[:, None]
     k_vect = np.cross(dict_mkr_coords['RASI'] - dict_mkr_coords['SACR'],
                       dict_mkr_coords['LASI'] - dict_mkr_coords['SACR'], axis=1)
     k_vect = k_vect / np.linalg.norm(k_vect, axis=1)[:, None]
     j_vect = np.cross(k_vect, i_vect)
-    reference_sys['Pelvis'] = np.dstack((k_vect, j_vect, i_vect))
+    reference_sys['Pelvis'] = np.dstack((i_vect, j_vect, k_vect))
     reference_sys['Pelvis'] = np.rollaxis(reference_sys['Pelvis'], 2, 1)
     # endregion
 
@@ -222,14 +231,18 @@ def main():
         joint_angles[cur_side + 'Hip'] = np.zeros((cnt_frames, 3), dtype=np.float32)
         for i in range(cnt_frames):
             joint_angles[cur_side + 'Hip'][i] = calc_floating_angles(reference_sys['Pelvis'][i],
-                                                                  reference_sys[cur_side + 'Thigh'][i], side=cur_side)
+                                                                     reference_sys[cur_side + 'Thigh'][i],
+                                                                      in_deg=False)
         for seg in range(len(segment_names)-1):
             joint_angles[cur_side + joint_names[seg + 1]] = np.zeros((cnt_frames, 3), dtype=np.float32)
             for i in range(cnt_frames):
                 joint_angles[cur_side+joint_names[seg+1]][i] = \
                     calc_floating_angles(reference_sys[cur_side+segment_names[seg]][i],
-                                         reference_sys[cur_side+segment_names[seg+1]][i], side=cur_side)
+                                         reference_sys[cur_side+segment_names[seg+1]][i], side=cur_side, in_deg=False)
     #endregion
+    for name in joint_angles.keys():
+        for ang in range(3):
+            joint_angles[name][:, ang] = np.unwrap(joint_angles[name][:, ang])
 
     # region Plotting angles
     vlines = []
@@ -237,11 +250,11 @@ def main():
         for col, side in enumerate(['L', 'R']):
             cur_ax = fig.add_subplot(gs[row, 3+col])
             cur_ax.set_xlim(start_frame, end_frame)
-            cur_ax.set_ylim(-10, 100)
+            cur_ax.set_ylim(-2, 2)
             vlines.append(cur_ax.axvline(x=start_frame, ymin=0, ymax=1, color=(0, 1, 0), linewidth=1.0, linestyle='--'))
             cur_ax.set_title(side + joint_names[row])
             cur_ax.plot(arr_frames, joint_angles[side + joint_names[row]][:, 0],
-                        linewidth=1.0, color='g', label='Flexion')
+                        linewidth=1.0, color='tab:blue', label='Flexion')
             cur_ax.legend(loc='upper right', fontsize='small')
 
     ax_fr = fig.add_subplot(gs[3, :], facecolor='lightgoldenrodyellow')

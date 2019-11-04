@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/win10.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/win10.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C3DCYB.py" beforeDir="false" afterPath="$PROJECT_DIR$/C3DCYB.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/C3DCYB_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/C3DCYB_2.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Geoms.py" beforeDir="false" afterPath="$PROJECT_DIR$/Geoms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emg_proc.py" beforeDir="false" afterPath="$PROJECT_DIR$/emg_proc.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -60,22 +57,22 @@
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="Python Console" value="66" />
-          <entry key="py" value="4204" />
+          <entry key="py" value="4859" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="4270" />
+          <entry key="Python" value="4925" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="5" />
+          <entry key="py" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Python" value="5" />
+          <entry key="Python" value="8" />
         </counts>
       </usages-collector>
     </session>
@@ -85,17 +82,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/C3D.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="103">
-              <caret line="244" column="38" selection-start-line="244" selection-start-column="30" selection-end-line="244" selection-end-column="38" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/C3DCYB.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="44" />
+            <state relative-caret-position="-1790">
+              <caret line="354" column="65" selection-start-line="354" selection-start-column="65" selection-end-line="354" selection-end-column="65" />
             </state>
           </provider>
         </entry>
@@ -103,13 +91,39 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/C3DCYB_2.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="214" column="72" selection-start-line="214" selection-start-column="72" selection-end-line="214" selection-end-column="72" />
+            <state relative-caret-position="153">
+              <caret line="243" column="70" selection-start-line="243" selection-start-column="70" selection-end-line="243" selection-end-column="70" />
               <folding>
                 <element signature="e#4#13#0" expanded="true" />
-                <element signature="e#1640#1683#0" />
-                <element signature="e#2749#2780#0" />
-                <element signature="e#6084#6169#0" />
+                <element signature="e#1528#1571#0" />
+                <element signature="e#1831#1886#0" />
+                <element signature="e#2754#2785#0" />
+                <element signature="e#8991#9016#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Geoms.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="114">
+              <caret line="240" selection-start-line="240" selection-end-line="240" />
+              <folding>
+                <marker date="1572264577582" expanded="true" signature="1731:1737" ph="..." />
+                <marker date="1572264577582" expanded="true" signature="3020:3132" ph="..." />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/C3DCYB.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="111">
+              <caret line="215" column="4" lean-forward="true" selection-start-line="215" selection-start-column="4" selection-end-line="216" selection-end-column="108" />
+              <folding>
+                <element signature="e#4#13#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,19 +151,6 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Geoms.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1530">
-              <caret line="64" column="23" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="23" />
-              <folding>
-                <marker date="1572264577582" expanded="true" signature="1731:1737" ph="..." />
-                <marker date="1572264577582" expanded="true" signature="3020:3132" ph="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -161,11 +162,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>Line</find>
-      <find>get_all</find>
-      <find>vanl</find>
-      <find>vanr</find>
-      <find>show</find>
       <find>dflt</find>
       <find>breadth</find>
       <find>pts_obj.dra</find>
@@ -173,8 +169,29 @@
       <find>pointcl</find>
       <find>update</find>
       <find>normalize</find>
-      <find>low</find>
       <find>for i in</find>
+      <find>deg</find>
+      <find>Pelvis</find>
+      <find>vli</find>
+      <find>geom</find>
+      <find>coords</find>
+      <find>coordsy</find>
+      <find>csys_l_thigh</find>
+      <find>temp</find>
+      <find>ax</find>
+      <find>set_data_3d</find>
+      <find>vis_objs</find>
+      <find>vis_objs =</find>
+      <find>ax =</find>
+      <find>vis_objs.</find>
+      <find>axes_pos</find>
+      <find>LTHI</find>
+      <find>axes_pos =</find>
+      <find>HEE</find>
+      <find>Foot</find>
+      <find>arr_pos</find>
+      <find>low</find>
+      <find>(0, 0</find>
     </findStrings>
     <replaceStrings>
       <replace>RVAN</replace>
@@ -191,8 +208,8 @@
         <option value="$PROJECT_DIR$/C3DView_Slider.py" />
         <option value="$PROJECT_DIR$/C3D.py" />
         <option value="$PROJECT_DIR$/Geoms.py" />
-        <option value="$PROJECT_DIR$/C3DCYB.py" />
         <option value="$PROJECT_DIR$/emg_proc.py" />
+        <option value="$PROJECT_DIR$/C3DCYB.py" />
         <option value="$PROJECT_DIR$/C3DCYB_2.py" />
       </list>
     </option>
@@ -368,12 +385,12 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24983476" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24983476" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32907802" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32907802" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32907802" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -414,9 +431,19 @@
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/C3DCYB.py</url>
+          <line>223</line>
+          <option name="timeStamp" value="50" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Geoms.py</url>
+          <line>258</line>
+          <option name="timeStamp" value="52" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/C3DCYB_2.py</url>
-          <line>90</line>
-          <option name="timeStamp" value="46" />
+          <line>246</line>
+          <option name="timeStamp" value="61" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -436,47 +463,52 @@
   <component name="debuggerHistoryManager">
     <expressions id="evaluateExpression">
       <expression>
-        <expression-string>plt.plot(a/np.max(a)*np.max(emg_data[0]))</expression-string>
+        <expression-string>k_vect</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, low_pass=20)</expression-string>
+        <expression-string>k_vect2</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, high_band= 500)</expression-string>
+        <expression-string>np.array_equal(k_vect, k_vect2)</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, high_band= 100)</expression-string>
+        <expression-string>k_vect2 = reference_sys['LFoot'][:, 0]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, low_band=1000)</expression-string>
+        <expression-string>k_vect = k_vect / np.linalg.norm(k_vect, axis=1)[:, None]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, low_band=900)</expression-string>
+        <expression-string>k_vect = z</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, low_band=2000)</expression-string>
+        <expression-string>k = z</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>a = envelope(emg_data[0], sfreq=2000, low_band=800)</expression-string>
+        <expression-string>z =</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
       <expression>
-        <expression-string>plt.plot(emg_data[0])</expression-string>
+        <expression-string>z = dict_mkr_coords['LHEE'] - dict_mkr_coords['LTOE']</expression-string>
+        <language-id>Python</language-id>
+        <evaluation-mode>EXPRESSION</evaluation-mode>
+      </expression>
+      <expression>
+        <expression-string>dict_mkr_coords[side+ref_markers[seg_enum][0]]</expression-string>
         <language-id>Python</language-id>
         <evaluation-mode>EXPRESSION</evaluation-mode>
       </expression>
@@ -521,10 +553,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/C3D.py">
+    <entry file="file://$PROJECT_DIR$/Transforms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="103">
-          <caret line="244" column="38" selection-start-line="244" selection-start-column="30" selection-end-line="244" selection-end-column="38" />
+        <state relative-caret-position="-578">
+          <caret line="16" column="48" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/matplotlib/cbook/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="183">
+          <caret line="218" selection-start-line="218" selection-end-line="218" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python36/Lib/site-packages/matplotlib/widgets.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="125">
+          <caret line="441" selection-start-line="441" selection-end-line="441" />
         </state>
       </provider>
     </entry>
@@ -539,10 +585,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/C3D.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1790">
+          <caret line="354" column="65" selection-start-line="354" selection-start-column="65" selection-end-line="354" selection-end-column="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/C3DCYB.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="111">
+          <caret line="215" column="4" lean-forward="true" selection-start-line="215" selection-start-column="4" selection-end-line="216" selection-end-column="108" />
+          <folding>
+            <element signature="e#4#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Geoms.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1530">
-          <caret line="64" column="23" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="23" />
+        <state relative-caret-position="114">
+          <caret line="240" selection-start-line="240" selection-end-line="240" />
           <folding>
             <marker date="1572264577582" expanded="true" signature="1731:1737" ph="..." />
             <marker date="1572264577582" expanded="true" signature="3020:3132" ph="..." />
@@ -550,29 +613,16 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Transforms.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-578">
-          <caret line="16" column="48" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="48" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/C3DCYB.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" selection-start-line="7" selection-end-line="7" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/C3DCYB_2.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="214" column="72" selection-start-line="214" selection-start-column="72" selection-end-line="214" selection-end-column="72" />
+        <state relative-caret-position="153">
+          <caret line="243" column="70" selection-start-line="243" selection-start-column="70" selection-end-line="243" selection-end-column="70" />
           <folding>
             <element signature="e#4#13#0" expanded="true" />
-            <element signature="e#1640#1683#0" />
-            <element signature="e#2749#2780#0" />
-            <element signature="e#6084#6169#0" />
+            <element signature="e#1528#1571#0" />
+            <element signature="e#1831#1886#0" />
+            <element signature="e#2754#2785#0" />
+            <element signature="e#8991#9016#0" />
           </folding>
         </state>
       </provider>

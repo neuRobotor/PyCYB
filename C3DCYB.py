@@ -18,7 +18,7 @@ from Geoms import Line, PointCloud, CoordSys
 import Transforms as tf
 from plt_axis import set_axes_equal
 #%%
-def calc_floating_angles(mat_a, mat_b, side='right', in_deg=True):
+def calc_floating_angles(mat_a, mat_b, side='right', in_deg=False):
     if type(mat_a) is not np.ndarray: return False
     if type(mat_b) is not np.ndarray: return False
     a_x = mat_a[:,0]
@@ -39,7 +39,7 @@ def calc_floating_angles(mat_a, mat_b, side='right', in_deg=True):
         sin_gamma = np.dot(axis, b_x)
         cos_gamma = np.dot(b_y, axis)
         
-    alpha = np.arctan(sin_alpha/cos_alpha)
+    alpha = np.arctan2(sin_alpha,cos_alpha)
     beta = np.arccos(cos_beta)
     gamma = np.arctan(sin_gamma/cos_gamma)
     
@@ -214,20 +214,20 @@ def main():
     #geom_objs.append(csys_r_shank)
     # Create a CoordSys class instace for the left thigh
     csys_l_thigh = CoordSys('Left_Thigh', ax)
-    csys_l_thigh.set_from_3points(dict_mkr_coords["LKNE"], dict_mkr_coords["LKNM"], dict_mkr_coords["LTHI"])
+    csys_l_thigh.set_from_3points(dict_mkr_coords["LHEE"], dict_mkr_coords["LTOE"], dict_mkr_coords["LVAN"])
     csys_l_thigh_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 0], degrees=True).as_dcm()
     csys_l_thigh.apply_intrinsic_rotation(csys_l_thigh_rot_mat)
     csys_l_thigh.update_axes_pos()
-    #csys_l_thigh.draw_vis_objs(fr=0)
-    #geom_objs.append(csys_l_thigh)
+    csys_l_thigh.draw_vis_objs(fr=0)
+    geom_objs.append(csys_l_thigh)
     # Create a CoordSys class instance for the left shank
     csys_l_shank = CoordSys('Left_Shank', ax)
     csys_l_shank.set_from_3points(dict_mkr_coords["LANK"], dict_mkr_coords["LANM"], dict_mkr_coords["LTIB"])
     csys_l_shank_rot_mat = Rotation.from_euler('XYZ', [-90, 0, 0], degrees=True).as_dcm()
     csys_l_shank.apply_intrinsic_rotation(csys_l_shank_rot_mat)
     csys_l_shank.update_axes_pos()
-    #csys_l_shank.draw_vis_objs(fr=0)
-    #geom_objs.append(csys_l_shank)
+    csys_l_shank.draw_vis_objs(fr=0)
+    geom_objs.append(csys_l_shank)
     #'''
 
     # Calcuation of the right knee flexion angles in two different ways
@@ -271,8 +271,8 @@ def main():
     l_knee_ang_floating = np.zeros((cnt_frames, 3), dtype=np.float32)
     l_knee_ang_euler = np.zeros((cnt_frames, 3), dtype=np.float32)
     for i in range(cnt_frames):
-        l_knee_ang_floating[i] = calc_floating_angles(csys_l_thigh.arr_rot[i], csys_l_shank.arr_rot[i], side='left')
-        l_knee_ang_euler[i] = tf.calc_rot_angles_euler(csys_l_thigh.arr_rot[i], csys_l_shank.arr_rot[i])
+        l_knee_ang_floating[i] = calc_floating_angles(csys_l_shank.arr_rot[i], csys_l_thigh.arr_rot[i], side='left')
+        l_knee_ang_euler[i] = tf.calc_rot_angles_euler(csys_l_shank.arr_rot[i], csys_l_thigh.arr_rot[i])
     l_knee_flex_floating = l_knee_ang_floating[:,0]
     l_knee_flex_euler = -l_knee_ang_euler[:,0]   
     l_knee_add_floating = l_knee_ang_floating[:,1]
@@ -293,7 +293,7 @@ def main():
 
     ax_2d_1 = fig.add_axes([0.55, 0.15, 0.4, 0.3])
     ax_2d_1.set_xlim(start_frame, end_frame)
-    ax_2d_1.set_ylim(-10, 100)
+    ax_2d_1.set_ylim(-3, 1)
     vline_2d_1 = ax_2d_1.axvline(x=start_frame, ymin=0, ymax=1, color=(0,1,0), linewidth=1.0, linestyle='--')    
     title_2d_1 = ax_2d_1.set_title('Left Knee Flexion-Extension')
     ax_2d_1.plot(arr_frames, l_knee_flex_floating, linewidth=1.0, color='r', label='Floating', linestyle='--')
