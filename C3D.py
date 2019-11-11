@@ -25,10 +25,16 @@ class C3DServer:
         print(self.itf.GetRegUserName())
         print(self.itf.GetRegUserOrganization())
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *args):
+        self.close_c3d()
+
     def open_c3d(self, file_name):
         #print("Opening a C3D file:{}".format(file_name))
         if self.itf is None:
-            self.itf = win32.Dispatch('C3DServer.C3D')        
+            self.itf = win32.Dispatch('C3DServer.C3D')
         return self.itf.Open(file_name,3)        
 
     def save_c3d(self, file_name=''):
