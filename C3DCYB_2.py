@@ -153,7 +153,7 @@ def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=50):
         emg_data = [None] * 8
         for i in range(8):
             emg_data[i] = c3d.get_analog_data("Sensor {}.EMG{}".format(i + 1, i + 1))
-            emg_data[i] = envelope(emg_data[i], low_pass=emg_lowpass)
+            emg_data[i] = envelope(emg_data[i], sfreq=2000, low_pass=emg_lowpass)
         c3d.close_c3d()
         # endregion
 
