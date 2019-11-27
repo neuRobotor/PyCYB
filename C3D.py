@@ -14,6 +14,7 @@ class C3DServer:
     
     def __init__(self):
         self.itf = win32.Dispatch('C3DServer.C3D')
+        '''
         self.reg_mode = self.itf.GetRegistrationMode()
         if self.reg_mode == 0:
             print('Unregistered C3DServer')
@@ -24,7 +25,7 @@ class C3DServer:
         print('Version = ', self.itf.GetVersion())
         print(self.itf.GetRegUserName())
         print(self.itf.GetRegUserOrganization())
-
+        '''
     def __enter__(self):
         return self
 
