@@ -2,14 +2,41 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/PyCYB.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PyCYB.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/other.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/chi_fit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convmemnet_chi.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/convnet.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist_fit.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dist_valid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/disttest.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fqz.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utility/plot_learning_curve.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/utility/scalebars.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/C3D.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C3DCYB.py" beforeDir="false" afterPath="$PROJECT_DIR$/C3DCYB_archive.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/C3DCYB_2.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CYBNET.py" beforeDir="false" afterPath="$PROJECT_DIR$/CYBNET.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Keras-practice/conv-net.py" beforeDir="false" afterPath="$PROJECT_DIR$/Keras-practice/conv-net.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/C3D.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C3DCYB_archive.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/C3DCYB_archive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/C3DView_Slider.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/C3DView_Slider.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CYBNET.py" beforeDir="false" afterPath="$PROJECT_DIR$/convmemnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CYBNET_CLASS.py" beforeDir="false" afterPath="$PROJECT_DIR$/cybnet_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cluster.json" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/Cluster.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Geoms.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/Geoms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Transforms.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/Transforms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c3dcyb.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emg_proc.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/emg_proc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary1.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary10.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary10.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary11.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary11.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary12.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary12.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary13.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary13.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary2.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary2.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary3.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary3.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary4.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary4.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary5.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary5.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary6.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary6.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary7.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary7.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary8.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary8.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model_summary9.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Summaries/model_summary9.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plt_axis.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/plt_axis.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,56 +51,25 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>coordsy</find>
-      <find>csys_l_thigh</find>
-      <find>temp</find>
-      <find>ax</find>
-      <find>set_data_3d</find>
-      <find>vis_objs</find>
-      <find>vis_objs =</find>
-      <find>ax =</find>
-      <find>vis_objs.</find>
-      <find>axes_pos</find>
-      <find>LTHI</find>
-      <find>axes_pos =</find>
-      <find>HEE</find>
-      <find>Foot</find>
-      <find>arr_pos</find>
-      <find>low</find>
-      <find>(0, 0</find>
-      <find>cnt_fram</find>
-      <find>arr_fra</find>
-      <find>marker</find>
-      <find>mkr_names</find>
-      <find>mkr_pts_reshape</find>
-      <find>mkr_pts</find>
-      <find>get</find>
-      <find>dsta</find>
-      <find>mean</find>
-      <find>features</find>
-      <find>to_cat</find>
-      <find>layers.</find>
-      <find>accur</find>
-    </findStrings>
-    <replaceStrings>
-      <replace>RVAN</replace>
-    </replaceStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1U6eUPgJiPRVZCaLmGJetTRnV0w" />
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="C:/Source_files/Python/BBB" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="settings.editor.selected.configurable" value="PyScientificConfigurable" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Keras-practice" />
       <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB" />
+      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Keras-practice" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\utility" />
+      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Archive" />
+      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -88,8 +84,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.CYBNET">
-    <configuration name="CYBNET" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.convmemnet">
+    <configuration name="chi_fit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -102,7 +98,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/CYBNET.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/chi_fit.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -111,7 +107,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="CYBNET_CLASS" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="convmemnet" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -119,12 +115,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Keras-practice" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Keras-practice/CYBNET_CLASS.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/convmemnet.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -133,7 +129,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="conv-net" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="convmemnet_chi" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -141,12 +137,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Keras-practice" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Keras-practice/conv-net.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/convmemnet_chi.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -155,7 +151,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="keras-first-network" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="dist_valid" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -163,12 +159,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Keras-practice" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Keras-practice/keras-first-network.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/dist_valid.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -177,7 +173,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="regress-net" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="disttest" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -185,12 +181,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Keras-practice" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Keras-practice/regress-net.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/disttest.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -200,19 +196,19 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.keras-first-network" />
-      <item itemvalue="Python.regress-net" />
-      <item itemvalue="Python.conv-net" />
-      <item itemvalue="Python.CYBNET" />
-      <item itemvalue="Python.CYBNET_CLASS" />
+      <item itemvalue="Python.convmemnet" />
+      <item itemvalue="Python.disttest" />
+      <item itemvalue="Python.convmemnet_chi" />
+      <item itemvalue="Python.chi_fit" />
+      <item itemvalue="Python.dist_valid" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.CYBNET" />
-        <item itemvalue="Python.conv-net" />
-        <item itemvalue="Python.CYBNET_CLASS" />
-        <item itemvalue="Python.regress-net" />
-        <item itemvalue="Python.keras-first-network" />
+        <item itemvalue="Python.convmemnet" />
+        <item itemvalue="Python.convmemnet_chi" />
+        <item itemvalue="Python.dist_valid" />
+        <item itemvalue="Python.chi_fit" />
+        <item itemvalue="Python.disttest" />
       </list>
     </recent_temporary>
   </component>
@@ -228,6 +224,12 @@
       <updated>1572110973998</updated>
       <workItem from="1574681593947" duration="3574000" />
       <workItem from="1574854020514" duration="12144000" />
+      <workItem from="1574941662654" duration="8658000" />
+      <workItem from="1575126231225" duration="17230000" />
+      <workItem from="1575202231020" duration="19146000" />
+      <workItem from="1575367913363" duration="11869000" />
+      <workItem from="1575487898454" duration="12090000" />
+      <workItem from="1575546971848" duration="3599000" />
     </task>
     <servers />
   </component>
@@ -260,32 +262,32 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/C3DCYB_archive.py</url>
+          <url>file://$PROJECT_DIR$/Archive/C3DCYB_archive.py</url>
           <line>173</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/C3DCYB_archive.py</url>
+          <url>file://$PROJECT_DIR$/Archive/C3DCYB_archive.py</url>
           <line>257</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/C3DCYB_archive.py</url>
+          <url>file://$PROJECT_DIR$/Archive/C3DCYB_archive.py</url>
           <line>253</line>
           <option name="timeStamp" value="15" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/C3DCYB_archive.py</url>
+          <url>file://$PROJECT_DIR$/Archive/C3DCYB_archive.py</url>
           <line>99</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/C3DCYB_archive.py</url>
+          <url>file://$PROJECT_DIR$/Archive/C3DCYB_archive.py</url>
           <line>223</line>
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Geoms.py</url>
+          <url>file://$PROJECT_DIR$/utility/Geoms.py</url>
           <line>258</line>
           <option name="timeStamp" value="52" />
         </line-breakpoint>
@@ -295,9 +297,99 @@
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/CYBNET.py</url>
+          <url>file://$PROJECT_DIR$/convnet.py</url>
           <line>52</line>
           <option name="timeStamp" value="122" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dist_fit.py</url>
+          <line>128</line>
+          <option name="timeStamp" value="124" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dist_fit.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="132" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
+          <line>472</line>
+          <option name="timeStamp" value="143" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
+          <line>468</line>
+          <option name="timeStamp" value="144" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
+          <line>423</line>
+          <option name="timeStamp" value="146" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
+          <line>422</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
+          <line>395</line>
+          <option name="timeStamp" value="148" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convnet.py</url>
+          <line>121</line>
+          <option name="timeStamp" value="152" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="154" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <line>70</line>
+          <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dist_fit.py</url>
+          <line>108</line>
+          <option name="timeStamp" value="157" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dist_fit.py</url>
+          <line>103</line>
+          <option name="timeStamp" value="158" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/disttest.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="159" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/chi_fit.py</url>
+          <line>27</line>
+          <option name="timeStamp" value="162" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/chi_fit.py</url>
+          <line>23</line>
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/disttest.py</url>
+          <line>31</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/dist_valid.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="177" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convmemnet_chi.py</url>
+          <line>108</line>
+          <option name="timeStamp" value="180" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -315,55 +407,16 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PyCYB$convnet.coverage" NAME="convnet Coverage Results" MODIFIED="1575376444708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$convmemnet_chi.coverage" NAME="convmemnet_chi Coverage Results" MODIFIED="1575549555268" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$disttest.coverage" NAME="disttest Coverage Results" MODIFIED="1575498057152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$fqz.coverage" NAME="fqz Coverage Results" MODIFIED="1575128559197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$CYBNET.coverage" NAME="CYBNET Coverage Results" MODIFIED="1574873978924" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-  </component>
-  <component name="debuggerHistoryManager">
-    <expressions id="evaluateExpression">
-      <expression>
-        <expression-string>[f for f in os.listdir(data_path) if f.endswith('.json')]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>np.ones(emg_data.shape[0], 1)</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>emg_data.shape[0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>Y</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>dict_joint_angles[joint][:, 0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>dict_joint_angles[joint][(:, 0)]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>dict_joint_angles[joint][:]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>dict_joint_angles[joint][:][0]</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-      <expression>
-        <expression-string>X</expression-string>
-        <language-id>Python</language-id>
-        <evaluation-mode>EXPRESSION</evaluation-mode>
-      </expression>
-    </expressions>
+    <SUITE FILE_PATH="coverage/PyCYB$cybnet.coverage" NAME="cybnet Coverage Results" MODIFIED="1575369937613" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$chi_fit.coverage" NAME="chi_fit Coverage Results" MODIFIED="1575504866041" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1575285753049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$dist_valid.coverage" NAME="dist_valid Coverage Results" MODIFIED="1575548026842" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$dist_fit.coverage" NAME="dist_fit Coverage Results" MODIFIED="1575414712621" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$convmemnet.coverage" NAME="convmemnet Coverage Results" MODIFIED="1575550579467" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

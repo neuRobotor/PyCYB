@@ -1,15 +1,16 @@
 import os
 import sys
-import itertools as it
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider
-from C3D import C3DServer
-from Geoms import Line, PointCloud, CoordSys
-from emg_proc import envelope
+from utility.C3D import C3DServer
+from utility.Geoms import Line, PointCloud
+from utility.emg_proc import envelope
 import json
 import multiprocessing
 from functools import partial
+import re
+
 
 dflt_c3d_f_name = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB005\005_Stair\005_Stair11.c3d'
 c3d_f_path = ''
@@ -63,24 +64,32 @@ def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
         return angles
 
 
-def parallel_proc(fname, pdiff, ptarget_dir, pdir_in):
+def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv):
     print('Processing file ' + fname + '...')
-    joint_angles, emg_data = c3d_proc(pdir_in + '\\' + fname, diff=pdiff)
+    joint_angles, emg_data = c3d_proc(pdir_in + '\\' + fname, diff=pdiff, emg_lowpass=pcf, env=False)
     name = os.path.splitext(fname)[0] if not pdiff else os.path.splitext(fname)[0] + '_w'
     list_vals = [ar.tolist() for ar in joint_angles.values()]
     keys = joint_angles.keys()
-    save_angles = {key : li for key, li in zip(keys, list_vals)}
+    save_angles = {key: li for key, li in zip(keys, list_vals)}
     save_angles["EMG"] = [emg.tolist() for emg in emg_data]
+    save_angles["low-pass cf"] = pcf if penv else None
+    save_angles["data mode"] = "velocity" if pdiff else "angles"
     with open(ptarget_dir + '\\' + name + '.json', 'w') as fp:
         json.dump(save_angles, fp, indent=4)
 
 
-def dir_proc(diff=False):
+def dir_proc(diff=False, env=False):
     dir_names = proc_input(sys.argv)
+    for dir in dir_names[1:]:
+        if not os.path.isdir(dir):
+            print("No such directory found:")
+            print(dir)
+            help_msg()
+            return
     if len(dir_names) >= 2:
         dir_in = dir_names[1]
         target_dir = dir_names[1]
-        print('Processing directory:')
+        print('\nProcessing directory:')
         print(dir_in + '\n')
     else:
         print('Please enter directory path')
@@ -89,7 +98,11 @@ def dir_proc(diff=False):
     if len(dir_names) >= 3:
         target_dir = dir_names[2]
 
-    f = partial(parallel_proc, pdiff=diff, pdir_in=dir_in, ptarget_dir=target_dir)
+    cf = [int(re.search(r'(\d+)$', str(arg)).group(0))
+          for arg in sys.argv if "-cf" in arg or "--cutoff" in arg]
+    if not cf:
+        cf = [5]
+    f = partial(parallel_proc, pdiff=diff, pdir_in=dir_in, ptarget_dir=target_dir, pcf=cf[0], penv=env)
     fnames = [f for f in os.listdir(dir_in) if f.endswith('.c3d')]
     nProcess = multiprocessing.cpu_count()
     with multiprocessing.Pool(nProcess) as pool:
@@ -176,7 +189,7 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
     return joint_angles, dict_mkr_coords
 
 
-def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=5, diff=False):
+def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=5, diff=False, env=False):
     with C3DServer() as c3d:
         # region Read a C3D file and extract all necessary info
         c3d.open_c3d(c3d_name)
@@ -187,9 +200,11 @@ def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=5, diff=False):
         mkr_pts = c3d.get_all_marker_coords_arr3d(mkr_scale_factor)
         dict_mkr_coords = {k: mkr_pts[:, dict_mkr_idx[k], :] for k in mkr_names}
         emg_data = [None] * 8
+        emg_freq = c3d.get_analog_frame_rate()
         for i in range(8):
             emg_data[i] = c3d.get_analog_data("Sensor {}.EMG{}".format(i + 1, i + 1))
-            emg_data[i] = envelope(emg_data[i], sfreq=2000, low_pass=emg_lowpass)
+            if env:
+                emg_data[i] = envelope(emg_data[i], sfreq=emg_freq, low_pass=emg_lowpass)
         c3d.close_c3d()
         # endregion
 
@@ -206,7 +221,7 @@ def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=5, diff=False):
     return joint_angles, emg_data
 
 
-def visu(diff = False):
+def visu(diff=False, env=False):
     # region Globals and Commandline arguements
     global sl_fr
     asis_breadth = None
@@ -235,9 +250,15 @@ def visu(diff = False):
     mkr_pts_reshape = np.reshape(mkr_pts, (dim_mkr_pts[0]*dim_mkr_pts[1], dim_mkr_pts[2]))
     dict_mkr_coords = {k:mkr_pts[:,dict_mkr_idx[k],:] for k in mkr_names}
     emg_data = [None]*8
+    cf = [int(re.search(r'(\d+)$', str(arg)).group(0))
+          for arg in sys.argv if "-cf" in arg or "--cutoff" in arg]
+    emg_freq = int(c3d.get_analog_frame_rate())
+    if not cf:
+        cf = [5]
     for i in range(8):
         emg_data[i] = c3d.get_analog_data("Sensor {}.EMG{}".format(i+1, i+1))
-        emg_data[i] = envelope(emg_data[i], low_pass=50)
+        if env:
+            emg_data[i] = envelope(emg_data[i], low_pass=cf[0], sfreq=emg_freq)
     c3d.close_c3d()
     # endregion
 
@@ -262,10 +283,12 @@ def visu(diff = False):
     fig = plt.figure(constrained_layout=True)
     gs = fig.add_gridspec(4, 5, height_ratios=[6, 6, 6, 1])
     # Add an axes for 3D graph for markers
+    from matplotlib.ticker import MultipleLocator
     ax = fig.add_subplot(gs[:3, :3], projection='3d', proj_type='persp')
-    ax.set_xlabel('X')
-    ax.set_ylabel('Y')
-    ax.set_zlabel('Z')
+    ax.xaxis.set_major_locator(MultipleLocator(0.5))
+    ax.set_xlabel('X (m)')
+    ax.set_ylabel('Y (m)')
+    ax.set_zlabel('Z (m)')
     ax.view_init(elev=20, azim=-135)
     title = ax.set_title('C3D viewer, frame={0:05d}'.format(start_frame))
 
@@ -342,20 +365,40 @@ def visu(diff = False):
     geom_objs.append(line_obj)
     # endregion
     # endregion
-
+    import seaborn as sns
+    sns.set_style("whitegrid")
     # region Plotting angles
     joint_names = ['Hip', 'Knee', 'Ankle'] if not diff else ['HipW', 'KneeW', 'AnkleW']
     vlines = []
+    axes_list = list()
     for row in range(3):
         for col, side in enumerate(['L', 'R']):
             cur_ax = fig.add_subplot(gs[row, 3+col])
             cur_ax.set_xlim(start_frame, end_frame)
             # cur_ax.set_ylim(-2, 2)
             vlines.append(cur_ax.axvline(x=start_frame, ymin=0, ymax=1, color=(0, 1, 0), linewidth=1.0, linestyle='--'))
-            cur_ax.set_title(side + joint_names[row])
-            cur_ax.plot(arr_frames, joint_angles[side + joint_names[row]][:, 0],
-                        linewidth=1.0, color='tab:blue', label='Flexion')
+            #cur_ax.set_title(side + joint_names[row])
+            cur_ax.plot(arr_frames, joint_angles[side + joint_names[row]][:, 0]/np.pi*180,
+                        linewidth=1.0, color='tab:blue', label=side + joint_names[row]+' Flexion')
             cur_ax.legend(loc='upper right', fontsize='small')
+            if row == 2:
+                cur_ax.set_xlabel("Frame")
+            else:
+                cur_ax.set_xticklabels([])
+            if col == 0:
+                cur_ax.set_ylabel("Angle (Degrees°)")
+            else:
+                cur_ax.set_yticklabels([])
+            axes_list.append(cur_ax)
+    for i, cur_ax in enumerate(axes_list):
+        cur_ax.get_shared_x_axes().join(cur_ax, axes_list[i%2])
+        cur_ax.get_shared_y_axes().join(cur_ax, axes_list[int(i/2)*2])
+    axes_list[0].set_ylim((-10+np.min(joint_angles['RHip'][:, 0]/np.pi*180),
+                           10+np.max(joint_angles['LHip'][:, 0]/np.pi*180)))
+    axes_list[2].set_ylim((-10 + np.min(joint_angles['RKnee'][:, 0] / np.pi * 180),
+                           10 + np.max(joint_angles['RKnee'][:, 0] / np.pi * 180)))
+    axes_list[4].set_ylim((-10 + np.min(joint_angles['RAnkle'][:, 0] / np.pi * 180),
+                           10 + np.max(joint_angles['RAnkle'][:, 0] / np.pi * 180)))
 
     ax_fr = fig.add_subplot(gs[3, :], facecolor='lightgoldenrodyellow')
     sl_fr = Slider(ax_fr, 'Frame', start_frame, end_frame, valinit=start_frame, valstep=1, valfmt='%05d')
@@ -373,7 +416,66 @@ def visu(diff = False):
         fig.canvas.flush_events()
 
     sl_fr.on_changed(update)
+    import seaborn
+    with seaborn.axes_style("dark"):
+        sns.set_style("dark", {"axes.facecolor": ".95"})
+        f, axes = plt.subplots(8, 1, sharex='col', sharey='col', figsize=(8,6))
+        axes[7].get_shared_y_axes().remove(axes[7])
+        if env:
+            axes[0].set_title("EMG envelopes, low-pass = {0}".format(cf[0]))
+        else:
+            axes[0].set_title("EMG signals, $F_s={}$".format(emg_freq))
+        emg_names = ["LIO", "RIO", "LEO", "REO", "IT", "MT", "ES", "ECG"]
+        x = np.arange(len(emg_data[0]))/emg_freq
 
+        def sc(axis):
+            l = axis.get_majorticklocs()
+            return len(l) > 1 and (l[1] - l[0])
+
+        for row, ax in enumerate(axes):
+            ax.plot(x, emg_data[row], linewidth=0.8, c=seaborn.color_palette()[0])
+            d = sc(ax.yaxis)
+            ax.set_ylabel(emg_names[row])
+            if row is not 7:
+                seaborn.despine(ax = ax, bottom=True)
+        ax.spines["top"].set_linewidth(2)
+        f.subplots_adjust(hspace=-0.01)
+
+        from utility.scalebars import add_scalebar
+        add_scalebar(ax, sizex=0, matchx=False, sizey=3*d, matchy=False, hidex=False, hidey=False,
+                     labely='\n{0:.1f} mV'.format(d*3000), borderpad=0.2)
+        ax=axes[0]
+        d = sc(ax.yaxis)
+        add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
+                     labely='\n{0:.1f} mV'.format(d*1000), borderpad=0.2)
+        for ax in axes:
+            ax.get_yaxis().set_ticks([])
+        ax.set_xlabel("Time (s)")
+        plt.savefig("emg.png", transparent=True)
+        f, axes = plt.subplots(8, 1, sharex='col', sharey='col')
+
+
+        axes[0].set_title("Normalised EMG input frame to NN".format(cf[0]))
+        emg_names = ["LIO", "RIO", "LEO", "REO", "IT", "MT", "ES", "ECG"]
+        x = np.arange(20)
+
+        for i, emg in enumerate(emg_data):
+            emg = np.array(emg_data[i])
+            emg_data[i] = (emg - np.mean(emg)) / np.std(emg)
+        emg_data = np.array(emg_data)[:, 350:370]
+        vmin = np.min(emg_data)
+        vmax = np.max(emg_data)
+        cbar_ax = f.add_axes([.91, .11, .03, .77])
+        for row, ax in enumerate(axes):
+            emg = np.array(emg_data[row])
+            emg = (emg - np.mean(emg))/np.std(emg)
+            a = np.expand_dims(emg, axis=0)
+            hm = seaborn.heatmap(a, ax=ax, vmin=vmin, vmax=vmax, cbar=row == 0, cbar_ax=None if row else cbar_ax)
+            ax.set_ylabel(emg_names[row])
+            ax.get_yaxis().set_ticks([])
+        #f.tight_layout(rect=[0, 0, .9, 1])
+        cbar_ax.margins(x=0.1)
+        plt.savefig("20.png", transparent=True)
     plt.show()
 
     return sl_fr
@@ -386,12 +488,13 @@ def help_msg():
           'python C3DCYB.py [options] source_path [target_path]\n'
           '\t[options]:\n'
           '\t\tnone\t\tInput source_path to directory of .c3d files to process\n'
+          '\t\t-d --diff\tExtract joint angular velocity instead of angles\n'
+          '\t\t-cfN --cutoffN\tSubstitute N with cutoff frequency (Hz) for EMG low-pass\n'
+          '\t\t-e --enve\tCalculate envelope of EMG using supplied cf\n'
           '\t\t\t\tOptionally specify target_path if target directory is different\n'
           '\t\t-h --help\tDisplay this message\n'
           '\t\t-v --visu\tProcess a single .c3d file, and display interactive plots\n'
-          '\t\t\t\tNo target_path needed\n'
-          '\t\t-d --diff\tExtract joint angular velocity instead of angles\n'
-          '\t\t\t\tOptionally specify target_path if target directory is different\n')
+          '\t\t\t\tNo target_path needed\n')
 
 
 def main():
@@ -400,10 +503,10 @@ def main():
             help_msg()
             return
         if '-v' in sys.argv or '--visu' in sys.argv:
-            visu(diff='-d' in sys.argv or '--diff' in sys.argv)
+            visu(diff='-d' in sys.argv or '--diff' in sys.argv, env='-e' in sys.argv or '--enve' in sys.argv)
             return
         else:
-            dir_proc(diff='-d' in sys.argv or '--diff' in sys.argv)
+            dir_proc(diff='-d' in sys.argv or '--diff' in sys.argv, env='-e' in sys.argv or '--enve' in sys.argv)
     else:
         print('Please use at least 1 argument\n')
         help_msg()
