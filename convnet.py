@@ -107,7 +107,9 @@ def kfold():
         else ['LHipW', 'RHipW', 'LKneeW', 'RKneeW', 'LAnkleW', 'RAnkleW']
     X = np.empty((0, freq_factor, n_channels))
     Y = [[] for _ in range(len(joint_names))]
+    files=list()
     for file in sorted([f for f in os.listdir(data_path) if f.endswith('.json')]):
+        files.append(file)
         with open(data_path+'\\'+file) as json_file:
             dict_data = json.load(json_file)
         for i, joint in enumerate(joint_names):
@@ -132,7 +134,8 @@ def kfold():
     cur_model = partial(conv1d_model, n_timesteps=X.shape[1], n_features=X.shape[2],
                         n_outputs=Y.shape[1], drp=drop, krnl=kernel)
     model = cur_model()
-    estimator = KerasRegressor(build_fn=cur_model, epochs=400, batch_size=32, verbose=2)
+    ep, ba = 400, 32
+    estimator = KerasRegressor(build_fn=cur_model, epochs=ep, batch_size=ba, verbose=2)
     kfold = KFold(n_splits=k)
     scores = cross_val_score(estimator, X, Y, cv=kfold, scoring='neg_mean_squared_error', n_jobs=-1)
     #
@@ -143,31 +146,45 @@ def kfold():
     #     scores.append(score)
     #     losses.append(loss)
     # summarize results
+    summary(k, scores, kernel, drop, model, data_path, ep, ba, files)
 
+
+def summary(k, scores, kernel, drop, model, data_path, epochs, batch, files):
     print(scores)
     m, st = np.mean(scores), np.std(scores)
 
     print('MSE: {0:.3f} (+/-{1:.3f})'.format(-m, st))
     print('K-fold: {0:.0f}'.format(k))
+    # endregion
 
-
+    # region Self-documentation
     ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
-            for f in os.listdir('.') if f.endswith('.txt')]
+            for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries') if f.endswith('.txt')]
     if not ends:
         ends = [0]
+    print(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries\model_summary' +
+          str(max(ends) + 1) + '.txt')
+    from datetime import datetime
+    dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
     with open(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries\model_summary' +
               str(max(ends) + 1) + '.txt', 'w+') as f:
         model.summary(print_fn=lambda x: f.write(x + '\n'))
-        f.write("\nMSE: {:.3f}% (+/-{:.3f})\n"
+        f.write("\nDate: {}\n"
+                "File: {}\n"
+                "Scores: {}\n"
+                "MSE: {:.3f} (+/-{:.3f})\n"
                 "Dropout (if applicable): {:.3f}\n"
                 "Kernel (if applicable): {:.0f}, {:.0f}\n"
-                "K: {:.0f}\n".format(m, st, drop, kernel[0], kernel[1], k)
+                "Epochs: {}, Batch size: {}\n"
+                "K: {:.0f}\n".format(dt_string, os.path.basename(sys.argv[0]),
+                                     scores, m, st, drop, kernel[0], kernel[1], epochs, batch, k)
                 + "\n\nUsing Files:\n")
-        for file in [os.path.splitext(f)[0] for f in os.listdir(data_path) if f.endswith('.json')]:
+        for file in files:
             f.write(file + "\n")
 
     # plot_model(model, to_file='model_plot'+str(max(ends) + 1)+'.png', show_shapes=True, show_layer_names=True)
-
+    # endregion
 
 def main():
     kfold()

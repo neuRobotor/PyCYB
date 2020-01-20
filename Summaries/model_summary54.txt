@@ -1,0 +1,70 @@
+Model: "sequential_1"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+conv1d_1 (Conv1D)            (None, 38, 8)             200       
+_________________________________________________________________
+conv1d_2 (Conv1D)            (None, 32, 4)             100       
+_________________________________________________________________
+max_pooling1d_1 (MaxPooling1 (None, 16, 4)             0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 16, 4)             0         
+_________________________________________________________________
+flatten_1 (Flatten)          (None, 64)                0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 100)               6500      
+_________________________________________________________________
+dense_2 (Dense)              (None, 6)                 606       
+=================================================================
+Total params: 7,406
+Trainable params: 7,406
+Non-trainable params: 0
+_________________________________________________________________
+
+Date: 08/12/2019 19:58:04
+File: convmemnet_chi.py
+Scores: [-0.10390735 -0.10253803 -0.1009867  -0.11092305 -0.10374401]
+MSE: -0.104 (+/-0.003)
+Dropout (if applicable): 0.500
+Kernel (if applicable): 3, 3
+Epochs: 100, Batch size: 128
+K: 5
+
+
+Using Files:
+004_Stair01.json
+004_Stair02.json
+004_Stair03.json
+004_Stair04.json
+004_Stair05.json
+004_Stair06.json
+004_Stair07.json
+004_Stair08.json
+004_Stair09.json
+004_Stair10.json
+004_Stair11.json
+004_Stair12.json
+004_Stair13.json
+004_Stair14.json
+004_Stair15.json
+004_Stair16.json
+004_Stair17.json
+004_Stair18.json
+004_Stair19.json
+004_Stair20.json
+004_Stair21.json
+004_Stair22.json
+004_Stair23.json
+004_Stair24.json
+004_Stair25.json
+004_Stair26.json
+004_Stair27.json
+004_Stair28.json
+004_Stair29.json
+004_Stair30.json
+004_Stair31.json
+004_Stair32.json
+004_Stair33.json
+004_Stair34.json
+004_Stair35.json
+004_Stair36.json

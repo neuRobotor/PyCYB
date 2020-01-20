@@ -9,7 +9,7 @@ import seaborn as sns
 import os
 import json
 DISTRIBUTIONS = _distn_names
-DISTRIBUTIONS = ['chi', 'chi2', 'foldnorm', 'halfnorm', 'invgauss']
+DISTRIBUTIONS = ['f', 'chi', 'chi2', 'foldnorm', 'halfnorm', 'invgauss']
 matplotlib.rcParams['figure.figsize'] = (16.0, 12.0)
 sns.set()
 
@@ -100,16 +100,17 @@ for i, file in enumerate(sorted([f for f in os.listdir(data_path) if f.endswith(
         break
 data = pd.Series(X[0, :])
 data = (data - np.mean(data))/np.std(data)
+#data = np.abs(data[abs(data - np.mean(data)) < 9 * np.std(data)])
+data = np.abs(data)
 data.plot(kind='hist', bins=50, density=True, alpha=0.5)
-data = np.abs(data[abs(data - np.mean(data)) < 4 * np.std(data)])
 # Plot for comparison
 plt.figure(figsize=(12,8))
-ax = data.plot(kind='hist', bins=50, density=True, alpha=0.5)
+ax = data.plot(kind='hist', bins=200, density=True, alpha=0.5)
 # Save plot limits
 dataYLim = ax.get_ylim()
 plt.ticklabel_format(style='sci', scilimits=(0,0))
 # Find best fit distribution
-best_fit_name, best_fit_params = best_fit_distribution(data, 200, ax)
+best_fit_name, best_fit_params = best_fit_distribution(data, 500, ax)
 best_dist = getattr(st, best_fit_name)
 
 # Update plots

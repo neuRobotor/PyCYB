@@ -19,10 +19,12 @@ global sl_fr
 
 def proc_input(list_in):
     list_out = list(list_in)
+    options_out = list()
     for el in list_in:
         if "-" in el:
+            options_out.append(el)
             list_out.remove(el)
-    return list_out
+    return list_out, options_out
 
 
 def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
@@ -68,6 +70,8 @@ def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv):
     print('Processing file ' + fname + '...')
     joint_angles, emg_data = c3d_proc(pdir_in + '\\' + fname, diff=pdiff, emg_lowpass=pcf, env=False)
     name = os.path.splitext(fname)[0] if not pdiff else os.path.splitext(fname)[0] + '_w'
+    if penv:
+        name += "_Env"
     list_vals = [ar.tolist() for ar in joint_angles.values()]
     keys = joint_angles.keys()
     save_angles = {key: li for key, li in zip(keys, list_vals)}
@@ -79,7 +83,7 @@ def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv):
 
 
 def dir_proc(diff=False, env=False):
-    dir_names = proc_input(sys.argv)
+    dir_names, options = proc_input(sys.argv)
     for dir in dir_names[1:]:
         if not os.path.isdir(dir):
             print("No such directory found:")
@@ -99,14 +103,17 @@ def dir_proc(diff=False, env=False):
         target_dir = dir_names[2]
 
     cf = [int(re.search(r'(\d+)$', str(arg)).group(0))
-          for arg in sys.argv if "-cf" in arg or "--cutoff" in arg]
+          for arg in options if "-cf" in arg or "--cutoff" in arg]
     if not cf:
         cf = [5]
     f = partial(parallel_proc, pdiff=diff, pdir_in=dir_in, ptarget_dir=target_dir, pcf=cf[0], penv=env)
     fnames = [f for f in os.listdir(dir_in) if f.endswith('.c3d')]
     nProcess = multiprocessing.cpu_count()
+    import time
+    t1 = time.perf_counter()
     with multiprocessing.Pool(nProcess) as pool:
         pool.map(f, fnames)
+    print("Elapsed time: {}".format(time.perf_counter()-t1))
     return
 
 
@@ -485,7 +492,7 @@ def visu(diff=False, env=False):
 def help_msg():
     print('Joint Angle Estimation using Joint-Coordinate Systems and EMG pre-processing\n'
           'Usage:\n'
-          'python C3DCYB.py [options] source_path [target_path]\n'
+          'python c3dcyb.py [options] source_path [target_path]\n'
           '\t[options]:\n'
           '\t\tnone\t\tInput source_path to directory of .c3d files to process\n'
           '\t\t-d --diff\tExtract joint angular velocity instead of angles\n'
