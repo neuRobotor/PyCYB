@@ -4,14 +4,9 @@ import os
 import json
 import re
 from keras.utils.vis_utils import plot_model
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import Dropout
-from keras.layers import MaxPooling1D
-from keras.layers import Reshape
+from keras.models import Sequential,
+from keras.layers import Dense, Flatten, Dropout, MaxPooling1D, DepthwiseConv2D
 from keras.layers.convolutional import Conv1D
-from keras.layers.convolutional import Conv2D
 from sklearn.model_selection import train_test_split
 from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import cross_val_score
@@ -20,7 +15,37 @@ from functools import partial
 from convnet import summary
 
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
-
+def depthwise_model(n_timesteps, n_features, n_outputs, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
+    model = Sequential()
+    model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
+                              kernel_size=(1, krnl[0]),
+                              depth_multiplier=16,
+                              activation='elu',
+                              padding='valid'))
+    if not dilate:
+        model.Name = "1D TCN"
+        model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
+                                  kernel_size=(1, krnl[1]),
+                                  depth_multiplier=16,
+                                  activation='elu',
+                                  padding='valid'))
+    else:
+        model.Name = "1D {} dilated TCN".format(dilate)
+        model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
+                                  kernel_size=(1, krnl[1]),
+                                  dilation_rate=dilate,
+                                  depth_multiplier=16,
+                                  activation='elu',
+                                  padding='valid'))
+    if mpool:
+        model.add(MaxPooling1D(pool_size=mpool))
+    model.add(Dropout(drp))
+    model.add(Flatten())
+    model.add(Dense(100, activation='relu'))
+    model.add(Dense(50, activation='relu'))
+    model.add(Dense(n_outputs, activation='linear'))
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mape'])
+    return model
 
 def conv1d_model(n_timesteps, n_features, n_outputs, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
     model = Sequential()
