@@ -2,7 +2,8 @@ import scipy as sp
 import numpy as np
 from scipy import signal
 
-def denoise(emg, low_pass=10, sfreq=2000, high_band=20, low_band=450):
+
+def denoise(emg, sfreq=2000, high_band=20, low_band=450):
     emg = emg - np.mean(emg)
     emg = emg - np.mean(emg)
     # normalise cut-off frequencies to sampling frequency

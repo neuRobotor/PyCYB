@@ -12,8 +12,7 @@ from functools import partial
 import re
 
 
-dflt_c3d_f_name = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB005\005_Stair\005_Stair11.c3d'
-c3d_f_path = ''
+
 global sl_fr
 
 
@@ -232,13 +231,10 @@ def visu(diff=False, env=False):
     # region Globals and Commandline arguements
     global sl_fr
     asis_breadth = None
-    dir_names = proc_input(sys.argv)
-    if len(dir_names) >= 2:
-        c3d_f_path = dir_names[1]
-    else:
-        c3d_f_path = os.path.join(os.getcwd(), dflt_c3d_f_name)
-    if len(dir_names) >= 3:
-        asis_breadth = dir_names[2]
+    dir_names, _ = proc_input(sys.argv)
+
+    c3d_f_path = dir_names[1]
+    print(c3d_f_path)
     # endregion
 
     # region Read a C3D file and extract all necessary info
