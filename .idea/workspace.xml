@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/ECG_filter/ecg_remove.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Model Selection/ARcoeffs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Model Selection/costAna.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ECG_filter/anc.py" beforeDir="false" afterPath="$PROJECT_DIR$/ECG_filter/anc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/convmemnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/convmemnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_compare.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/parameter_fitting/anc_fit.py" beforeDir="false" afterPath="$PROJECT_DIR$/parameter_fitting/anc_fit.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plot_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/plot_predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/emg_proc.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/emg_proc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/load_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/load_util.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -49,8 +56,8 @@
       <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Keras-practice" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\parameter_fitting" />
       <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB" />
+      <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\parameter_fitting" />
       <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\utility" />
       <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Archive" />
       <recent name="C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries" />
@@ -68,8 +75,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.model_compare">
-    <configuration name="ale" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.plot_predict">
+    <configuration name="anc_fit" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -77,12 +84,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ECG_filter" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/parameter_fitting" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ECG_filter/ale.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/parameter_fitting/anc_fit.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -135,7 +142,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="model_compare" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="ecg_remove" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -143,12 +150,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/ECG_filter" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/model_compare.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/ECG_filter/ecg_remove.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -180,19 +187,19 @@
       <method v="2" />
     </configuration>
     <list>
+      <item itemvalue="Python.anc.y" />
+      <item itemvalue="Python.anc_fit" />
+      <item itemvalue="Python.ecg_remove" />
       <item itemvalue="Python.convmemnet" />
       <item itemvalue="Python.plot_predict" />
-      <item itemvalue="Python.ale" />
-      <item itemvalue="Python.anc.y" />
-      <item itemvalue="Python.model_compare" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.model_compare" />
-        <item itemvalue="Python.anc.y" />
-        <item itemvalue="Python.ale" />
         <item itemvalue="Python.plot_predict" />
         <item itemvalue="Python.convmemnet" />
+        <item itemvalue="Python.ecg_remove" />
+        <item itemvalue="Python.anc.y" />
+        <item itemvalue="Python.anc_fit" />
       </list>
     </recent_temporary>
   </component>
@@ -223,6 +230,11 @@
       <workItem from="1579366359567" duration="5046000" />
       <workItem from="1579608225620" duration="26524000" />
       <workItem from="1579788115254" duration="5869000" />
+      <workItem from="1579806299422" duration="937000" />
+      <workItem from="1579808369860" duration="5757000" />
+      <workItem from="1579819770437" duration="1280000" />
+      <workItem from="1579867446341" duration="2650000" />
+      <workItem from="1580040161117" duration="25509000" />
     </task>
     <servers />
   </component>
@@ -401,23 +413,18 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/plot_predict.py</url>
-          <line>24</line>
+          <line>26</line>
           <option name="timeStamp" value="233" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/plot_predict.py</url>
-          <line>49</line>
+          <line>53</line>
           <option name="timeStamp" value="234" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/convmemnet.py</url>
-          <line>151</line>
+          <line>161</line>
           <option name="timeStamp" value="237" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convmemnet.py</url>
-          <line>180</line>
-          <option name="timeStamp" value="238" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ECG_filter/ale.py</url>
@@ -426,18 +433,48 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ECG_filter/anc.py</url>
-          <line>98</line>
+          <line>121</line>
           <option name="timeStamp" value="243" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ECG_filter/anc.py</url>
-          <line>80</line>
+          <line>102</line>
           <option name="timeStamp" value="244" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ECG_filter/anc.py</url>
-          <line>73</line>
-          <option name="timeStamp" value="245" />
+          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <line>203</line>
+          <option name="timeStamp" value="246" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/parameter_fitting/anc_fit.py</url>
+          <line>40</line>
+          <option name="timeStamp" value="252" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/parameter_fitting/anc_fit.py</url>
+          <line>20</line>
+          <option name="timeStamp" value="254" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Model Selection/ARcoeffs.py</url>
+          <line>34</line>
+          <option name="timeStamp" value="256" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <line>191</line>
+          <option name="timeStamp" value="273" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <line>190</line>
+          <option name="timeStamp" value="274" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <line>113</line>
+          <option name="timeStamp" value="275" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -458,23 +495,26 @@
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PyCYB$convnet.coverage" NAME="convnet Coverage Results" MODIFIED="1575376444708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_chi.coverage" NAME="convmemnet_chi Coverage Results" MODIFIED="1575895033953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$ARcoeffs.coverage" NAME="ARcoeffs Coverage Results" MODIFIED="1580050199770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Model Selection" />
+    <SUITE FILE_PATH="coverage/PyCYB$ecg_remove.coverage" NAME="ecg_remove Coverage Results" MODIFIED="1580152326091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_bc.coverage" NAME="convmemnet_bc Coverage Results" MODIFIED="1575835243830" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$ale.coverage" NAME="ale Coverage Results" MODIFIED="1579710660062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
+    <SUITE FILE_PATH="coverage/PyCYB$anc_fit.coverage" NAME="anc_fit Coverage Results" MODIFIED="1580058801074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/parameter_fitting" />
     <SUITE FILE_PATH="coverage/PyCYB$kernel_fit.coverage" NAME="kernel_fit Coverage Results" MODIFIED="1575832739551" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_ecdf.coverage" NAME="convmemnet_ecdf Coverage Results" MODIFIED="1575910250396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$model_compare.coverage" NAME="model_compare Coverage Results" MODIFIED="1579793350946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$dist_valid.coverage" NAME="dist_valid Coverage Results" MODIFIED="1578841412452" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$dist_fit.coverage" NAME="dist_fit Coverage Results" MODIFIED="1578878096494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$disttest.coverage" NAME="disttest Coverage Results" MODIFIED="1575498057152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$plot_predict.coverage" NAME="plot_predict Coverage Results" MODIFIED="1579370466561" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$plot_predict.coverage" NAME="plot_predict Coverage Results" MODIFIED="1580236614507" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$fqz.coverage" NAME="fqz Coverage Results" MODIFIED="1575128559197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$ecdf_fit.coverage" NAME="ecdf_fit Coverage Results" MODIFIED="1578841601335" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$CYBNET.coverage" NAME="CYBNET Coverage Results" MODIFIED="1574873978924" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$cybnet.coverage" NAME="cybnet Coverage Results" MODIFIED="1575369937613" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$chi_fit.coverage" NAME="chi_fit Coverage Results" MODIFIED="1575829095820" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$anc_y.coverage" NAME="anc.y Coverage Results" MODIFIED="1579789057588" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
+    <SUITE FILE_PATH="coverage/PyCYB$anc_y.coverage" NAME="anc.y Coverage Results" MODIFIED="1580148060866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1575285753049" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$box_cox_fit.coverage" NAME="box-cox_fit Coverage Results" MODIFIED="1575835159929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$convmemnet.coverage" NAME="convmemnet Coverage Results" MODIFIED="1579369358597" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$convmemnet.coverage" NAME="convmemnet Coverage Results" MODIFIED="1580152982358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

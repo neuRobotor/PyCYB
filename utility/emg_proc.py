@@ -3,6 +3,12 @@ import numpy as np
 from scipy import signal
 
 
+def norm_emg(data):
+    emg_std = np.std(data, axis=1)
+    emg_mean = np.mean(data, axis=1)
+    return (data - emg_mean[:, None]) / emg_std[:, None]
+
+
 def denoise(emg, sfreq=2000, high_band=20, low_band=450):
     emg = emg - np.mean(emg)
     emg = emg - np.mean(emg)

@@ -12,13 +12,15 @@ with open(file_path) as json_file:
     dict_data = json.load(json_file)
 
 emg_data = norm_emg(np.array(dict_data["EMG"]))
+ecg = emg_data[7]
 
 ws=40
 s=1
 
 emg_data = stack_emg(emg_data, window_size=ws, stride=s)
 #emg_data = emg_data[:,:,:-1]
-model = load_model('env.h5')
+emg_data = np.expand_dims(emg_data, 1)
+model = load_model('separate_w40_s1.h5')
 
 y = model.predict(emg_data)
 
@@ -47,13 +49,18 @@ for i, joint in enumerate(joint_names):
 Y0 = np.array(Y0)
 Y0 = Y0[:, :, 0].transpose()
 
+ecg = ecg[0:len(Y0)]
+
 for i, joint in enumerate(joint_names):
-    if "LKnee" not in joint:
-        continue
+    # if "LKnee" not in joint:
+    #     continue
     #cur_data = [row[0] for row in dict_data[joint][1:]]
-    axes[i].plot(Y0[:,i])
-    axes[i].plot(np.arange(N, len(y[:, 0])+N), y[:, 0])
-    axes[i].set_xlabel("Time Sample (0.5 ms)")
+    axes[i].plot(np.arange(len(Y0[:, i]))/2000,
+                 (ecg-np.mean(ecg))/np.std(ecg)/5 * np.std(Y0[:, i]) + np.mean(Y0[:, i]) + 0.2,
+                 alpha=0.3, color='gray', lw=0.7)
+    axes[i].plot(np.arange(len(Y0[:, i]))/2000, Y0[:, i])
+    axes[i].plot(np.arange(N, len(y[:, i])+N)/2000, y[:, i])
+    axes[i].set_xlabel("Time (s)")
     axes[i].set_ylabel("Radians")
     axes[i].set_title(joint)
 

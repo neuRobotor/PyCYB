@@ -4,8 +4,8 @@ import os
 import json
 import re
 from keras.utils.vis_utils import plot_model
-from keras.models import Sequential,
-from keras.layers import Dense, Flatten, Dropout, MaxPooling1D, DepthwiseConv2D
+from keras.models import Sequential
+from keras.layers import Dense, Flatten, Dropout, MaxPooling1D, MaxPooling2D, DepthwiseConv2D
 from keras.layers.convolutional import Conv1D
 from sklearn.model_selection import train_test_split
 from keras.wrappers.scikit_learn import KerasRegressor
@@ -14,31 +14,36 @@ from sklearn.model_selection import KFold
 from functools import partial
 from convnet import summary
 
+
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
-def depthwise_model(n_timesteps, n_features, n_outputs, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
+def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
+    n_timesteps = shape_X[2]
+    n_features = shape_X[3]
+    n_outputs = shape_Y[1]
+
     model = Sequential()
     model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                               kernel_size=(1, krnl[0]),
-                              depth_multiplier=16,
-                              activation='elu',
+                              depth_multiplier=4,
+                              activation='relu',
                               padding='valid'))
     if not dilate:
         model.Name = "1D TCN"
         model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                                   kernel_size=(1, krnl[1]),
                                   depth_multiplier=16,
-                                  activation='elu',
+                                  activation='relu',
                                   padding='valid'))
     else:
         model.Name = "1D {} dilated TCN".format(dilate)
         model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                                   kernel_size=(1, krnl[1]),
                                   dilation_rate=dilate,
-                                  depth_multiplier=16,
-                                  activation='elu',
+                                  depth_multiplier=4,
+                                  activation='relu',
                                   padding='valid'))
     if mpool:
-        model.add(MaxPooling1D(pool_size=mpool))
+        model.add(MaxPooling2D(pool_size=(1,mpool)))
     model.add(Dropout(drp))
     model.add(Flatten())
     model.add(Dense(100, activation='relu'))
@@ -47,7 +52,12 @@ def depthwise_model(n_timesteps, n_features, n_outputs, drp=0.3, krnl=(3, 3), di
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mape'])
     return model
 
-def conv1d_model(n_timesteps, n_features, n_outputs, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
+
+def conv1d_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
+    n_timesteps = shape_X[1]
+    n_features = shape_X[2]
+    n_outputs = shape_Y[1]
+
     model = Sequential()
 
     model.add(Conv1D(filters=16, kernel_size=krnl[0], activation='relu', input_shape=(n_timesteps, n_features)))
@@ -90,7 +100,7 @@ def data_proc(data_path, method, params=None, freq_factor=20, window_size=20,
     Y = [[] for _ in range(len(joint_names))]
     files = list()
     for file in sorted([f for f in os.listdir(data_path) if f.endswith('.json')]):
-        if task is not None and task not in file:
+        if (task is not None and task not in file) or 'Env' in file:
             continue
         files.append(file)
         with open(data_path + '\\' + file) as json_file:
@@ -120,8 +130,7 @@ def data_proc(data_path, method, params=None, freq_factor=20, window_size=20,
 
 
 def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_size, stride, freq_factor):
-    cur_model = partial(conv1d_model, n_timesteps=X.shape[1], n_features=X.shape[2],
-                       n_outputs=Y.shape[1], drp=drop, krnl=kernel, dilate=dil, mpool=poolsize)
+    cur_model = partial(depthwise_model, shape_X=X.shape, shape_Y=Y.shape, drp=drop, krnl=kernel, dilate=dil, mpool=poolsize)
     model = cur_model()
 
     if not validate:
@@ -146,7 +155,8 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
 
         Y0 = np.array(Y0)
         Y0 = Y0[:, :, 0].transpose()
-        Y0 = np.expand_dims(Y0[:, 2], 1)
+        #Y0 = np.expand_dims(Y0[:, 2], 1)
+        X0 = np.expand_dims(X0, 1)
 
         model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=None, validation_data=(X0, Y0))
         ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
@@ -177,7 +187,8 @@ def kfold():
     X, Y, files = data_proc(data_path, norm_emg, diff=diff,
                             window_size=window_size, n_channels=n_channels, task='Walk', stride=stride)
     #X = X[:, :, :-1]
-    Y = np.expand_dims(Y[:, 2], 1)
+    #Y = np.expand_dims(Y[:, 2], 1)
+    X = np.expand_dims(X, 1)
     print('Data loaded. Beginning training.')
 
     # ########################
@@ -188,7 +199,7 @@ def kfold():
     drop = 0.5
     kernel = (3, 3)
     dil = 3
-    poolsize = 2
+    poolsize = 5
     ep, ba = 50, 100
     validate = False
     if validate:

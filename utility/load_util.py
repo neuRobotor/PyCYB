@@ -2,10 +2,22 @@ import json
 import numpy as np
 import os
 
+
+def get_file_names(dir_path, task=None):
+    return [dir_path + '\\' + file for file in sorted([f for f in os.listdir(dir_path) if f.endswith('.json')])
+            if task is None or task in file]
+
+
 def load_dict(file_path):
     with open(file_path) as json_file:
         dict_data = json.load(json_file)
     return dict_data
+
+
+def save_dict(file_path, dict_in):
+    with open(file_path, 'w') as fp:
+        json.dump(dict_in, fp, indent=4)
+    return
 
 
 def load_emg(path, task=None, n_channels=8):

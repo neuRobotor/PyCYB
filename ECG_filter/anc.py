@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from utility.load_util import load_emg
 from utility.emg_proc import *
 import seaborn as sns
-from ale import lms_ale
+from ECG_filter.ale import lms_ale
 
 
 def norm_emg(data):
@@ -14,18 +14,23 @@ def norm_emg(data):
     return (data - emg_mean[:, None]) / emg_std[:, None]
 
 
-def lms_ic(M, s, y=None, delta=1, mu=0.005):
+def cost_comp(p, mse, N):
+    mdl = np.log(mse) + p*np.log(N)/N
+    aic = np.log(mse) + 2*p/N
+    aicc = aic + 2*p*(p+1)/(N-p-1)
+    return mdl, aic, aicc
+
+
+def lms_ic(M, s, y=None, delta=1, mu=0.005, a0=None):
     """
-    Adaptive Interference Cancellation
-    ECE 5655/4655 Real-Time DSP 8–15
     Adaptive interference canceller using LMS and FIR
+    Adapted from Mark Wickert, November 2014
+
     n,x,x_hat,e,ao,F,Ao = lms_ic(s,SIR,N,M,delta,mu)
 
     *******LMS Interference Cancellation Simulation************
-    s = Input speech signal
-    SIR = Speech signal power to sinusoid interference level in dB
-    N = Number of simulation samples
-    M = FIR Filter length (order M-1)
+    s = Input signal
+    M = FIR Filter length (order M)
     delta = Delay used to generate the reference signal
     mu = LMS step-size
 
@@ -37,7 +42,6 @@ def lms_ic(M, s, y=None, delta=1, mu=0.005):
     F = Frequency response axis vector
     Ao = Frequency response of filter
     **************************************
-    Mark Wickert, November 2014
     """
     n = np.arange(0, len(s))
     if y is None:
@@ -50,7 +54,7 @@ def lms_ic(M, s, y=None, delta=1, mu=0.005):
     # Initialize output vector x_hat, e, and filter weights and memory, and correlation memory to zero
     x_hat = np.zeros_like(s)
     e = np.zeros_like(s)
-    ao = np.zeros(M+1)
+    ao = np.zeros(M+1) if a0 is None else a0
     zi = signal.lfiltic(ao,1,y=0)
     ym = np.zeros_like(ao)
     for k,yk in enumerate(y):
@@ -68,52 +72,74 @@ def lms_ic(M, s, y=None, delta=1, mu=0.005):
     Ao = 20*np.log10(abs(Ao))
     return n,s,x_hat,e,ao,F,Ao
 
-sns.set_style('darkgrid')
-s = load_emg(r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data', task='Stair')
-s = norm_emg(s)
-s = s[:,:int(s.shape[1]/20)]
-y = s[7, :]
-s = s[5, :]
 
-n,x,x_hat,e,ao,F,Ao = lms_ic(8, s, y, mu=0.005)
+def main():
+    sns.set_style('darkgrid')
+    s = load_emg(r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data', task='Walk')
+    s = norm_emg(s)
+    s = s[:,:int(s.shape[1]/20)]
+    y = s[7, :]
+    s = s[5, :]
+    # mdls = list()
+    # aics = list()
+    # aiccs = list()
+    # for ord in range(0, 15):
+    #     print(ord)
+    #     mse = None
+    #     for m in np.linspace(0.0005, 0.05):
+    #         n, x, x_hat, e, ao, F, Ao = lms_ic(ord, s, y, mu=m)
+    #         mse = np.mean(e**2) if mse is None or np.mean(e**2) < mse else mse
+    #     mdl, aic, aicc = cost_comp(ord, mse, n.size)
+    #     mdls.append(mdl)
+    #     aics.append(aic)
+    #     aiccs.append(aicc)
+    # plt.plot(mdls)
+    # plt.plot(aics)
+    # plt.plot(aiccs)
+    # plt.show()
+    n,x,x_hat,e,ao,F,Ao = lms_ic(6, s, y, mu=0.01)
 
-print(np.mean(e**2))
-plt.plot(n,e**2)
-plt.ylabel(r'MSE')
-plt.xlabel(r'Time Index n')
+    print(np.mean(e**2))
+    plt.plot(n,e**2)
+    plt.ylabel(r'MSE')
+    plt.xlabel(r'Time Index n')
 
-plt.figure()
-plt.plot(n,x)
-plt.plot(n,y)
-plt.plot(n,e)
-plt.plot(n,x_hat)
-plt.legend((r'$x[n]$',r'$\hat{x}[n]$',r'$e[n]$'),loc='best')
-plt.ylabel(r'Input/Output Signal')
-plt.xlabel(r'Time Index n')
+    plt.figure()
+    plt.plot(n,y, alpha=0.5, c='gray')
+    plt.plot(n,x_hat, alpha=0.8, linestyle='--', c='gray')
+    plt.plot(n,x, lw=1.5)
+    plt.plot(n,e, alpha=0.6, c='tab:green')
 
-plt.figure()
-plt.plot(F,Ao)
-plt.ylabel(r'Frequency Response in dB')
-plt.xlabel(r'Normalized Frequency $\omega/(2\pi)$')
+    plt.legend((r'ECG',r'Estimated ECG corruption',r'Trapezius EMG', r'Filtered Trapezius EMG'),loc='best')
+    plt.ylabel(r'Input/Output Signal')
+    plt.xlabel(r'Time Index n')
 
-plt.show()
+    plt.figure()
+    plt.plot(F,Ao)
+    plt.ylabel(r'Frequency Response in dB')
+    plt.xlabel(r'Normalized Frequency $\omega/(2\pi)$')
 
-n,x,x_hat,e,ao,F,Ao = lms_ale(30,0.005,x=e)
+    plt.show()
 
-plt.figure()
-plt.plot(n,x)
-plt.plot(n,x_hat)
-plt.plot(n,e)
-plt.legend((r'$x[n]$',r'$\hat{x}[n]$',r'$e[n]$'),loc='best')
-plt.ylabel(r'Input/Output Signal')
-plt.xlabel(r'Time Index n')
-n,x,x_hat,e,ao,F,Ao = lms_ale(30,0.005,x=x_hat)
-plt.figure()
-plt.plot(n,x)
-plt.plot(n,x_hat)
-plt.plot(n,e)
-plt.legend((r'$x[n]$',r'$\hat{x}[n]$',r'$e[n]$'),loc='best')
-plt.ylabel(r'Input/Output Signal')
-plt.xlabel(r'Time Index n')
+    n,x,x_hat,e,ao,F,Ao = lms_ale(30,0.005,x=e)
 
-plt.show()
+    plt.figure()
+    plt.plot(n,x)
+    plt.plot(n,x_hat)
+    plt.plot(n,e)
+    plt.legend((r'$x[n]$',r'$\hat{x}[n]$',r'$e[n]$'),loc='best')
+    plt.ylabel(r'Input/Output Signal')
+    plt.xlabel(r'Time Index n')
+    n,x,x_hat,e,ao,F,Ao = lms_ale(30,0.005,x=x_hat)
+    plt.figure()
+    plt.plot(n,x)
+    plt.plot(n,x_hat)
+    plt.plot(n,e)
+    plt.legend((r'$x[n]$',r'$\hat{x}[n]$',r'$e[n]$'),loc='best')
+    plt.ylabel(r'Input/Output Signal')
+    plt.xlabel(r'Time Index n')
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()
