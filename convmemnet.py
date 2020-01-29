@@ -24,7 +24,7 @@ def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
     model = Sequential()
     model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                               kernel_size=(1, krnl[0]),
-                              depth_multiplier=4,
+                              depth_multiplier=2,
                               activation='relu',
                               padding='valid'))
     if not dilate:
@@ -39,7 +39,7 @@ def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
         model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                                   kernel_size=(1, krnl[1]),
                                   dilation_rate=dilate,
-                                  depth_multiplier=4,
+                                  depth_multiplier=2,
                                   activation='relu',
                                   padding='valid'))
     if mpool:
@@ -178,7 +178,7 @@ def kfold():
     #       LOAD INPUT
     # ########################
     data_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data'
-    window_size = 40
+    window_size = 60
     n_channels = 8
     stride = 1
     freq_factor = 20
@@ -197,9 +197,9 @@ def kfold():
 
     k = 5
     drop = 0.5
-    kernel = (3, 3)
-    dil = 3
-    poolsize = 5
+    kernel = (5, 5)
+    dil = 5
+    poolsize = 2
     ep, ba = 50, 100
     validate = False
     if validate:

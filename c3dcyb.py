@@ -459,7 +459,7 @@ def visu(diff=False, env=False):
 
 
         axes[0].set_title("Normalised EMG input frame to NN".format(cf[0]))
-        emg_names = ["LIO", "RIO", "LEO", "REO", "IT", "MT", "ES", "ECG"]
+        emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
         x = np.arange(20)
 
         for i, emg in enumerate(emg_data):

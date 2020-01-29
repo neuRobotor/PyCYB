@@ -4,8 +4,10 @@ import json
 from keras.models import load_model
 from convmemnet import stack_emg, norm_emg
 import numpy as np
+import tensorflow as tf
+import keras
 
-file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
+file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Walk20.json'
 sns.set()
 sns.set_context('paper')
 with open(file_path) as json_file:
@@ -21,13 +23,23 @@ emg_data = stack_emg(emg_data, window_size=ws, stride=s)
 #emg_data = emg_data[:,:,:-1]
 emg_data = np.expand_dims(emg_data, 1)
 model = load_model('separate_w40_s1.h5')
-
+model.summary()
 y = model.predict(emg_data)
 
 fig, axes = plt.subplots(3, 2)
 axes = axes.flatten()
 
-y = model.predict(emg_data)
+import time
+t1 = time.perf_counter()
+for i in range(2):
+    y = model.predict(emg_data)
+print(time.perf_counter()-t1)
+
+emg_data = np.expand_dims(emg_data, 1)
+t1 = time.perf_counter()
+for cur_data in emg_data:
+    y = model.predict(cur_data, batch_size=1)
+print(time.perf_counter()-t1)
 N = 20
 def f(y_in):
     return np.convolve(y_in, np.ones((N,))/N, mode='valid')
@@ -55,14 +67,27 @@ for i, joint in enumerate(joint_names):
     # if "LKnee" not in joint:
     #     continue
     #cur_data = [row[0] for row in dict_data[joint][1:]]
-    axes[i].plot(np.arange(len(Y0[:, i]))/2000,
-                 (ecg-np.mean(ecg))/np.std(ecg)/5 * np.std(Y0[:, i]) + np.mean(Y0[:, i]) + 0.2,
-                 alpha=0.3, color='gray', lw=0.7)
-    axes[i].plot(np.arange(len(Y0[:, i]))/2000, Y0[:, i])
-    axes[i].plot(np.arange(N, len(y[:, i])+N)/2000, y[:, i])
-    axes[i].set_xlabel("Time (s)")
+    e, = axes[i].plot(np.arange(len(Y0[:, i]))/2000,
+                     (ecg-np.mean(ecg))/np.std(ecg)/5 * np.std(Y0[:, i]) + np.mean(Y0[:, i]) + 0.2,
+                     alpha=0.25, color='gray', lw=0.7)
+    o, = axes[i].plot(np.arange(len(Y0[:, i]))/2000, Y0[:, i])
+    est, = axes[i].plot(np.arange(N, len(y[:, i])+N)/2000, y[:, i])
+    if i>3 :
+        axes[i].set_xlabel("Time (s)")
+    else:
+        axes[i].set_xticklabels([])
+    if i ==1:
+        plt.legend((o, est, e), ("Actual Angles", "Predicted Angles", "ECG signal (A.U.)"), bbox_to_anchor=(1.04, 0.5),
+                   loc="center left", borderaxespad=0)
     axes[i].set_ylabel("Radians")
     axes[i].set_title(joint)
+    axes[i].locator_params(axis='y', nbins=4)
 
+
+# box = fig.get_position()
+# fig.set_position([box.x0, box.y0, box.width * 0.8, box.height])
 plt.tight_layout()
+plt.subplots_adjust(right=0.85)
+#fig.suptitle("Prediction with separated channels", x=0.5, size=22)
+
 plt.show()
