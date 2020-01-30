@@ -24,7 +24,7 @@ def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
     model = Sequential()
     model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                               kernel_size=(1, krnl[0]),
-                              depth_multiplier=2,
+                              depth_multiplier=4,
                               activation='relu',
                               padding='valid'))
     if not dilate:
@@ -39,7 +39,7 @@ def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
         model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                                   kernel_size=(1, krnl[1]),
                                   dilation_rate=dilate,
-                                  depth_multiplier=2,
+                                  depth_multiplier=4,
                                   activation='relu',
                                   padding='valid'))
     if mpool:
@@ -139,7 +139,7 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
             dict_data = json.load(json_file)
         emg_data = norm_emg(np.array(dict_data["EMG"]))
         X0 = stack_emg(emg_data, window_size=window_size, stride=stride)
-        #X0 = X0[:,:,:-1]
+        X0 = X0[:,:,:-1]
         joint_names = ['LHip', 'RHip', 'LKnee', 'RKnee', 'LAnkle', 'RAnkle']
         Y0 = [[] for _ in range(len(joint_names))]
         for i, joint in enumerate(joint_names):
@@ -158,13 +158,17 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
         #Y0 = np.expand_dims(Y0[:, 2], 1)
         X0 = np.expand_dims(X0, 1)
 
-        model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=None, validation_data=(X0, Y0))
+        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=None, validation_data=(X0, Y0))
         ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
                 for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models') if f.endswith('.h5')]
         if not ends:
             ends = [0]
         filepath = r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\model_' + str(max(ends) + 1) + '.h5'
         model.save(filepath)
+        import pickle
+        with open(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\history_' + str(max(ends) + 1) + r'.pickle' 'wb') as handle:
+            pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
         return
 
     estimator = KerasRegressor(build_fn=cur_model, epochs=ep, batch_size=ba, verbose=2)
@@ -178,7 +182,7 @@ def kfold():
     #       LOAD INPUT
     # ########################
     data_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data'
-    window_size = 60
+    window_size = 40
     n_channels = 8
     stride = 1
     freq_factor = 20
@@ -186,7 +190,7 @@ def kfold():
 
     X, Y, files = data_proc(data_path, norm_emg, diff=diff,
                             window_size=window_size, n_channels=n_channels, task='Walk', stride=stride)
-    #X = X[:, :, :-1]
+    X = X[:, :, :-1]
     #Y = np.expand_dims(Y[:, 2], 1)
     X = np.expand_dims(X, 1)
     print('Data loaded. Beginning training.')
@@ -197,9 +201,9 @@ def kfold():
 
     k = 5
     drop = 0.5
-    kernel = (5, 5)
-    dil = 5
-    poolsize = 2
+    kernel = (3, 3)
+    dil = 3
+    poolsize = 5
     ep, ba = 50, 100
     validate = False
     if validate:

@@ -7,7 +7,7 @@ import numpy as np
 import tensorflow as tf
 import keras
 
-file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Walk20.json'
+file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
 sns.set()
 sns.set_context('paper')
 with open(file_path) as json_file:
@@ -16,30 +16,30 @@ with open(file_path) as json_file:
 emg_data = norm_emg(np.array(dict_data["EMG"]))
 ecg = emg_data[7]
 
-ws=40
+ws=60
 s=1
 
 emg_data = stack_emg(emg_data, window_size=ws, stride=s)
 #emg_data = emg_data[:,:,:-1]
-emg_data = np.expand_dims(emg_data, 1)
-model = load_model('separate_w40_s1.h5')
+#emg_data = np.expand_dims(emg_data, 1)
+model = load_model('w60_s1.h5')
 model.summary()
 y = model.predict(emg_data)
 
 fig, axes = plt.subplots(3, 2)
 axes = axes.flatten()
 
-import time
-t1 = time.perf_counter()
-for i in range(2):
-    y = model.predict(emg_data)
-print(time.perf_counter()-t1)
-
-emg_data = np.expand_dims(emg_data, 1)
-t1 = time.perf_counter()
-for cur_data in emg_data:
-    y = model.predict(cur_data, batch_size=1)
-print(time.perf_counter()-t1)
+# import time
+# t1 = time.perf_counter()
+# for i in range(2):
+#     y = model.predict(emg_data)
+# print(time.perf_counter()-t1)
+#
+# emg_data = np.expand_dims(emg_data, 1)
+# t1 = time.perf_counter()
+# for cur_data in emg_data:
+#     y = model.predict(cur_data, batch_size=1)
+# print(time.perf_counter()-t1)
 N = 20
 def f(y_in):
     return np.convolve(y_in, np.ones((N,))/N, mode='valid')

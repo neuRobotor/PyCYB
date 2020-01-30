@@ -22,7 +22,7 @@ for i in range(8):
     plt.axis('off')
     for j in range(8):
         ax = fig.add_subplot(inner_grid[j])
-        col_map = 'Greys'
+        col_map = 'gray'
 
         if j < 4:
             delta = np.max(filters1) - np.min(filters1)

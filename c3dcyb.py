@@ -428,7 +428,7 @@ def visu(diff=False, env=False):
             axes[0].set_title("EMG envelopes, low-pass = {0}".format(cf[0]))
         else:
             axes[0].set_title("EMG signals, $F_s={}$".format(emg_freq))
-        emg_names = ["LIO", "RIO", "LEO", "REO", "IT", "MT", "ES", "ECG"]
+        emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
         x = np.arange(len(emg_data[0]))/emg_freq
 
         def sc(axis):

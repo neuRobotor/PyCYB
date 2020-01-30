@@ -4,6 +4,39 @@ import keras
 import numpy as np
 
 
+def depthwise_output():
+    inputs = Input(shape=(1, 20, 8))
+    inter = DepthwiseConv2D(input_shape=(1, 20, 8),
+                            kernel_size=(1, 4),  # height 1,  width 7  (ostensibly 1D)
+                            depth_multiplier=2,
+                            depthwise_initializer='ones',
+                            bias_initializer='zeros',
+                            padding='valid')(inputs)
+    inter2 = DepthwiseConv2D(input_shape=(1, 20, 8),
+                              kernel_size=(1, 4),  # height 1,  width 7  (ostensibly 1D)
+                              dilation_rate=4,
+                              depth_multiplier=2,
+                              depthwise_initializer='ones',
+                              bias_initializer='zeros',
+                              padding='valid')(inter)
+    outputs = Flatten()(inter2)
+    model = Model(inputs=inputs, outputs=[outputs, inter, inter2])
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mape'])
+    return model
+
+
+    model = Sequential()
+    model.add(DepthwiseConv2D(input_shape=(1, 20, 8),
+                              kernel_size=(1, 3),  # height 1,  width 7  (ostensibly 1D)
+                              depth_multiplier=16,
+                              activation='elu',
+                              padding='valid'))
+    model.add(Flatten())
+    model.add(Dense(6, activation='linear'))
+    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mape'])
+    return model
+
+
 def depthwise_model():
     model = Sequential()
     model.add(DepthwiseConv2D(input_shape=(1, 20, 8),

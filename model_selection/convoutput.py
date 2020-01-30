@@ -1,23 +1,33 @@
-import matplotlib.pyplot as plt
-import seaborn as sns
-from keras.models import load_model
+from model_selection.model_compare import depthwise_output
 import numpy as np
+from matplotlib.pyplot import imshow, show, figure
+
+model = depthwise_output()
+inp = np.concatenate((np.arange(20).reshape((20, 1)) * -1, np.zeros((20, 1)), np.ones((20, 1))*10, np.zeros((20, 4)),
+                      np.arange(20).reshape((20, 1))), axis=1)
+inp = np.expand_dims(inp, 0)
+inp = np.expand_dims(inp, 0)
+print(inp)
+
+p, inter, inter2 = model.predict(inp)
+imshow(inp[0, 0, :, :], cmap='gray')
+figure()
+imshow(inter[0, 0, :, :])
+figure()
+imshow(inter2[0, 0, :, :])
+figure()
+imshow(np.tile(p[:, :], (200, 1)))
+
+impact = p
+impacts = p.reshape(5, 8, 4)
+
+import seaborn as sns
+import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 
-sns.set_style('white')
-model = load_model('filtered_w40_s1.h5')
-model.summary()
-weights, biases = model.layers[5].get_weights()
-populations = weights.reshape((6, 8, 16, 100))
-populations = np.abs(populations.reshape((6, 8, 1600)))
-impact = np.max(np.abs(weights), axis=1)
-impacts = impact.reshape((6, 8, 16))
-# impacts = np.rollaxis(impacts, 1, 0)
-# impacts = impacts.reshape((8, 96))
-
 fig = plt.figure(constrained_layout=False, figsize=(16, 8))
-fig.suptitle("Maximum absolute value of weighing into dense layers")
-gs = GridSpec(6, 8, figure=fig)
+fig.suptitle("Mean absolute value of weighing into dense layers")
+gs = GridSpec(5, 8, figure=fig)
 col_map = "gray"
 muscle_names = ['L Internal Oblique', 'R Internal Oblique', 'L External Oblique', 'R External Oblique',
                 'Latissimus Dorsi', 'Transverse Trapezius', 'Erector Spinae', 'ECG']
@@ -32,10 +42,10 @@ ax.tick_params(left=False, labelleft=False)
 ax.patch.set_visible(False)
 for col in range(8):
     print(col)
-    for row in range(6):
+    for row in range(5):
         ax = fig.add_subplot(gs[row * 8 + col])
         delta = np.max(impact) - np.min(impact)
-        delta = 0.00 * delta
+        delta = 0.0 * delta
         if row == 0:
             ax.set_title(muscle_names[col])
         if row == 5 and col == 0:
@@ -48,11 +58,6 @@ for col in range(8):
                         vmax=np.max(impact) + delta,
                         cmap=col_map, cbar=False, xticklabels=False, yticklabels=False)
 
-#         ax.annotate(r'$\mu$: {0:.3g}'.format(np.mean(populations[row, col, :])) + '\n' +
-#                     r'$\sigma$: {0:.3g}'.format(np.std(populations[row, col, :]))
-#                     , xy=(0, 1),
-#                     xycoords='axes fraction', fontsize=16,
-#                     xytext=(5, -5), textcoords='offset points',
-#                     ha='left', va='top', c='white')
-plt.subplots_adjust(left=0.06, right=0.94, wspace=0.25)
-plt.savefig("impact_max_label", transparent=True)
+
+show()
+print(p)
