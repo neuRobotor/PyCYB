@@ -14,6 +14,8 @@ from sklearn.model_selection import KFold
 from functools import partial
 from convnet import summary
 from convmemnet import norm_emg, stack_emg, data_proc, depthwise_model
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from sklearn.preprocessing import normalize
 
 
 # os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
@@ -32,6 +34,8 @@ def depthwise_model_gap(shape_X1, shape_X2, shape_Y, drp=0.3, krnl=(3, 3), dilat
                                   activation='relu',
                                   padding='valid')
 
+    pool = MaxPooling2D(pool_size=(1, mpool))
+
     if not dilate:
         conv_layer2 = DepthwiseConv2D(input_shape=(1, n_timesteps2, n_channels),
                                       kernel_size=(1, krnl[1]),
@@ -46,8 +50,8 @@ def depthwise_model_gap(shape_X1, shape_X2, shape_Y, drp=0.3, krnl=(3, 3), dilat
                                       activation='relu',
                                       padding='valid')
 
-    featuremap1 = conv_layer2(conv_layer1(input_recent))
-    featuremap2 = conv_layer2(conv_layer1(input_old))
+    featuremap1 = conv_layer2(pool(conv_layer1(input_recent)))
+    featuremap2 = conv_layer2(pool(conv_layer1(input_old)))
 
     if mpool:
         pool = MaxPooling2D(pool_size=(1, mpool))
@@ -99,11 +103,14 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
 
         Y0 = np.array(Y0)
         Y0 = Y0[:, :, 0].transpose()
+        Y0 = normalize(np.array(Y0), axis=1)
         # Y0 = np.expand_dims(Y0[:, 2], 1)
         for i in range(2):
             X0[i] = np.expand_dims(X0[i], 1)
+        mc = ModelCheckpoint('best_model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
+        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=8)
 
-        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=None, validation_data=(X0, Y0))
+        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=[es, mc], validation_data=(X0, Y0))
         ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
                 for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models') if f.endswith('.h5')
                 and 'model_' in f]
@@ -129,17 +136,18 @@ def kfold():
     #       LOAD INPUT
     # ########################
     data_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data'
-    window_size = 120
+    window_size = 240
     n_channels = 8
     stride = 1
     freq_factor = 20
-    windows =(42, 42)
+    windows = (100, 100)
     diff = "w" in [f for f in os.listdir(data_path) if f.endswith('.json')][0]
 
     X, Y, files = data_proc(data_path, norm_emg, diff=diff,
                             window_size=window_size, n_channels=n_channels, task='Walk', stride=stride, windows=windows)
     # X = X[:, :, :-1]
     # Y = np.expand_dims(Y[:, 2], 1)
+    Y = normalize(np.array(Y), axis=1)
     for i in range(2):
         X[i] = np.expand_dims(X[i], 1)
     print('Data loaded. Beginning training.')
@@ -150,9 +158,9 @@ def kfold():
 
     k = 5
     drop = 0.5
-    kernel = (3, 3)
+    kernel = (15, 3)
     dil = 3
-    poolsize = 5
+    poolsize = 4
     ep, ba = 25, 150
     validate = False
     if validate:

@@ -4,6 +4,7 @@ import json
 from keras.models import load_model
 from convmemnet import stack_emg, norm_emg
 import numpy as np
+from sklearn.preprocessing import normalize
 import tensorflow as tf
 import keras
 
@@ -16,16 +17,16 @@ with open(file_path) as json_file:
 emg_data = norm_emg(np.array(dict_data["EMG"]))
 ecg = emg_data[7]
 
-ws = 120
+ws = 240
 s = 1
 
-emg_data = stack_emg(emg_data, window_size=ws, stride=s, windows=(42,42))
+emg_data = stack_emg(emg_data, window_size=ws, stride=s, windows=(100,100))
 for i in range(2):
     emg_data[i] = np.expand_dims(emg_data[i], 1)
 #emg_data = emg_data[1]
 #emg_data = emg_data[:,:,:-1]
 #emg_data = np.expand_dims(emg_data, 1)
-model = load_model('w120_w42_w42_s1.h5')
+model = load_model('w240_w100_w100_s1_norm.h5')
 model.summary()
 y = model.predict(emg_data)
 
@@ -63,6 +64,7 @@ for i, joint in enumerate(joint_names):
 
 Y0 = np.array(Y0)
 Y0 = Y0[:, :, 0].transpose()
+Y0 = normalize(np.array(Y0), axis=1)
 
 ecg = ecg[0:len(Y0)]
 
