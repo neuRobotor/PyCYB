@@ -1,11 +1,9 @@
 # fit an empirical cdf to a bimodal dataset
-from convmemnet_ecdf import ecdf_norm
+from old_net.convmemnet_ecdf import ecdf_norm
 import matplotlib.pyplot as plt
 import numpy as np
 from statsmodels.distributions.empirical_distribution import ECDF
-from scipy.stats import norm
 import os
-import csv
 import json
 import multiprocessing
 import seaborn as sns

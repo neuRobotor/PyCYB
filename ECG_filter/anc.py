@@ -97,7 +97,7 @@ def main():
     # plt.plot(aics)
     # plt.plot(aiccs)
     # plt.show()
-    n,x,x_hat,e,ao,F,Ao = lms_ic(6, s, y, mu=0.01)
+    n,x,x_hat,e,ao,F,Ao = lms_ic(3, s, y, mu=0.01)
 
     print(np.mean(e**2))
     plt.plot(n,e**2)

@@ -16,13 +16,16 @@ with open(file_path) as json_file:
 emg_data = norm_emg(np.array(dict_data["EMG"]))
 ecg = emg_data[7]
 
-ws=60
-s=1
+ws = 120
+s = 1
 
-emg_data = stack_emg(emg_data, window_size=ws, stride=s)
+emg_data = stack_emg(emg_data, window_size=ws, stride=s, windows=(42,42))
+for i in range(2):
+    emg_data[i] = np.expand_dims(emg_data[i], 1)
+#emg_data = emg_data[1]
 #emg_data = emg_data[:,:,:-1]
 #emg_data = np.expand_dims(emg_data, 1)
-model = load_model('w60_s1.h5')
+model = load_model('w120_w42_w42_s1.h5')
 model.summary()
 y = model.predict(emg_data)
 

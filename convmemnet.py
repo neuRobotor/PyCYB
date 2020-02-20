@@ -16,6 +16,8 @@ from convnet import summary
 
 
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+
+
 def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
     n_timesteps = shape_X[2]
     n_features = shape_X[3]
@@ -39,7 +41,7 @@ def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
         model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
                                   kernel_size=(1, krnl[1]),
                                   dilation_rate=dilate,
-                                  depth_multiplier=4,
+                                  depth_multiplier=3,
                                   activation='relu',
                                   padding='valid'))
     if mpool:
@@ -84,19 +86,30 @@ def norm_emg(data):
     return (data - emg_mean[:, None]) / emg_std[:, None]
 
 
-def stack_emg(emg_data, window_size, stride):
+def stack_emg(emg_data, window_size, stride, windows=None):
     emg_data = [emg_data[:, i:i + window_size] for i in range(0, emg_data.shape[1]-window_size+1, stride)]
     emg_data = np.dstack(emg_data)
-    return emg_data.transpose()  # shape: (chunk number, sample, feature)
+    emg_data = emg_data.transpose()
+    if windows is None:
+        return emg_data  # shape: (chunk number, sample, feature)
+    else:
+        return [emg_data[:,:windows[0],:], emg_data[:, -windows[1]:, :]]
+
+
+
 
 
 def data_proc(data_path, method, params=None, freq_factor=20, window_size=20,
-              diff=False, n_channels=8, task=None, stride=None):
+              diff=False, n_channels=8, task=None, stride=None, windows=None):
     if stride is None:
         stride = window_size
     joint_names = ['LHip', 'RHip', 'LKnee', 'RKnee', 'LAnkle', 'RAnkle'] if not diff \
         else ['LHipW', 'RHipW', 'LKneeW', 'RKneeW', 'LAnkleW', 'RAnkleW']
-    X = np.empty((0, window_size, n_channels))
+
+    if windows is None:
+        X = np.empty((0, window_size, n_channels))
+    else:
+        X = [np.empty((0, w, n_channels)) for w in windows]
     Y = [[] for _ in range(len(joint_names))]
     files = list()
     for file in sorted([f for f in os.listdir(data_path) if f.endswith('.json')]):
@@ -110,8 +123,12 @@ def data_proc(data_path, method, params=None, freq_factor=20, window_size=20,
             emg_data = method(np.array(dict_data["EMG"]))
         else:
             emg_data = method(np.array(dict_data["EMG"]), params)
-        emg_data = stack_emg(emg_data, window_size=window_size, stride=stride)
-        X = np.vstack((X, emg_data))
+        emg_data = stack_emg(emg_data, window_size=window_size, stride=stride, windows=windows)
+        if windows is None:
+            X = np.vstack((X, emg_data))
+        else:
+            for i in range(2):
+                X[i] = np.vstack((X[i], emg_data[i]))
 
         for i, joint in enumerate(joint_names):
             cur_data = dict_data[joint]
@@ -160,7 +177,8 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
 
         history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=None, validation_data=(X0, Y0))
         ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
-                for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models') if f.endswith('.h5')]
+                for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models') if f.endswith('.h5')
+                and 'model_' in f]
         if not ends:
             ends = [0]
         filepath = r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\model_' + str(max(ends) + 1) + '.h5'

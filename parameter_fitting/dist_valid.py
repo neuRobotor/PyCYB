@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.stats import norm, chi
-from scipy.stats import f as f_dist
 import os
 import csv
 import pandas as pd
@@ -61,7 +60,7 @@ for i, p in enumerate(params):
     axes.flatten()[i].set_ylabel("Probability density")
 
 fig.tight_layout()
-from convmemnet_chi import chi_norm
+from old_net.convmemnet_chi import chi_norm
 X1 = chi_norm(X0, params)
 fig, axes = plt.subplots(4, 2)
 plt.tight_layout()
@@ -112,7 +111,6 @@ for p in params:
     transf = np.clip(X[7, :], a_min=a_min, a_max=a_max)
     transf = dist.cdf(transf, loc=loc, scale=scale, *arg)
     transf = norm.ppf(transf)
-import seaborn as sns
 plt.figure()
 plt.hist(transf, bins=100)
 
