@@ -5,7 +5,7 @@ import numpy as np
 from matplotlib.gridspec import GridSpec
 
 sns.set_style('white')
-model = load_model('filtered_w40_s1.h5')
+model = load_model('Models/filtered_w40_s1.h5')
 model.summary()
 weights, biases = model.layers[5].get_weights()
 populations = weights.reshape((6, 8, 16, 100))
@@ -39,20 +39,20 @@ for col in range(8):
         if row == 0:
             ax.set_title(muscle_names[col])
         if row == 5 and col == 0:
-            sns.heatmap(np.expand_dims(impacts[row, col, :], 0), ax=ax,
+            sns.heatmap(np.expand_dims(np.sort(impacts[row, col, :]), 0), ax=ax,
                         vmin=np.min(impact) - delta, vmax=np.max(impact) + delta, cmap=col_map, cbar=False,
                         yticklabels=False)
             ax.set_xlabel("Features")
         else:
-            sns.heatmap(np.expand_dims(impacts[row, col, :], 0), ax=ax, vmin=np.min(impact) - delta,
+            sns.heatmap(np.expand_dims(np.sort(impacts[row, col, :]), 0), ax=ax, vmin=np.min(impact) - delta,
                         vmax=np.max(impact) + delta,
                         cmap=col_map, cbar=False, xticklabels=False, yticklabels=False)
 
-#         ax.annotate(r'$\mu$: {0:.3g}'.format(np.mean(populations[row, col, :])) + '\n' +
-#                     r'$\sigma$: {0:.3g}'.format(np.std(populations[row, col, :]))
-#                     , xy=(0, 1),
-#                     xycoords='axes fraction', fontsize=16,
-#                     xytext=(5, -5), textcoords='offset points',
-#                     ha='left', va='top', c='white')
+        # ax.annotate(r'$\mu$: {0:.3g}'.format(np.mean(populations[row, col, :])) + '\n' +
+        #             r'$\sigma$: {0:.3g}'.format(np.std(populations[row, col, :]))
+        #             , xy=(0, 1),
+        #             xycoords='axes fraction', fontsize=16,
+        #             xytext=(5, -5), textcoords='offset points',
+        #             ha='left', va='top', c='white')
 plt.subplots_adjust(left=0.06, right=0.94, wspace=0.25)
 plt.savefig("impact_max_label", transparent=True)

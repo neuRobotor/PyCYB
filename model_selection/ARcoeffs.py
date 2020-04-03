@@ -1,5 +1,5 @@
 from spectrum import aryule
-from utility.load_util import load_emg
+from utility.save_load_util import load_emg
 from utility.emg_proc import norm_emg
 import matplotlib.pyplot as plt
 import seaborn as sns

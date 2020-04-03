@@ -17,6 +17,7 @@ from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from functools import partial
+from utility.save_load_util import summary
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 
@@ -147,41 +148,6 @@ def kfold():
     #     losses.append(loss)
     # summarize results
     summary(k, scores, kernel, drop, model, data_path, ep, ba, files)
-
-
-def summary(k, scores, kernel, drop, model, data_path, epochs, batch, files):
-    print(scores)
-    m, st = np.mean(scores), np.std(scores)
-
-    print('MSE: {0:.3f} (+/-{1:.3f})'.format(-m, st))
-    print('K-fold: {0:.0f}'.format(k))
-    # endregion
-
-    # region Self-documentation
-    ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
-            for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries') if f.endswith('.txt')]
-    if not ends:
-        ends = [0]
-    print(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries\model_summary' +
-          str(max(ends) + 1) + '.txt')
-    from datetime import datetime
-    dt_string = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-    with open(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Summaries\model_summary' +
-              str(max(ends) + 1) + '.txt', 'w+') as f:
-        model.summary(print_fn=lambda x: f.write(x + '\n'))
-        f.write("\nDate: {}\n"
-                "File: {}\n"
-                "Scores: {}\n"
-                "MSE: {:.3f} (+/-{:.3f})\n"
-                "Dropout (if applicable): {:.3f}\n"
-                "Kernel (if applicable): {:.0f}, {:.0f}\n"
-                "Epochs: {}, Batch size: {}\n"
-                "K: {:.0f}\n".format(dt_string, os.path.basename(sys.argv[0]),
-                                     scores, m, st, drop, kernel[0], kernel[1], epochs, batch, k)
-                + "\n\nUsing Files:\n")
-        for file in files:
-            f.write(file + "\n")
 
     # plot_model(model, to_file='model_plot'+str(max(ends) + 1)+'.png', show_shapes=True, show_layer_names=True)
     # endregion

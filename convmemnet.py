@@ -12,10 +12,12 @@ from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from functools import partial
-from convnet import summary
+from utility.save_load_util import summary
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+from sklearn.preprocessing import normalize
+from utility.save_load_util import incr_file
 
-
-#os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
+# os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 
 def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
@@ -29,6 +31,8 @@ def depthwise_model(shape_X, shape_Y, drp=0.3, krnl=(3, 3), dilate=0, mpool=0):
                               depth_multiplier=4,
                               activation='relu',
                               padding='valid'))
+    if mpool:
+        model.add(MaxPooling2D(pool_size=(1,mpool)))
     if not dilate:
         model.Name = "1D TCN"
         model.add(DepthwiseConv2D(input_shape=(1, n_timesteps, n_features),
@@ -96,9 +100,6 @@ def stack_emg(emg_data, window_size, stride, windows=None):
         return [emg_data[:,:windows[0],:], emg_data[:, -windows[1]:, :]]
 
 
-
-
-
 def data_proc(data_path, method, params=None, freq_factor=20, window_size=20,
               diff=False, n_channels=8, task=None, stride=None, windows=None):
     if stride is None:
@@ -151,42 +152,21 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
     model = cur_model()
 
     if not validate:
-        file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
-        with open(file_path) as json_file:
-            dict_data = json.load(json_file)
-        emg_data = norm_emg(np.array(dict_data["EMG"]))
-        X0 = stack_emg(emg_data, window_size=window_size, stride=stride)
-        X0 = X0[:,:,:-1]
-        joint_names = ['LHip', 'RHip', 'LKnee', 'RKnee', 'LAnkle', 'RAnkle']
-        Y0 = [[] for _ in range(len(joint_names))]
-        for i, joint in enumerate(joint_names):
-            cur_data = dict_data[joint]
-            upsampled = np.array(cur_data)
-            xp = np.arange(len(upsampled))*freq_factor/stride
-            x = np.arange(window_size, len(upsampled)*freq_factor+1)
-            x = x[0::stride]
-            def interp_f(data):
-                return np.interp(x, xp, data)
-            upsampled = np.apply_along_axis(interp_f, 0, upsampled)
-            Y0[i].extend(upsampled.tolist())
-
-        Y0 = np.array(Y0)
-        Y0 = Y0[:, :, 0].transpose()
+        data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data'
+        X0, Y0, _ = data_proc(data_path, norm_emg,
+                            window_size=window_size,  task='Validation', stride=stride)
+        Y0 = normalize(np.array(Y0), axis=1)
         #Y0 = np.expand_dims(Y0[:, 2], 1)
         X0 = np.expand_dims(X0, 1)
 
-        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=None, validation_data=(X0, Y0))
-        ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
-                for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models') if f.endswith('.h5')
-                and 'model_' in f]
-        if not ends:
-            ends = [0]
-        filepath = r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\model_' + str(max(ends) + 1) + '.h5'
+        mc = ModelCheckpoint('Models/best_model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
+        es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=8)
+        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=[es, mc], validation_data=(X0, Y0))
+        filepath, ends = incr_file(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models', 'model_', '.h5')
         model.save(filepath)
         import pickle
-        with open(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\history_' + str(max(ends) + 1) + r'.pickle' 'wb') as handle:
+        with open(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\history_' + str(max(ends) + 1) + r'.pickle', 'wb') as handle:
             pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
-
         return
 
     estimator = KerasRegressor(build_fn=cur_model, epochs=ep, batch_size=ba, verbose=2)
@@ -195,12 +175,12 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
     return scores, model
 
 
-def kfold():
+def main():
     # ########################
     #       LOAD INPUT
     # ########################
-    data_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data'
-    window_size = 40
+    data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data'
+    window_size = 200
     n_channels = 8
     stride = 1
     freq_factor = 20
@@ -208,8 +188,9 @@ def kfold():
 
     X, Y, files = data_proc(data_path, norm_emg, diff=diff,
                             window_size=window_size, n_channels=n_channels, task='Walk', stride=stride)
-    X = X[:, :, :-1]
+    #X = X[:, :, :-1]
     #Y = np.expand_dims(Y[:, 2], 1)
+    Y = normalize(np.array(Y), axis=1)
     X = np.expand_dims(X, 1)
     print('Data loaded. Beginning training.')
 
@@ -219,10 +200,10 @@ def kfold():
 
     k = 5
     drop = 0.5
-    kernel = (3, 3)
+    kernel = (15, 3)
     dil = 3
-    poolsize = 5
-    ep, ba = 50, 100
+    poolsize = 8
+    ep, ba = 50, 20
     validate = False
     if validate:
         scores, model = train_net(X, Y, k=k, dil=dil, poolsize=poolsize, kernel=kernel, drop=drop, ep=ep, ba=ba,
@@ -231,13 +212,6 @@ def kfold():
     else:
         train_net(X, Y, k=k, dil=dil, poolsize=poolsize, kernel=kernel, drop=drop, ep=ep, ba=ba,
                   validate=validate, window_size=window_size, stride=stride, freq_factor=freq_factor)
-
-
-
-
-def main():
-    kfold()
-    pass
 
 
 if __name__ == "__main__":

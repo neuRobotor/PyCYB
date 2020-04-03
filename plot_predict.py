@@ -8,7 +8,7 @@ from sklearn.preprocessing import normalize
 import tensorflow as tf
 import keras
 
-file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
+file_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
 sns.set()
 sns.set_context('paper')
 with open(file_path) as json_file:
@@ -26,7 +26,7 @@ for i in range(2):
 #emg_data = emg_data[1]
 #emg_data = emg_data[:,:,:-1]
 #emg_data = np.expand_dims(emg_data, 1)
-model = load_model('w240_w100_w100_s1_norm.h5')
+model = load_model('Models/w240_w100_w100_s1_early2.h5')
 model.summary()
 y = model.predict(emg_data)
 
@@ -64,7 +64,7 @@ for i, joint in enumerate(joint_names):
 
 Y0 = np.array(Y0)
 Y0 = Y0[:, :, 0].transpose()
-Y0 = normalize(np.array(Y0), axis=1)
+#Y0 = normalize(np.array(Y0), axis=1)
 
 ecg = ecg[0:len(Y0)]
 

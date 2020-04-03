@@ -25,18 +25,6 @@ def depthwise_output():
     return model
 
 
-    model = Sequential()
-    model.add(DepthwiseConv2D(input_shape=(1, 20, 8),
-                              kernel_size=(1, 3),  # height 1,  width 7  (ostensibly 1D)
-                              depth_multiplier=16,
-                              activation='elu',
-                              padding='valid'))
-    model.add(Flatten())
-    model.add(Dense(6, activation='linear'))
-    model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mape'])
-    return model
-
-
 def depthwise_model():
     model = Sequential()
     model.add(DepthwiseConv2D(input_shape=(1, 20, 8),

@@ -2,7 +2,7 @@ from numpy import sqrt, arange, sign, cos, pi, zeros_like, zeros, hstack, array,
 from numpy.random import randn
 from scipy import signal
 from matplotlib.pyplot import plot, xlabel, ylabel, grid, title, xlim, ylim, legend, figure, show
-from utility.load_util import load_emg
+from utility.save_load_util import load_emg
 import numpy as np
 
 

@@ -80,7 +80,7 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
     model = cur_model()
 
     if not validate:
-        file_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
+        file_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data\104_Validation40.json'
         with open(file_path) as json_file:
             dict_data = json.load(json_file)
         emg_data = norm_emg(np.array(dict_data["EMG"]))
@@ -107,19 +107,18 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
         # Y0 = np.expand_dims(Y0[:, 2], 1)
         for i in range(2):
             X0[i] = np.expand_dims(X0[i], 1)
-        mc = ModelCheckpoint('best_model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
+        mc = ModelCheckpoint('Models/best_model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
         es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=8)
-
         history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=[es, mc], validation_data=(X0, Y0))
         ends = [int(re.search(r'(\d+)$', str(os.path.splitext(f)[0])).group(0))
-                for f in os.listdir(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models') if f.endswith('.h5')
+                for f in os.listdir(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models') if f.endswith('.h5')
                 and 'model_' in f]
         if not ends:
             ends = [0]
-        filepath = r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\model_' + str(max(ends) + 1) + '.h5'
+        filepath = r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_' + str(max(ends) + 1) + '.h5'
         model.save(filepath)
         import pickle
-        with open(r'C:\Users\win10\Desktop\Projects\CYB\PyCYB\Models\history_' + str(
+        with open(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\history_' + str(
                 max(ends) + 1) + r'.pickle', 'wb') as handle:
             pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
@@ -135,7 +134,7 @@ def kfold():
     # ########################
     #       LOAD INPUT
     # ########################
-    data_path = r'C:\Users\win10\Desktop\Projects\CYB\Experiment_Balint\CYB004\Data'
+    data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data'
     window_size = 240
     n_channels = 8
     stride = 1
@@ -161,7 +160,7 @@ def kfold():
     kernel = (15, 3)
     dil = 3
     poolsize = 4
-    ep, ba = 25, 150
+    ep, ba = 25, 20
     validate = False
     if validate:
         scores, model = train_net(X, Y, k=k, dil=dil, poolsize=poolsize, kernel=kernel, drop=drop, ep=ep, ba=ba,

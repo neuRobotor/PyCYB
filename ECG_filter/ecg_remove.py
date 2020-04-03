@@ -1,6 +1,6 @@
 from ECG_filter.anc import lms_ic
 from utility.emg_proc import norm_emg
-from utility.load_util import load_dict, save_dict, get_file_names
+from utility.save_load_util import load_dict, save_dict, get_file_names
 import multiprocessing
 import numpy as np
 
