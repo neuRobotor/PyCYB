@@ -5,6 +5,24 @@ import re
 import sys
 
 
+def model_summary_to_string(model):
+    str_list = []
+    model.summary(print_fn=lambda x: str_list.append(x))
+    return "\n".join(str_list)
+
+
+def print_to_file(str_in, filepath):
+    with open(filepath, 'w+') as f:
+        f.write(str_in)
+
+
+def kw_summary(**kwargs):
+    str_out = ()
+    for key, item in kwargs.items():
+        str_out += key + ': ' + str(item) + '\n'
+    return str_out
+
+
 def summary(k, scores, kernel, drop, model, data_path, epochs, batch, files):
     print(scores)
     m, st = np.mean(scores), np.std(scores)
@@ -49,6 +67,13 @@ def incr_file(dir_path, file_name, ext):
     if not ends:
         ends = [0]
     return dir_path + '\\', file_name + str(max(ends) + 1) + ext, ends
+
+
+def incr_dir(dir_path, dir_name):
+    ends = [int(re.search(r'(\d+)$', d).group(0)) for d in next(os.walk(dir_path))[1] if dir_name in d]
+    if not ends:
+        ends = [0]
+    return dir_path + '\\', dir_name, ends
 
 
 def get_file_names(dir_path, task=None):

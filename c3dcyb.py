@@ -11,8 +11,6 @@ import multiprocessing
 from functools import partial
 import re
 
-
-
 global sl_fr
 
 
@@ -67,7 +65,7 @@ def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
 
 def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv):
     print('Processing file ' + fname + '...')
-    joint_angles, emg_data = c3d_proc(pdir_in + '\\' + fname, diff=pdiff, emg_lowpass=pcf, env=False)
+    joint_angles, emg_data = c3d_proc(pdir_in + '\\' + fname, diff=pdiff, emg_lowpass=pcf, env=penv)
     name = os.path.splitext(fname)[0] if not pdiff else os.path.splitext(fname)[0] + '_w'
     if penv:
         name += "_Env"
@@ -195,7 +193,7 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
     return joint_angles, dict_mkr_coords
 
 
-def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=5, diff=False, env=False):
+def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=10, diff=False, env=False):
     with C3DServer() as c3d:
         # region Read a C3D file and extract all necessary info
         c3d.open_c3d(c3d_name)
@@ -446,11 +444,11 @@ def visu(diff=False, env=False):
 
         from utility.scalebars import add_scalebar
         add_scalebar(ax, sizex=0, matchx=False, sizey=3*d, matchy=False, hidex=False, hidey=False,
-                     labely='\n{0:.1f} mV'.format(d*3000), borderpad=0.2)
+                     labely='\n{0:.3f} mV'.format(d*3000), borderpad=0.2)
         ax=axes[0]
         d = sc(ax.yaxis)
         add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
-                     labely='\n{0:.1f} mV'.format(d*1000), borderpad=0.2)
+                     labely='\n{0:.3f} mV'.format(d*1000), borderpad=0.2)
         for ax in axes:
             ax.get_yaxis().set_ticks([])
         ax.set_xlabel("Time (s)")

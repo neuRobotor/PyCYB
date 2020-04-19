@@ -4,7 +4,7 @@ from utility.emg_proc import norm_emg
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from ECG_filter.anc import lms_ic
+from EMG_filter.anc import lms_ic
 
 
 def main():

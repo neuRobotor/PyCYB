@@ -1,4 +1,4 @@
-from ECG_filter.lms import *
+from EMG_filter.lms import *
 import numpy as np
 import scipy.signal as sp
 
@@ -35,9 +35,19 @@ def spectrum_lms(d, n_bins, **kwargs):
     return F
 
 
+def ar_stack(x, order):
+    x = np.squeeze(x)
+    X = np.zeros((order, len(x) - order + 1))
+    for i in range(order):
+        X[i] = x[order - i - 1:len(x) - i]
+    return X
 
-def anc(s, ref, mu, order=1, delay=0, mode='GNGD', filter_in=None, **kwargs):
-    X = lms_stack(ref, order)
+
+def anc(s, ref, mu, order=1, delay=0, mode='GNGD', filter_in=None, pad=False, **kwargs):
+    if pad:
+        s = np.concatenate((np.zeros(order-delay+1), s))
+        ref = np.concatenate((np.zeros(ref.shape[0], order - delay + 1), ref), axis=1)
+    X = ar_stack(ref, order)
     X = X[:, :X.shape[1] - delay]
     s = s[order + delay - 1:]
     if filter_in is not None:

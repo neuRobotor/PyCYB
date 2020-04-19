@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from utility.save_load_util import load_emg
 from utility.emg_proc import *
 import seaborn as sns
-from ECG_filter.ale import lms_ale
+from EMG_filter.ale import lms_ale
 
 
 def norm_emg(data):

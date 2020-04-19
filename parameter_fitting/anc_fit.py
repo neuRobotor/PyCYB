@@ -1,6 +1,6 @@
 import multiprocessing
 import numpy as np
-from ECG_filter.anc import lms_ic
+from EMG_filter.anc import lms_ic
 from utility.save_load_util import load_emg
 import pickle
 

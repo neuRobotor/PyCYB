@@ -27,7 +27,8 @@ for i in range(2):
 #emg_data = emg_data[:,:,:-1]
 #emg_data = np.expand_dims(emg_data, 1)
 model = load_model('Models/w240_w100_w100_s1_early2.h5')
-model.summary()
+str_list = []
+model.summary(print_fn = lambda x: str_list.append(x))
 y = model.predict(emg_data)
 
 fig, axes = plt.subplots(3, 2)

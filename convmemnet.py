@@ -3,19 +3,20 @@ import sys
 import os
 import json
 import re
-from keras.utils.vis_utils import plot_model
-from keras.models import Sequential
-from keras.layers import Dense, Flatten, Dropout, MaxPooling1D, MaxPooling2D, DepthwiseConv2D
-from keras.layers.convolutional import Conv1D
+
+from tensorflow.keras.models import Sequential
+
+from tensorflow.keras.layers import Dense, Flatten, Dropout, MaxPooling1D, MaxPooling2D, DepthwiseConv2D
+from tensorflow.keras.layers import Conv1D
 from sklearn.model_selection import train_test_split
-from keras.wrappers.scikit_learn import KerasRegressor
+from tensorflow.keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection import cross_val_score
 from sklearn.model_selection import KFold
 from functools import partial
 from utility.save_load_util import summary
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from sklearn.preprocessing import normalize
-from utility.save_load_util import incr_file
+from utility.save_load_util import incr_file, incr_dir, model_summary_to_string, kw_summary, print_to_file
 
 # os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
@@ -147,14 +148,14 @@ def data_proc(data_path, method, params=None, freq_factor=20, window_size=20,
     return X, Y, files
 
 
-def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_size, stride, freq_factor):
+def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_size, stride, freq_factor, files):
     cur_model = partial(depthwise_model, shape_X=X.shape, shape_Y=Y.shape, drp=drop, krnl=kernel, dilate=dil, mpool=poolsize)
     model = cur_model()
 
     if not validate:
         data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data'
         X0, Y0, _ = data_proc(data_path, norm_emg,
-                            window_size=window_size,  task='Validation', stride=stride)
+                            window_size=window_size,  task='Validation', stride=stride, freq_factor=freq_factor)
         Y0 = normalize(np.array(Y0), axis=1)
         #Y0 = np.expand_dims(Y0[:, 2], 1)
         X0 = np.expand_dims(X0, 1)
@@ -162,12 +163,23 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
         mc = ModelCheckpoint('Models/best_model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
         es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=8)
         history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=[es, mc], validation_data=(X0, Y0))
-        filepath, ends = incr_file(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models', 'model_', '.h5')
-        model.save(filepath)
+        dir_path, ends = incr_dir(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models', 'model_')
+        os.mkdir(dir_path)
+        #filepath, ends = incr_file(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models', 'model_', '.h5')
+        model.save(dir_path+'\\model_' + str(max(ends) + 1))
         import pickle
-        with open(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\history_' + str(max(ends) + 1) + r'.pickle', 'wb') as handle:
+        with open(dir_path+'\\history_' + str(max(ends) + 1) + r'.pickle', 'wb') as handle:
             pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        file_names = "\n".join(files)
+        str_sum = model_summary_to_string(model) + '\n'
+        str_sum += kw_summary(dil=dil, drop=drop, poolsize=poolsize, kernel=kernel,
+                              epochs=ep, batch=ba, window_size=window_size, stride=stride)
+        str_sum += '\n\n' + file_names
+        print_to_file(str_sum, dir_path + '\\summary_'+ str(max(ends) + 1) + r'.txt')
         return
+
+
+
 
     estimator = KerasRegressor(build_fn=cur_model, epochs=ep, batch_size=ba, verbose=2)
     kfold = KFold(n_splits=k)
@@ -207,11 +219,11 @@ def main():
     validate = False
     if validate:
         scores, model = train_net(X, Y, k=k, dil=dil, poolsize=poolsize, kernel=kernel, drop=drop, ep=ep, ba=ba,
-                                  validate=validate, window_size=window_size, stride=stride, freq_factor=freq_factor)
+                                  validate=validate, window_size=window_size, stride=stride, freq_factor=freq_factor, files=files)
         summary(k, scores, kernel, drop, model, data_path, ep, ba, files)
     else:
         train_net(X, Y, k=k, dil=dil, poolsize=poolsize, kernel=kernel, drop=drop, ep=ep, ba=ba,
-                  validate=validate, window_size=window_size, stride=stride, freq_factor=freq_factor)
+                  validate=validate, window_size=window_size, stride=stride, freq_factor=freq_factor, files=files)
 
 
 if __name__ == "__main__":

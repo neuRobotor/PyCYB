@@ -1,16 +1,8 @@
 import numpy as np
 
 
-def lms_stack(x, order):
-    x = np.squeeze(x)
-    X = np.zeros((order, len(x) - order + 1))
-    for i in range(order):
-        X[i] = x[order - i - 1:len(x) - i]
-    return X
-
-
 class LMS:
-    def __init__(self, x_in, d_in, mu, gamma=0., def_weigths=0., sign=False, act='lin'):
+    def __init__(self, x_in, d_in, mu, gamma=0., def_weigths=0., sign=False, act='lin', scale=1, bias=0, reps=0):
         """
         :type d_in: np.ndarray
         :type x_in: np.ndarray
@@ -18,10 +10,18 @@ class LMS:
         :type gamma: Union[ndarray, float, int]
         :type def_weigths: Union[ndarray, float, int]
         """
+
         self.X = np.array(x_in, ndmin=2)
         self.D = np.array(d_in)
+        if reps:
+            self.X = np.tile(self.X, (1, reps))
+            self.D = np.tile(self.D, reps)
+        if bias:
+            self.X = np.concatenate((np.array(self.X, ndmin=2), bias * np.ones((1, self.X.shape[1]))), 0)
+
         if self.D.ndim > 1:
             Exception("Multidimensional target signal supplied. Use MIMO algorithm instead.")
+
         self.mu = mu
         self.gamma = gamma
         self.W = np.zeros((self.X.shape[0], len(self.D) + 1))
@@ -35,8 +35,8 @@ class LMS:
             self.weight_update = self.weight_update_sign
             self.run = self.run_symbolic
         if act is 'tanh':
-            self.act = np.tanh
-            self.d_act = lambda x: 1-np.tanh(x)**2
+            self.act = lambda x: scale * (np.tanh(x))
+            self.d_act = lambda x: scale * (1 - np.tanh(x) ** 2)
             self.run = self.run_symbolic
         elif act is 'lin':
             self.act = lambda x: x
@@ -70,14 +70,15 @@ class LMS:
         self.e[round_in] = self.D[round_in] - self.Y[round_in]
 
     def weight_update(self, round_in, stepsize):
-        self.W[:, round_in+1] = (1 - stepsize * self.gamma) * self.W[:, round_in] + \
-                                stepsize * self.d_act(self.W[:, round_in] @ self.X[:, round_in]) * \
-                                self.X[:, round_in] * self.e[round_in]
+        self.W[:, round_in + 1] = (1 - stepsize * self.gamma) * self.W[:, round_in] + \
+                                  stepsize * self.d_act(self.W[:, round_in] @ self.X[:, round_in]) * \
+                                  self.X[:, round_in] * self.e[round_in]
 
     def weight_update_sign(self, round_in, stepsize):
         self.W[:, round_in + 1] = (1 - stepsize * self.gamma) * self.W[:, round_in] + \
                                   stepsize * self.d_act(self.W[:, round_in] @ self.X[:, round_in]) * \
                                   np.sign(self.X[:, round_in]) * np.sign(self.e[round_in])
+
 
 class CLMS(LMS):
     def __init__(self, x_in, d_in, mu, alg='reg', def_a_weights=0, **kwargs):
@@ -118,7 +119,7 @@ class CLMS(LMS):
 
 
 class GNGD(LMS):
-    def __init__(self, x_in, d_in, mu, eps=0., rho=0.15, **kwargs):
+    def __init__(self, x_in, d_in, mu, eps=0., rho=0.15, beta=1, **kwargs):
         """
         :type rho: Union[float, int]
         :type eps: Union[np.ndarray, float, int]
@@ -127,18 +128,16 @@ class GNGD(LMS):
         self.rho = rho
         self.eps = np.zeros(self.W.shape[-1])
         self.eps[0] = eps
+        self.beta = beta
 
     def run(self, rounds=0):
         if self.round == 0:
             self.Y[0] = self.W[:, 0] @ self.X[:, 0]
             self.e[0] = self.D[0] - self.Y[0]
-            eta = self.mu / (self.X[:, 0] @ self.X[:, 0] + self.eps[0])
-
+            eta = self.beta / (self.X[:, 0] @ self.X[:, 0] + self.eps[0])
             self.W[:, 1] = (1 - eta * self.gamma) * self.W[:, 0] + \
                            eta * self.X[:, 0] * self.e[0]
-            self.eps[1] = self.eps[0] - \
-                             self.rho * self.mu * self.e[0] * self.e[0] * (self.X[:, 0] @ self.X[:, 0]) / \
-                             (self.X[:, 0] @ self.X[:, 0] + self.eps[0]) ** 2
+            self.eps[1] = self.eps[0]
             self.round = 1
             if rounds:
                 rounds -= 1
@@ -146,20 +145,20 @@ class GNGD(LMS):
         for n in self.get_range(rounds):
             self.Y[n] = self.W[:, n] @ self.X[:, n]
             self.e[n] = self.D[n] - self.Y[n]
-            eta = self.mu / (self.X[:, n] @ self.X[:, n] + self.eps[n])
+            eta = self.beta / (self.X[:, n] @ self.X[:, n] + self.eps[n])
             self.W[:, n + 1] = (1 - eta * self.gamma) * self.W[:, n] + eta * self.X[:, n] * self.e[n]
             self.eps[n + 1] = self.eps[n] - \
-                                 self.rho * self.mu * self.e[n] * self.e[n - 1] * (self.X[:, n] @ self.X[:, n - 1]) / \
-                                 (self.X[:, n] @ self.X[:, n] + self.eps[n - 1]) ** 2
+                              self.rho * self.mu * self.e[n] * self.e[n - 1] * (self.X[:, n] @ self.X[:, n - 1]) / \
+                              (self.X[:, n - 1] @ self.X[:, n - 1] + self.eps[n - 1]) ** 2
 
     def run_symbolic(self, rounds=0):
         if self.round == 0:
             self.predict(0)
             self.error(0)
-            eta = self.mu / (self.X[:, 0] @ self.X[:, 0] + self.eps[0])
+            eta = self.beta / (self.X[:, 0] @ self.X[:, 0] + self.eps[0])
             self.weight_update(0, eta)
             self.eps[1] = self.eps[0] - \
-                             self.rho * self.mu * self.e[0] * self.e[0] * np.sign(self.X[:, 0] @ self.X[:, 0]) / \
+                          self.rho * self.mu * self.e[0] * self.e[0] * np.sign(self.X[:, 0] @ self.X[:, 0]) / \
                           (self.X[:, 0] @ self.X[:, 0] + self.eps[0]) ** 2
             self.round = 1
             if rounds:
@@ -171,8 +170,9 @@ class GNGD(LMS):
             eta = self.mu / (self.X[:, n] @ self.X[:, n] + self.eps[n])
             self.weight_update(n, eta)
             self.eps[n + 1] = self.eps[n] - \
-                                 self.rho * self.mu * self.e[n] * self.e[n - 1] * np.sign(self.X[:, n] @ self.X[:, n - 1]) / \
-                                 (self.X[:, n] @ self.X[:, n] + self.eps[n - 1]) ** 2
+                              self.rho * self.mu * self.e[n] * self.e[n - 1] * np.sign(
+                self.X[:, n] @ self.X[:, n - 1]) / \
+                              (self.X[:, n - 1] @ self.X[:, n - 1] + self.eps[n - 1]) ** 2
 
 
 class GASS(LMS):
@@ -200,10 +200,10 @@ class GASS(LMS):
         if self.sign:
             def psi_update_sym(mu1, x1, psi1, e1):
                 return self.psi_update(mu1, np.sign(x1), psi1, np.sign(e1))
+
             self.psi_update_sym = psi_update_sym
         else:
             self.psi_update_sym = self.psi_update
-
 
     def run(self, rounds=0):
         for n in self.get_range(rounds):
@@ -224,7 +224,6 @@ class GASS(LMS):
             self.psi = self.psi_update_sym(mu_old, self.X[:, n], self.psi, self.e[n])
 
 
-
 def main():
     import scipy.signal as sp
     import matplotlib.pyplot as plt
@@ -233,11 +232,11 @@ def main():
     s = np.genfromtxt(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\ECG_filter\noise.csv', delimiter=',')
     # s = sp.lfilter([1, 0.5], [1], n)
     # s[5000] = 1000
-    s = 3*s
+    s = 3 * s
     X = np.stack((s[0:-1]), axis=0)
     Y = np.stack(np.tanh((s[1:])), axis=0)
 
-    F = GASS(X, Y, mu=0.001, alg='M&X', rho=0,  act='tanh')
+    F = GASS(X, Y, mu=0.001, alg='M&X', rho=0, act='tanh')
     F.run()
     plt.plot(F.e)
     plt.xlabel('Sample n')
