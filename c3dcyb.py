@@ -27,13 +27,13 @@ def proc_input(list_in):
 def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
     if type(mat_a) is not np.ndarray: return False
     if type(mat_b) is not np.ndarray: return False
-    a_x = mat_a[:,0]
-    a_y = mat_a[:,1]
-    a_z = mat_a[:,2]
-    b_x = mat_b[:,0]
-    b_y = mat_b[:,1]
-    b_z = mat_b[:,2]
-    axis = np.cross(b_z, a_x)/np.linalg.norm(np.cross(b_z, a_x))
+    a_x = mat_a[:, 0]
+    a_y = mat_a[:, 1]
+    a_z = mat_a[:, 2]
+    b_x = mat_b[:, 0]
+    b_y = mat_b[:, 1]
+    b_z = mat_b[:, 2]
+    axis = np.cross(b_z, a_x) / np.linalg.norm(np.cross(b_z, a_x))
 
     sin_alpha = -np.dot(axis, a_z)
     cos_alpha = np.dot(a_y, axis)
@@ -47,14 +47,14 @@ def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
 
     alpha = np.arctan2(sin_alpha, cos_alpha)
     beta = np.arccos(cos_beta)
-    gamma = np.arctan(sin_gamma/cos_gamma)
+    gamma = np.arctan(sin_gamma / cos_gamma)
 
     flexion = alpha
     external_rotation = gamma
     if side == 'R':
-        adduction = beta-np.pi
+        adduction = beta - np.pi
     else:
-        adduction = np.pi-beta
+        adduction = np.pi - beta
 
     angles = np.array([flexion, adduction, external_rotation], dtype=np.float32)
     if in_deg:
@@ -110,7 +110,7 @@ def dir_proc(diff=False, env=False):
     t1 = time.perf_counter()
     with multiprocessing.Pool(nProcess) as pool:
         pool.map(f, fnames)
-    print("Elapsed time: {}".format(time.perf_counter()-t1))
+    print("Elapsed time: {}".format(time.perf_counter() - t1))
     return
 
 
@@ -172,8 +172,8 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
         joint_angles[cur_side + joint_names[0]] = np.zeros((cnt_frames, 3), dtype=np.float32)
         for i in range(cnt_frames):
             joint_angles[cur_side + joint_names[0]][i] = calc_floating_angles(reference_sys['Pelvis'][i],
-                                                                     reference_sys[cur_side + 'Thigh'][i],
-                                                                     in_deg=False)
+                                                                              reference_sys[cur_side + 'Thigh'][i],
+                                                                              in_deg=False)
         # Rest of the joints
         for seg in range(len(segment_names) - 1):
             joint_angles[cur_side + joint_names[seg + 1]] = np.zeros((cnt_frames, 3), dtype=np.float32)
@@ -228,7 +228,6 @@ def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=10, diff=False, env=False)
 def visu(diff=False, env=False):
     # region Globals and Commandline arguements
     global sl_fr
-    asis_breadth = None
     dir_names, _ = proc_input(sys.argv)
 
     c3d_f_path = dir_names[1]
@@ -244,20 +243,20 @@ def visu(diff=False, env=False):
     arr_frames = np.linspace(start_frame, end_frame, cnt_frames, dtype=int)
     mkr_names = ['SACR', 'RASI', 'LASI', 'LTHI', 'LKNE', 'LKNM', 'RTHI', 'RKNE', 'RKNM',
                  'LTIB', 'LANK', 'LANM', 'RTIB', 'RANK', 'RANM', 'LHEE', 'LTOE', 'RHEE', 'RTOE']
-    dict_mkr_idx = {k:c3d.get_marker_index(k) for k in mkr_names}
+    dict_mkr_idx = {k: c3d.get_marker_index(k) for k in mkr_names}
     mkr_scale_factor = 0.001 if c3d.get_marker_unit() == 'mm' else 1.0
     mkr_pts = c3d.get_all_marker_coords_arr3d(mkr_scale_factor)
     dim_mkr_pts = mkr_pts.shape
-    mkr_pts_reshape = np.reshape(mkr_pts, (dim_mkr_pts[0]*dim_mkr_pts[1], dim_mkr_pts[2]))
-    dict_mkr_coords = {k:mkr_pts[:,dict_mkr_idx[k],:] for k in mkr_names}
-    emg_data = [None]*8
+    mkr_pts_reshape = np.reshape(mkr_pts, (dim_mkr_pts[0] * dim_mkr_pts[1], dim_mkr_pts[2]))
+    dict_mkr_coords = {k: mkr_pts[:, dict_mkr_idx[k], :] for k in mkr_names}
+    emg_data = [None] * 8
     cf = [int(re.search(r'(\d+)$', str(arg)).group(0))
           for arg in sys.argv if "-cf" in arg or "--cutoff" in arg]
     emg_freq = int(c3d.get_analog_frame_rate())
     if not cf:
         cf = [5]
     for i in range(8):
-        emg_data[i] = c3d.get_analog_data("Sensor {}.EMG{}".format(i+1, i+1))
+        emg_data[i] = c3d.get_analog_data("Sensor {}.EMG{}".format(i + 1, i + 1))
         if env:
             emg_data[i] = envelope(emg_data[i], low_pass=cf[0], sfreq=emg_freq)
     c3d.close_c3d()
@@ -296,12 +295,12 @@ def visu(diff=False, env=False):
     # Calculate the proper range of x y z limits
     pts_min = np.min(mkr_pts_reshape, axis=0)
     pts_max = np.max(mkr_pts_reshape, axis=0)
-    pts_range = pts_max-pts_min
-    pts_mid = (pts_min+pts_max)*0.5
+    pts_range = pts_max - pts_min
+    pts_mid = (pts_min + pts_max) * 0.5
     pts_range_max = np.max(pts_range)
-    ax.set_xlim(pts_mid[0]-pts_range_max*0.5, pts_mid[0]+pts_range_max*0.5)
-    ax.set_ylim(pts_mid[1]-pts_range_max*0.5, pts_mid[1]+pts_range_max*0.5)
-    ax.set_zlim(pts_mid[2]-pts_range_max*0.5, pts_mid[2]+pts_range_max*0.5)
+    ax.set_xlim(pts_mid[0] - pts_range_max * 0.5, pts_mid[0] + pts_range_max * 0.5)
+    ax.set_ylim(pts_mid[1] - pts_range_max * 0.5, pts_mid[1] + pts_range_max * 0.5)
+    ax.set_zlim(pts_mid[2] - pts_range_max * 0.5, pts_mid[2] + pts_range_max * 0.5)
 
     # A list to contain geometric class instances
     geom_objs = []
@@ -323,7 +322,7 @@ def visu(diff=False, env=False):
     geom_objs.append(vpts_obj)
 
     # region Create several Line class instances in order to display the lines in the leg
-    line_obj = Line(name='RThigh' , axes=ax)
+    line_obj = Line(name='RThigh', axes=ax)
     line_obj.set_point_names(['RVHI', 'RVKN'])
     line_obj.set_from_2points(dict_mkr_coords['RVHI'], dict_mkr_coords['RVKN'])
     line_obj.set_color((0.05, 0.5, 0.1, 0.5))
@@ -374,13 +373,13 @@ def visu(diff=False, env=False):
     axes_list = list()
     for row in range(3):
         for col, side in enumerate(['L', 'R']):
-            cur_ax = fig.add_subplot(gs[row, 3+col])
+            cur_ax = fig.add_subplot(gs[row, 3 + col])
             cur_ax.set_xlim(start_frame, end_frame)
             # cur_ax.set_ylim(-2, 2)
             vlines.append(cur_ax.axvline(x=start_frame, ymin=0, ymax=1, color=(0, 1, 0), linewidth=1.0, linestyle='--'))
-            #cur_ax.set_title(side + joint_names[row])
-            cur_ax.plot(arr_frames, joint_angles[side + joint_names[row]][:, 0]/np.pi*180,
-                        linewidth=1.0, color='tab:blue', label=side + joint_names[row]+' Flexion')
+            # cur_ax.set_title(side + joint_names[row])
+            cur_ax.plot(arr_frames, joint_angles[side + joint_names[row]][:, 0] / np.pi * 180,
+                        linewidth=1.0, color='tab:blue', label=side + joint_names[row] + ' Flexion')
             cur_ax.legend(loc='upper right', fontsize='small')
             if row == 2:
                 cur_ax.set_xlabel("Frame")
@@ -392,10 +391,10 @@ def visu(diff=False, env=False):
                 cur_ax.set_yticklabels([])
             axes_list.append(cur_ax)
     for i, cur_ax in enumerate(axes_list):
-        cur_ax.get_shared_x_axes().join(cur_ax, axes_list[i%2])
-        cur_ax.get_shared_y_axes().join(cur_ax, axes_list[int(i/2)*2])
-    axes_list[0].set_ylim((-10+np.min(joint_angles['RHip'][:, 0]/np.pi*180),
-                           10+np.max(joint_angles['LHip'][:, 0]/np.pi*180)))
+        cur_ax.get_shared_x_axes().join(cur_ax, axes_list[i % 2])
+        cur_ax.get_shared_y_axes().join(cur_ax, axes_list[int(i / 2) * 2])
+    axes_list[0].set_ylim((-10 + np.min(joint_angles['RHip'][:, 0] / np.pi * 180),
+                           10 + np.max(joint_angles['LHip'][:, 0] / np.pi * 180)))
     axes_list[2].set_ylim((-10 + np.min(joint_angles['RKnee'][:, 0] / np.pi * 180),
                            10 + np.max(joint_angles['RKnee'][:, 0] / np.pi * 180)))
     axes_list[4].set_ylim((-10 + np.min(joint_angles['RAnkle'][:, 0] / np.pi * 180),
@@ -404,10 +403,9 @@ def visu(diff=False, env=False):
     ax_fr = fig.add_subplot(gs[3, :], facecolor='lightgoldenrodyellow')
     sl_fr = Slider(ax_fr, 'Frame', start_frame, end_frame, valinit=start_frame, valstep=1, valfmt='%05d')
 
-
     def update(val):
         fr_no = int(sl_fr.val)
-        fr_idx = fr_no-start_frame
+        fr_idx = fr_no - start_frame
         title.set_text('C3D viewer, frame={0:05d}'.format(fr_no))
         for geom in geom_objs:
             geom.update_vis_objs(fr_idx)
@@ -420,14 +418,14 @@ def visu(diff=False, env=False):
     import seaborn
     with seaborn.axes_style("dark"):
         sns.set_style("dark", {"axes.facecolor": ".95"})
-        f, axes = plt.subplots(8, 1, sharex='col', sharey='col', figsize=(8,6))
+        f, axes = plt.subplots(8, 1, sharex='col', sharey='col', figsize=(8, 6))
         axes[7].get_shared_y_axes().remove(axes[7])
         if env:
             axes[0].set_title("EMG envelopes, low-pass = {0}".format(cf[0]))
         else:
             axes[0].set_title("EMG signals, $F_s={}$".format(emg_freq))
         emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
-        x = np.arange(len(emg_data[0]))/emg_freq
+        x = np.arange(len(emg_data[0])) / emg_freq
 
         def sc(axis):
             l = axis.get_majorticklocs()
@@ -438,23 +436,22 @@ def visu(diff=False, env=False):
             d = sc(ax.yaxis)
             ax.set_ylabel(emg_names[row])
             if row is not 7:
-                seaborn.despine(ax = ax, bottom=True)
+                seaborn.despine(ax=ax, bottom=True)
         ax.spines["top"].set_linewidth(2)
         f.subplots_adjust(hspace=-0.01)
 
         from utility.scalebars import add_scalebar
-        add_scalebar(ax, sizex=0, matchx=False, sizey=3*d, matchy=False, hidex=False, hidey=False,
-                     labely='\n{0:.3f} mV'.format(d*3000), borderpad=0.2)
-        ax=axes[0]
+        add_scalebar(ax, sizex=0, matchx=False, sizey=3 * d, matchy=False, hidex=False, hidey=False,
+                     labely='\n{0:.3f} mV'.format(d * 3000), borderpad=0.2)
+        ax = axes[0]
         d = sc(ax.yaxis)
         add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
-                     labely='\n{0:.3f} mV'.format(d*1000), borderpad=0.2)
+                     labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
         for ax in axes:
             ax.get_yaxis().set_ticks([])
         ax.set_xlabel("Time (s)")
         plt.savefig("emg.png", transparent=True)
         f, axes = plt.subplots(8, 1, sharex='col', sharey='col')
-
 
         axes[0].set_title("Normalised EMG input frame to NN".format(cf[0]))
         emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
@@ -469,12 +466,12 @@ def visu(diff=False, env=False):
         cbar_ax = f.add_axes([.91, .11, .03, .77])
         for row, ax in enumerate(axes):
             emg = np.array(emg_data[row])
-            emg = (emg - np.mean(emg))/np.std(emg)
+            emg = (emg - np.mean(emg)) / np.std(emg)
             a = np.expand_dims(emg, axis=0)
             hm = seaborn.heatmap(a, ax=ax, vmin=vmin, vmax=vmax, cbar=row == 0, cbar_ax=None if row else cbar_ax)
             ax.set_ylabel(emg_names[row])
             ax.get_yaxis().set_ticks([])
-        #f.tight_layout(rect=[0, 0, .9, 1])
+        # f.tight_layout(rect=[0, 0, .9, 1])
         cbar_ax.margins(x=0.1)
         plt.savefig("20.png", transparent=True)
     plt.show()

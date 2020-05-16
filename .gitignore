@@ -1,2 +1,4 @@
 CYB
 *.pickle
+*.h5
+*.svg

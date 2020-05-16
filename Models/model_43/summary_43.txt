@@ -1,0 +1,77 @@
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+reshape (Reshape)            (None, 1, 200, 8)         0         
+_________________________________________________________________
+depthwise_conv2d (DepthwiseC (None, 1, 196, 32)        192       
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 1, 32, 32)         0         
+_________________________________________________________________
+depthwise_conv2d_1 (Depthwis (None, 1, 26, 128)        512       
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 1, 4, 128)         0         
+_________________________________________________________________
+dropout (Dropout)            (None, 1, 4, 128)         0         
+_________________________________________________________________
+flatten (Flatten)            (None, 512)               0         
+_________________________________________________________________
+dense (Dense)                (None, 200)               102600    
+_________________________________________________________________
+batch_normalization (BatchNo (None, 200)               800       
+_________________________________________________________________
+activation (Activation)      (None, 200)               0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 200)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 200)               40200     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 200)               800       
+_________________________________________________________________
+activation_1 (Activation)    (None, 200)               0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 200)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 100)               20100     
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 100)               400       
+_________________________________________________________________
+activation_2 (Activation)    (None, 100)               0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 50)                200       
+_________________________________________________________________
+activation_3 (Activation)    (None, 50)                0         
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 6)                 306       
+=================================================================
+Total params: 171,160
+Trainable params: 170,060
+Non-trainable params: 1,100
+_________________________________________________________________
+data_dir: C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data
+window_size: 200
+delay: 200
+gap_windows: None
+stride: 1
+freq_factor: 20
+file_names: ['004_Sit01.json', '004_Sit02.json', '004_Sit03.json', '004_Sit04.json', '004_Sit05.json', '004_Sit06.json', '004_Sit07.json', '004_Sit08.json', '004_Sit09.json', '004_Sit10.json', '004_Sit11.json', '004_Sit12.json', '004_Sit13.json', '004_Stair01.json', '004_Stair02.json', '004_Stair03.json', '004_Stair04.json', '004_Stair05.json', '004_Stair06.json', '004_Stair07.json', '004_Stair08.json', '004_Stair09.json', '004_Stair10.json', '004_Stair11.json', '004_Stair12.json', '004_Stair13.json', '004_Stair14.json', '004_Stair15.json', '004_Stair16.json', '004_Stair17.json', '004_Stair18.json', '004_Stair19.json', '004_Stair20.json', '004_Stair21.json', '004_Stair22.json', '004_Stair23.json', '004_Stair24.json', '004_Stair25.json', '004_Stair26.json', '004_Stair27.json', '004_Stair28.json', '004_Stair29.json', '004_Stair30.json', '004_Stair31.json', '004_Stair32.json', '004_Stair33.json', '004_Stair34.json', '004_Stair35.json', '004_Stair36.json', '004_Validation20.json', '004_Walk01.json', '004_Walk02.json', '004_Walk03.json', '004_Walk04.json', '004_Walk05.json', '004_Walk06.json', '004_Walk07.json', '004_Walk08.json', '004_Walk09.json', '004_Walk10.json', '004_Walk11.json', '004_Walk12.json', '004_Walk13.json', '004_Walk14.json', '004_Walk15.json', '004_Walk16.json', '004_Walk17.json', '004_Walk18.json', '004_Walk19.json']
+preproc: <function norm_emg at 0x00000236E2638AF8>
+batch_size: 64
+input_shape: (200, 8)
+n_outputs: 6
+acts: ('relu', 'selu')
+krnl: (5, 3)
+pad: valid
+dil: 3
+mpool: (6, 6)
+depth_mul: (4, 4)
+drp: 0.25
+dense_drp: True
+dense: (200, 200, 100, 50)
+b_norm: True

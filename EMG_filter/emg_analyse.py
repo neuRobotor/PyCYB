@@ -5,12 +5,7 @@ import matplotlib.pyplot as plt
 import scipy.signal as sp
 import seaborn as sns
 import numpy as np
-
-
-def norm_emg(data):
-    emg_std = np.std(data, axis=1)
-    emg_mean = np.mean(data, axis=1)
-    return (data - emg_mean[:, None]) / emg_std[:, None]
+from data_gen.preproc import norm_emg
 
 
 def main_delay_sweep():
@@ -72,6 +67,7 @@ def peak_regs(ecg, before, after, **kwargs):
         peaks = peaks[:-1]
     return [np.arange(peak-before, peak+after) for peak in peaks]
 
+
 def crop_to_peaks(emg, ecg, order, delay):
     X = ar_stack(ecg, order)
     X = X[:, :X.shape[1] - delay]
@@ -85,6 +81,7 @@ def crop_to_peaks(emg, ecg, order, delay):
     segs =[d[peak_id-200:peak_id +201] for peak_id in peaks]
     return np.concatenate(qrs), np.concatenate(segs)
 
+
 def main_cropped_lms():
     sns.set_style('darkgrid')
     emg = load_emg_stack(r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data', task='Stand')
@@ -95,16 +92,17 @@ def main_cropped_lms():
 
 
 def main_spectrum_lms():
-    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment_Balint\CYB005\Data\005_Stair12.json')
+    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Stair05.json')
     emg = norm_emg(emg)
-    targ = 1
+    targ = 5
     plt.plot(emg[targ, :])
     plt.figure()
-    F = spectrum_lms(emg[targ, :], 1000, gamma=0.01)
-    #spec = norm_emg(np.abs(F.W[1:int(F.W.shape[0]/2), 3:]).T).T
+    n_bins = 1000
+    F = spectrum_lms(emg[targ, :], n_bins, gamma=0.01)
+    #spec = norm_emg(np.abs(F.W[1:int(F.W.shape[0]/4), 3:]).T).T
     #spec = spec-np.min(spec)+1
-    spec = np.abs(F.W[1:int(F.W.shape[0] / 2), 3:])
-    plt.pcolormesh(np.arange(spec.shape[1]), np.arange(spec.shape[0]), np.log10(spec))
+    spec = np.abs(F.W[1:int(F.W.shape[0] / 8), :])
+    plt.pcolormesh(np.arange(spec.shape[1]), np.arange(spec.shape[0])/n_bins*2000, spec)
     plt.xlabel('Time')
     plt.ylabel('Frequency')
     plt.show()
@@ -114,7 +112,7 @@ def main_spectrum_lms():
 def main_spectrum_visu():
     # region Loading and setup
     sns.set_style('darkgrid')
-    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment_Balint\CYB005\Envelope\005_Stair12_Env.json', task='Stair')
+    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Walk05.json', task='Stair')
     emg = norm_emg(emg)
     fig, axes = plt.subplots(2,4)
     names = ['L Internal Oblique','R Internal Oblique','L External Oblique','R External Oblique','L Trapezius', 'R Trapezius', 'Erector Spinae', 'ECG']
@@ -153,7 +151,7 @@ def main_spectrum_visu():
 
         # region ECG ARMA modelling
 
-        peaks, _ = sp.find_peaks(ecg, distance=800, height=3.2)
+        peaks, _ = sp.find_peaks(ecg, distance=800, height=2.2)
         if min(peaks) < 59:
             peaks = peaks[1:]
         if max(peaks) > len(ecg) - 202:
@@ -185,7 +183,6 @@ def main_spectrum_visu():
     plt.plot(np.squeeze(F.W).T)
     plt.show()
     return
-
 
 
 if __name__ == '__main__':

@@ -156,20 +156,19 @@ def train_net(X, Y, dil, drop, poolsize, kernel, ep, ba, k, validate, window_siz
         data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data'
         X0, Y0, _ = data_proc(data_path, norm_emg,
                             window_size=window_size,  task='Validation', stride=stride, freq_factor=freq_factor)
-        Y0 = normalize(np.array(Y0), axis=1)
+        #Y0 = normalize(np.array(Y0), axis=1)
         #Y0 = np.expand_dims(Y0[:, 2], 1)
         X0 = np.expand_dims(X0, 1)
 
         mc = ModelCheckpoint('Models/best_model.h5', monitor='val_loss', mode='min', verbose=1, save_best_only=True)
         es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=8)
-        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=2, callbacks=[es, mc], validation_data=(X0, Y0))
+        history = model.fit(X, Y, batch_size=ba, epochs=ep, verbose=1, callbacks=[es, mc], validation_data=(X0, Y0))
+
         dir_path, ends = incr_dir(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models', 'model_')
-        os.mkdir(dir_path)
-        #filepath, ends = incr_file(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models', 'model_', '.h5')
-        model.save(dir_path+'\\model_' + str(max(ends) + 1))
+        model.save(dir_path+'\\model_' + str(max(ends) + 1) + '.h5')
         import pickle
         with open(dir_path+'\\history_' + str(max(ends) + 1) + r'.pickle', 'wb') as handle:
-            pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+            pickle.dump(history.history, handle, protocol=pickle.HIGHEST_PROTOCOL)
         file_names = "\n".join(files)
         str_sum = model_summary_to_string(model) + '\n'
         str_sum += kw_summary(dil=dil, drop=drop, poolsize=poolsize, kernel=kernel,
@@ -191,7 +190,7 @@ def main():
     # ########################
     #       LOAD INPUT
     # ########################
-    data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Balint\CYB104\Data'
+    data_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment_Balint\CYB004\Data'
     window_size = 200
     n_channels = 8
     stride = 1
@@ -202,7 +201,7 @@ def main():
                             window_size=window_size, n_channels=n_channels, task='Walk', stride=stride)
     #X = X[:, :, :-1]
     #Y = np.expand_dims(Y[:, 2], 1)
-    Y = normalize(np.array(Y), axis=1)
+    #Y = normalize(np.array(Y), axis=1)
     X = np.expand_dims(X, 1)
     print('Data loaded. Beginning training.')
 
@@ -212,10 +211,10 @@ def main():
 
     k = 5
     drop = 0.5
-    kernel = (15, 3)
+    kernel = (5, 3)
     dil = 3
-    poolsize = 8
-    ep, ba = 50, 20
+    poolsize = 3
+    ep, ba = 1, 32
     validate = False
     if validate:
         scores, model = train_net(X, Y, k=k, dil=dil, poolsize=poolsize, kernel=kernel, drop=drop, ep=ep, ba=ba,

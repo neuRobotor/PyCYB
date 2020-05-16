@@ -29,7 +29,7 @@ def fourier_mat(n_row, n_col):
 
 
 def spectrum_lms(d, n_bins, **kwargs):
-    X = fourier_mat(n_bins, len(d))
+    X = fourier_mat(n_bins, len(d))/n_bins
     F = CLMS(X, d, 1, **kwargs)
     F.run()
     return F

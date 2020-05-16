@@ -1,0 +1,49 @@
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+reshape (Reshape)            (None, 1, 200, 8)         0         
+_________________________________________________________________
+depthwise_conv2d (DepthwiseC (None, 1, 171, 48)        1488      
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 1, 42, 48)         0         
+_________________________________________________________________
+depthwise_conv2d_1 (Depthwis (None, 1, 15, 192)        2112      
+_________________________________________________________________
+dropout (Dropout)            (None, 1, 15, 192)        0         
+_________________________________________________________________
+flatten (Flatten)            (None, 2880)              0         
+_________________________________________________________________
+dense (Dense)                (None, 100)               288100    
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 6)                 306       
+=================================================================
+Total params: 297,056
+Trainable params: 297,056
+Non-trainable params: 0
+_________________________________________________________________
+data_dir: C:\Users\hbkm9\Documents\Projects\CYB\Experiment_Balint\CYB004\Data
+window_size: 200
+delay: 200
+gap_windows: None
+stride: 1
+freq_factor: 20
+file_names: ['004_Walk01.json', '004_Walk02.json', '004_Walk03.json', '004_Walk04.json', '004_Walk05.json', '004_Walk06.json', '004_Walk07.json', '004_Walk08.json', '004_Walk09.json', '004_Walk10.json', '004_Walk11.json', '004_Walk12.json', '004_Walk13.json', '004_Walk14.json', '004_Walk15.json', '004_Walk16.json', '004_Walk17.json', '004_Walk18.json', '004_Walk19.json']
+preproc: <function norm_emg at 0x00000257DC448AF8>
+ppkwargs: {'high_band': 30, 'low_band': 200, 'sfreq': 2000, 'filt_ord': 2}
+batch_size: 32
+input_shape: (200, 8)
+n_outputs: 6
+drp: 0.4
+acts: ('relu', 'relu')
+krnl: (30, 10)
+dil: 3
+mpool: (4, 0)
+depth_mul: (6, 4)
+dense: (100, 50)

@@ -5,6 +5,17 @@ import re
 import sys
 
 
+def document_model(dir_path, end, model, history, **kwargs):
+    os.makedirs(dir_path, exist_ok=True)
+    model.save(dir_path + '\\model_' + str(end) +'.h5')
+    import pickle
+    with open(dir_path + '\\history_' + str(end) + '.pickle', 'wb') as handle:
+        pickle.dump(history.history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    str_sum = model_summary_to_string(model) + '\n'
+    str_sum += kw_summary(**kwargs)
+    print_to_file(str_sum, dir_path + '\\summary_' + str(end) + '.txt')
+
+
 def model_summary_to_string(model):
     str_list = []
     model.summary(print_fn=lambda x: str_list.append(x))
@@ -17,7 +28,7 @@ def print_to_file(str_in, filepath):
 
 
 def kw_summary(**kwargs):
-    str_out = ()
+    str_out = str()
     for key, item in kwargs.items():
         str_out += key + ': ' + str(item) + '\n'
     return str_out
@@ -69,11 +80,14 @@ def incr_file(dir_path, file_name, ext):
     return dir_path + '\\', file_name + str(max(ends) + 1) + ext, ends
 
 
-def incr_dir(dir_path, dir_name):
+def incr_dir(dir_path, dir_name, make=True):
     ends = [int(re.search(r'(\d+)$', d).group(0)) for d in next(os.walk(dir_path))[1] if dir_name in d]
     if not ends:
         ends = [0]
-    return dir_path + '\\', dir_name, ends
+    new_dir = dir_path + '\\' + dir_name + str(max(ends) + 1)
+    if make:
+        os.makedirs(new_dir)
+    return new_dir, ends
 
 
 def get_file_names(dir_path, task=None):

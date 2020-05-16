@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 import json
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 from convmemnet import stack_emg, norm_emg
 import numpy as np
 from sklearn.preprocessing import normalize
@@ -17,18 +17,19 @@ with open(file_path) as json_file:
 emg_data = norm_emg(np.array(dict_data["EMG"]))
 ecg = emg_data[7]
 
-ws = 240
+ws = 200
 s = 1
 
-emg_data = stack_emg(emg_data, window_size=ws, stride=s, windows=(100,100))
-for i in range(2):
-    emg_data[i] = np.expand_dims(emg_data[i], 1)
-#emg_data = emg_data[1]
-#emg_data = emg_data[:,:,:-1]
-#emg_data = np.expand_dims(emg_data, 1)
-model = load_model('Models/w240_w100_w100_s1_early2.h5')
+emg_data = stack_emg(emg_data, window_size=ws, stride=s)
+# for i in range(2):
+#     emg_data[i] = np.expand_dims(emg_data[i], 1)
+# emg_data = emg_data[1]
+# emg_data = emg_data[:,:,:-1]
+# emg_data = np.expand_dims(emg_data, 1)
+model = load_model('Models/model_3/best_model_3.h5')
 str_list = []
 model.summary(print_fn = lambda x: str_list.append(x))
+print(str_list)
 y = model.predict(emg_data)
 
 fig, axes = plt.subplots(3, 2)

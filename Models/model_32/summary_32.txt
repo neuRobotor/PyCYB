@@ -1,0 +1,60 @@
+Model: "sequential"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+reshape (Reshape)            (None, 1, 200, 8)         0         
+_________________________________________________________________
+depthwise_conv2d (DepthwiseC (None, 1, 186, 96)        1536      
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 1, 46, 96)         0         
+_________________________________________________________________
+depthwise_conv2d_1 (Depthwis (None, 1, 40, 384)        1536      
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 1, 10, 384)        0         
+_________________________________________________________________
+dropout (Dropout)            (None, 1, 10, 384)        0         
+_________________________________________________________________
+flatten (Flatten)            (None, 3840)              0         
+_________________________________________________________________
+dense (Dense)                (None, 100)               384100    
+_________________________________________________________________
+batch_normalization (BatchNo (None, 100)               400       
+_________________________________________________________________
+activation (Activation)      (None, 100)               0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 50)                200       
+_________________________________________________________________
+activation_1 (Activation)    (None, 50)                0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 6)                 306       
+=================================================================
+Total params: 393,128
+Trainable params: 392,828
+Non-trainable params: 300
+_________________________________________________________________
+data_dir: C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data
+window_size: 200
+delay: 200
+gap_windows: None
+stride: 1
+freq_factor: 20
+file_names: ['004_Walk01.json', '004_Walk02.json', '004_Walk03.json', '004_Walk04.json', '004_Walk05.json', '004_Walk06.json', '004_Walk07.json', '004_Walk08.json', '004_Walk09.json', '004_Walk10.json', '004_Walk11.json', '004_Walk12.json', '004_Walk13.json', '004_Walk14.json', '004_Walk15.json', '004_Walk16.json', '004_Walk17.json', '004_Walk18.json', '004_Walk19.json']
+preproc: <function bp_filter at 0x0000024E278C8B88>
+ppkwargs: {'high_band': 25, 'low_band': 200, 'sfreq': 2000, 'filt_ord': 4}
+batch_size: 32
+input_shape: (200, 8)
+n_outputs: 6
+drp: 0.5
+acts: ('relu', 'relu')
+krnl: (15, 3)
+dil: 3
+mpool: (4, 4)
+depth_mul: (12, 4)
+dense: (100, 50)
+b_norm: True
