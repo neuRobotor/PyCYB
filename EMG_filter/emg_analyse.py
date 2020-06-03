@@ -8,6 +8,27 @@ import numpy as np
 from data_gen.preproc import norm_emg
 
 
+def main_ar():
+    sns.set_style('darkgrid')
+    # emg = load_emg_stack(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data', task='Walk')
+    # targ = 0
+    # x0 = np.array([cur_x[targ, i*400:(i+1)*400] for cur_x in emg for i in range(int(cur_x.shape[1]/400))])
+    # from statsmodels.tsa.stattools import pacf
+    # pacs = [pacf(cur_seg, method='ywm') for cur_seg in x0]
+    # plt.stem(np.mean(pacs, axis=0), use_line_collection=True)
+    # plt.axhline(1.96 / np.sqrt(x0.shape[1]), color='red', ls='--')
+    # plt.axhline(-1.96 / np.sqrt(x0.shape[1]), color='red', ls='--')
+    emg = norm_emg(load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Walk12.json', task='Walk'))
+    targ = 0
+    ord = 4
+    mu = 0.01
+    x = emg[targ,:]
+    X = ar_stack(x, ord)
+    F = LMS(x_in=X[:,:-1], d_in=x[ord:], mu=mu)
+    F.run()
+    plt.plot(F.W.T)
+    plt.show()
+
 def main_delay_sweep():
     # region Loading and setup
     sns.set_style('darkgrid')
@@ -92,19 +113,19 @@ def main_cropped_lms():
 
 
 def main_spectrum_lms():
-    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Stair05.json')
+    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Validation20.json')
     emg = norm_emg(emg)
-    targ = 5
+    targ = 4
     plt.plot(emg[targ, :])
     plt.figure()
     n_bins = 1000
     F = spectrum_lms(emg[targ, :], n_bins, gamma=0.01)
     #spec = norm_emg(np.abs(F.W[1:int(F.W.shape[0]/4), 3:]).T).T
     #spec = spec-np.min(spec)+1
-    spec = np.abs(F.W[1:int(F.W.shape[0] / 8), :])
+    spec = np.abs(F.W[1:int(F.W.shape[0] / 8), 1::2])
     plt.pcolormesh(np.arange(spec.shape[1]), np.arange(spec.shape[0])/n_bins*2000, spec)
     plt.xlabel('Time')
-    plt.ylabel('Frequency')
+    plt.ylabel('Frequency (Hz)')
     plt.show()
     return
 
@@ -186,4 +207,4 @@ def main_spectrum_visu():
 
 
 if __name__ == '__main__':
-    main_spectrum_lms()
+    main_ar()

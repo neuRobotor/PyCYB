@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-import json
 from tensorflow.keras.models import load_model
 import numpy as np
 import pickle
-from data_gen.preproc import bp_filter, norm_emg
+from scipy.signal import medfilt, savgol_filter
+from data_gen.preproc import bp_filter, norm_emg, spec_proc
+from utility.save_load_util import load_emg_stack
+import os
 
 
 def plot_history(history, data_dir):
@@ -30,12 +32,12 @@ def plot_history(history, data_dir):
     return
 
 
-def plot_pred(emg_data, Y0, ecg, delay, model, data_dir):
+def plot_pred(emg_data, Y0, ecg, delay, model, data_dir, stride):
     sns.set()
     sns.set_context('paper')
     plt.figure()
     y = model.predict(emg_data)
-    N = 20
+    N = max(1, 20)
 
     def f(y_in):
         return np.convolve(y_in, np.ones((N,)) / N, mode='valid')
@@ -75,9 +77,8 @@ def main():
     sns.set()
     sns.set_context('paper')
 
-    model_num = 62
+    model_num = 129
     model = load_model('Models/model_' + str(model_num) + '/best_model_' + str(model_num) + '.h5')
-
 
     with open('Models/model_' + str(model_num) + '/gen_' + str(model_num) + '.pickle', "rb") as input_file:
         gen = pickle.load(input_file)
@@ -91,15 +92,29 @@ def main():
     s = gen.stride
     delay = gen.delay
 
-    gen.file_names = ['004_Validation20.json']
+    gen.data_dir = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Validation'
+    gen.file_names = sorted([f for f in os.listdir(gen.data_dir) if f.endswith('.json') and "Walk" in f])
     gen.load_files()
-    emg_data, Y0 = gen.data_generation(range(gen.window_index_heads[-1][-1]))
-    ecg = gen.emg_data[0][7]
-    y = model.predict(emg_data)
+
+    cur_indexes = range(gen.window_index_heads[-1][-1])
+    head_tails = gen.window_index_heads
+    ids = [(file_id, cur_idx - head_tails[file_id][0])
+           for cur_idx in cur_indexes for file_id, head_tail in enumerate(head_tails)
+           if head_tail[0] <= cur_idx < head_tail[1]]
+
+    Y0 = np.array(
+        [np.squeeze(gen.angle_data[file_id][:, win_id + int(gen.delay / gen.stride), list(gen.dims)])
+         for file_id, win_id in ids])
+    gen.window_idx = np.arange(gen.n_windows)
+    raw = load_emg_stack(gen.data_dir, task='Walk', n_channels=8)
+    ecg = raw[0][7]
+    y = model.predict(gen)
     N = 20
 
     def f(y_in):
-        return np.convolve(y_in, np.ones((N,)) / N, mode='valid')
+        buff = medfilt(y_in, 51)
+        #return np.convolve(buff, np.ones((N,)) / N, mode='valid')
+        return
 
     y = np.apply_along_axis(f, 0, y)
     fig, axes = plt.subplots(3, 2)
@@ -117,7 +132,7 @@ def main():
         else:
             axes[i].set_xticklabels([])
         if i == 1:
-            plt.legend((o, est, e), ("Actual Angles", "Predicted Angles", "ECG signal (A.U.)"),
+            plt.legend((o, est, e), ("Actual Angles", "Predicted Angles", "ECG Signal (A.U.)"),
                        bbox_to_anchor=(1.04, 0.5),
                        loc="center left", borderaxespad=0)
         axes[i].set_ylabel("Radians")

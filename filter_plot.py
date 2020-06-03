@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
-from keras.models import load_model
+from tensorflow.keras.models import load_model
 import numpy as np
 from matplotlib.gridspec import GridSpec
 
 sns.set_style('white')
-model = load_model('Models/best_model_cyb104.h5')
-filters1, biases = model.layers[0].get_weights()
-filters2, _ = model.layers[2].get_weights()
+model = load_model('Models/model_71/best_model_71.h5')
+filters1, biases = model.layers[1].get_weights()
+filters2, _ = model.layers[3].get_weights()
 
 fig = plt.figure(constrained_layout=False, figsize=(12.8, 7.2))
 fig.suptitle("Primary and Secondary Features")

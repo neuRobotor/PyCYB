@@ -9,9 +9,16 @@ from utility.emg_proc import envelope
 import json
 import multiprocessing
 from functools import partial
+from scipy.signal import medfilt, hanning, find_peaks
 import re
 
 global sl_fr
+
+
+def rolling_window(a, window):
+    shape = a.shape[:-1] + (a.shape[-1] - window + 1, window)
+    strides = a.strides + (a.strides[-1],)
+    return np.lib.stride_tricks.as_strided(a, shape=shape, strides=strides)
 
 
 def proc_input(list_in):
@@ -63,9 +70,10 @@ def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
         return angles
 
 
-def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv):
+def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv, pz, pp):
     print('Processing file ' + fname + '...')
-    joint_angles, emg_data = c3d_proc(pdir_in + '\\' + fname, diff=pdiff, emg_lowpass=pcf, env=penv)
+    joint_angles, emg_data, direc = c3d_proc(pdir_in + '\\' + fname,
+                                             diff=pdiff, emg_lowpass=pcf, env=penv, z_dir=pz, param=pp)
     name = os.path.splitext(fname)[0] if not pdiff else os.path.splitext(fname)[0] + '_w'
     if penv:
         name += "_Env"
@@ -75,6 +83,8 @@ def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv):
     save_angles["EMG"] = [emg.tolist() for emg in emg_data]
     save_angles["low-pass cf"] = pcf if penv else None
     save_angles["data mode"] = "velocity" if pdiff else "angles"
+    if direc is not None:
+        name = re.sub(r'(_)', r'\1' + direc, name)
     with open(ptarget_dir + '\\' + name + '.json', 'w') as fp:
         json.dump(save_angles, fp, indent=4)
 
@@ -101,9 +111,12 @@ def dir_proc(diff=False, env=False):
 
     cf = [int(re.search(r'(\d+)$', str(arg)).group(0))
           for arg in options if "-cf" in arg or "--cutoff" in arg]
+    z_dir = '-z' in options or '--zdir' in options
+    param = '-p' in options or '-param' in options
     if not cf:
         cf = [5]
-    f = partial(parallel_proc, pdiff=diff, pdir_in=dir_in, ptarget_dir=target_dir, pcf=cf[0], penv=env)
+    f = partial(parallel_proc,
+                pdiff=diff, pdir_in=dir_in, ptarget_dir=target_dir, pcf=cf[0], penv=env, pz=z_dir, pp=param)
     fnames = [f for f in os.listdir(dir_in) if f.endswith('.c3d')]
     nProcess = multiprocessing.cpu_count()
     import time
@@ -114,7 +127,7 @@ def dir_proc(diff=False, env=False):
     return
 
 
-def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
+def v_markers(dict_mkr_coords, asis_breadth=None):
     # region Create virtual markers
     dict_mkr_coords['LVAN'] = (dict_mkr_coords['LANK'] + dict_mkr_coords['LANM']) / 2
     dict_mkr_coords['RVAN'] = (dict_mkr_coords['RANK'] + dict_mkr_coords['RANM']) / 2
@@ -134,6 +147,11 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
     dict_mkr_coords['LVHI'] = dict_mkr_coords['SACR'] + asis_breadth * (0.598 * u_hip + 0.344 * v_hip - 0.29 * w_hip)
     dict_mkr_coords['RVHI'] = dict_mkr_coords['SACR'] + asis_breadth * (0.598 * u_hip - 0.344 * v_hip - 0.29 * w_hip)
     # endregion
+
+
+def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
+
+    v_markers(dict_mkr_coords, asis_breadth=asis_breadth)
 
     # region Calculation of local coordinate systems
     # Access frame from rs = reference_sys['Name'] using rs[i]
@@ -193,7 +211,108 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
     return joint_angles, dict_mkr_coords
 
 
-def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=10, diff=False, env=False):
+def param_est(dict_mkr_coords, asis_breadth=None):
+    v_markers(dict_mkr_coords, asis_breadth=asis_breadth)
+
+    i_vect = (dict_mkr_coords['RASI'] - dict_mkr_coords['LASI'])
+    i_vect = i_vect / np.linalg.norm(i_vect, axis=1)[:, None]
+    k_vect = np.cross(dict_mkr_coords['RASI'] - dict_mkr_coords['SACR'],
+                      dict_mkr_coords['LASI'] - dict_mkr_coords['SACR'], axis=1)
+    k_vect = k_vect / np.linalg.norm(k_vect, axis=1)[:, None]
+    j_vect = np.cross(k_vect, i_vect)
+
+    med = partial(medfilt, kernel_size=51)
+
+    def sm_med(a):
+        return med(np.convolve(a, hanning(11), 'same'))
+
+    la_speed = np.linalg.norm(np.apply_along_axis(sm_med, 0, np.gradient(dict_mkr_coords['LHEE'], axis=0)), axis=1)
+    ra_speed = np.linalg.norm(np.apply_along_axis(sm_med, 0, np.gradient(dict_mkr_coords['RHEE'], axis=0)), axis=1)
+
+    d_speed = ra_speed-la_speed
+
+    direc = j_vect
+    direc[:,2] = 0
+    dist = dict_mkr_coords['RHEE'] - dict_mkr_coords['LHEE']
+    ap_dist = np.empty(dist.shape[0])
+    sacr_speed = np.apply_along_axis(med, 0, np.gradient(dict_mkr_coords['SACR'], axis=0))
+    for i in range(dist.shape[0]):
+        ap_dist[i] = np.dot(dist[i, :], direc[i, :])
+        sacr_speed[i] = np.dot(sacr_speed[i, :], direc[i, :])
+
+    height_dist = dict_mkr_coords['RHEE'][:, 2] - dict_mkr_coords['LHEE'][:, 2]
+
+    step_class = np.ones(dist.shape[0])
+    step_class[d_speed > 0.0005] = 0
+    step_class[d_speed < -0.0005] = 2
+    mode_w = 31
+    step_window = rolling_window(step_class, mode_w)
+
+    def mode_filter(a, classes=(0, 1, 2)):
+        scores = []
+        if classes is None:
+            classes = np.unique(a)
+        for c in classes:
+            scores.append(np.sum(a == c))
+        return classes[int(np.argmax(scores))]
+
+    step_class = np.apply_along_axis(mode_filter, 1, step_window)
+    step_class = np.append(step_class, np.ones(int((mode_w-1)/2))*step_class[-1])
+    step_class = np.append(np.ones(int((mode_w-1)/2))*step_class[0], step_class)
+
+    step_durations = []
+    step_starts = []
+    rs = 1  # running sum
+    cc = step_class[0]  # current class
+    step_starts.append(0)
+    for i in range(1, dist.shape[0]):
+        if step_class[i] == cc:
+            rs += 1
+        else:
+            step_starts.append(i)
+            step_durations.append(rs)
+            rs = 1
+            cc = step_class[i]
+    step_durations.append(rs)
+
+    def get_span(a, dist):
+        t0 = step_starts[int(np.sum(a > np.array(step_starts)) - 1)]
+        tend = t0 + step_durations[int(np.sum(a > np.array(step_starts)) - 1)]
+        if int(np.sum(a > np.array(step_starts)) - 1) == 0:
+            return max(np.max(dist[t0:tend]), 0) - min(np.min(dist[t0:tend]), 0)
+        if int(np.sum(a > np.array(step_starts)) - 1) == len(step_starts)-1:
+            return max(np.max(dist[t0:tend]), 0) - min(np.min(dist[t0:tend]), 0)
+        return np.max(dist[t0:tend]) - np.min(dist[t0:tend])
+
+    v_get_stride_length = np.vectorize(partial(get_span, dist=ap_dist))
+    v_get_step_height = np.vectorize(partial(get_span, dist=height_dist))
+    stride_lengths = np.zeros(dist.shape[0])
+    step_heights = np.zeros(dist.shape[0])
+
+    for i, step_start in enumerate(step_starts):
+        if step_class[step_start] == 1:
+            continue
+        stride_lengths[step_start:step_start+step_durations[i]] = \
+            v_get_stride_length(np.arange(step_start, step_start+step_durations[i]))
+        stride_lengths[step_start:step_start+step_durations[i]] = \
+            mode_filter(stride_lengths[step_start:step_start+step_durations[i]], classes=None)
+        step_heights[step_start:step_start + step_durations[i]] = \
+            v_get_step_height(np.arange(step_start, step_start + step_durations[i]))
+        step_heights[step_start:step_start + step_durations[i]] = \
+            mode_filter(step_heights[step_start:step_start + step_durations[i]], classes=None)
+    print('yee')
+    dict_out = {
+        'step_class': step_class,
+        'step_heights': step_heights,
+        'stride_lengths': stride_lengths,
+        'la_speed': la_speed,
+        'ra_speed': ra_speed,
+        'sacr_speed': sacr_speed
+    }
+    return dict_out
+
+
+def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=10, diff=False, env=False, z_dir=False, param=False):
     with C3DServer() as c3d:
         # region Read a C3D file and extract all necessary info
         c3d.open_c3d(c3d_name)
@@ -220,9 +339,19 @@ def c3d_proc(c3d_name, asis_breadth=None, emg_lowpass=10, diff=False, env=False)
                     for emg in emg_data]
         # endregion
 
-        joint_angles, _ = angle_est(dict_mkr_coords, asis_breadth, diff=diff)
+        if param:
+            joint_angles = param_est(dict_mkr_coords, asis_breadth)
+        else:
+            joint_angles, _ = angle_est(dict_mkr_coords, asis_breadth, diff=diff)
 
-    return joint_angles, emg_data
+        direction = None
+        if z_dir:
+            if dict_mkr_coords['SACR'][-1, 2] > dict_mkr_coords['SACR'][0, 2] * 1.1:
+                direction = 'Up'
+            elif dict_mkr_coords['SACR'][-1, 2] < dict_mkr_coords['SACR'][0, 2] * 0.9:
+                direction = 'Down'
+
+    return joint_angles, emg_data, direction
 
 
 def visu(diff=False, env=False):
@@ -451,29 +580,29 @@ def visu(diff=False, env=False):
             ax.get_yaxis().set_ticks([])
         ax.set_xlabel("Time (s)")
         plt.savefig("emg.png", transparent=True)
-        f, axes = plt.subplots(8, 1, sharex='col', sharey='col')
-
-        axes[0].set_title("Normalised EMG input frame to NN".format(cf[0]))
-        emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
-        x = np.arange(20)
-
-        for i, emg in enumerate(emg_data):
-            emg = np.array(emg_data[i])
-            emg_data[i] = (emg - np.mean(emg)) / np.std(emg)
-        emg_data = np.array(emg_data)[:, 350:370]
-        vmin = np.min(emg_data)
-        vmax = np.max(emg_data)
-        cbar_ax = f.add_axes([.91, .11, .03, .77])
-        for row, ax in enumerate(axes):
-            emg = np.array(emg_data[row])
-            emg = (emg - np.mean(emg)) / np.std(emg)
-            a = np.expand_dims(emg, axis=0)
-            hm = seaborn.heatmap(a, ax=ax, vmin=vmin, vmax=vmax, cbar=row == 0, cbar_ax=None if row else cbar_ax)
-            ax.set_ylabel(emg_names[row])
-            ax.get_yaxis().set_ticks([])
-        # f.tight_layout(rect=[0, 0, .9, 1])
-        cbar_ax.margins(x=0.1)
-        plt.savefig("20.png", transparent=True)
+        # f, axes = plt.subplots(8, 1, sharex='col', sharey='col')
+        #
+        # axes[0].set_title("Normalised EMG input frame to NN".format(cf[0]))
+        # emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
+        # x = np.arange(20)
+        #
+        # for i, emg in enumerate(emg_data):
+        #     emg = np.array(emg_data[i])
+        #     emg_data[i] = (emg - np.mean(emg)) / np.std(emg)
+        # emg_data = np.array(emg_data)[:, 350:370]
+        # vmin = np.min(emg_data)
+        # vmax = np.max(emg_data)
+        # cbar_ax = f.add_axes([.91, .11, .03, .77])
+        # for row, ax in enumerate(axes):
+        #     emg = np.array(emg_data[row])
+        #     emg = (emg - np.mean(emg)) / np.std(emg)
+        #     a = np.expand_dims(emg, axis=0)
+        #     hm = seaborn.heatmap(a, ax=ax, vmin=vmin, vmax=vmax, cbar=row == 0, cbar_ax=None if row else cbar_ax)
+        #     ax.set_ylabel(emg_names[row])
+        #     ax.get_yaxis().set_ticks([])
+        # # f.tight_layout(rect=[0, 0, .9, 1])
+        # cbar_ax.margins(x=0.1)
+        # plt.savefig("20.png", transparent=True)
     plt.show()
 
     return sl_fr
@@ -492,6 +621,8 @@ def help_msg():
           '\t\t\t\tOptionally specify target_path if target directory is different\n'
           '\t\t-h --help\tDisplay this message\n'
           '\t\t-v --visu\tProcess a single .c3d file, and display interactive plots\n'
+          '\t\t-z --zdir\tIndicate vertical travel in name (Up or Down)\n'
+          '\t\t-p --para\tExtract gait parameters instead of angles\n'
           '\t\t\t\tNo target_path needed\n')
 
 
