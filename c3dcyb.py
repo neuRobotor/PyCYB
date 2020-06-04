@@ -75,16 +75,22 @@ def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv, pz, pp):
     joint_angles, emg_data, direc = c3d_proc(pdir_in + '\\' + fname,
                                              diff=pdiff, emg_lowpass=pcf, env=penv, z_dir=pz, param=pp)
     name = os.path.splitext(fname)[0] if not pdiff else os.path.splitext(fname)[0] + '_w'
-    if penv:
-        name += "_Env"
+
     list_vals = [ar.tolist() for ar in joint_angles.values()]
     keys = joint_angles.keys()
     save_angles = {key: li for key, li in zip(keys, list_vals)}
     save_angles["EMG"] = [emg.tolist() for emg in emg_data]
     save_angles["low-pass cf"] = pcf if penv else None
     save_angles["data mode"] = "velocity" if pdiff else "angles"
+    prefix = ""
+    if pp:
+        prefix += "Param"
     if direc is not None:
-        name = re.sub(r'(_)', r'\1' + direc, name)
+        prefix += direc
+    if direc is not None or pp:
+        name = re.sub(r'(_)', r'\1' + prefix, name)
+    if penv:
+        name += "_Env"
     with open(ptarget_dir + '\\' + name + '.json', 'w') as fp:
         json.dump(save_angles, fp, indent=4)
 
@@ -300,14 +306,19 @@ def param_est(dict_mkr_coords, asis_breadth=None):
             v_get_step_height(np.arange(step_start, step_start + step_durations[i]))
         step_heights[step_start:step_start + step_durations[i]] = \
             mode_filter(step_heights[step_start:step_start + step_durations[i]], classes=None)
-    print('yee')
+
+    def get_speed(a):
+        return stride_lengths[a]/step_durations[int(np.sum(a >= np.array(step_starts)) - 1)]
+    step_speed = np.vectorize(get_speed)(np.arange(stride_lengths.shape[0]))
+
     dict_out = {
         'step_class': step_class,
         'step_heights': step_heights,
         'stride_lengths': stride_lengths,
         'la_speed': la_speed,
         'ra_speed': ra_speed,
-        'sacr_speed': sacr_speed
+        'sacr_speed': sacr_speed,
+        'step_speed': step_speed
     }
     return dict_out
 

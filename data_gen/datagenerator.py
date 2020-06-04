@@ -1,7 +1,7 @@
 import numpy as np
-import keras
 import json
 from tensorflow.keras.utils import Sequence, to_categorical
+import copy
 
 
 def _raise(ex):
@@ -18,6 +18,8 @@ class TCNDataGenerator(Sequence):
                  dims=(0,), shuffle=True, joint_names=('LHip', 'RHip', 'LKnee', 'RKnee', 'LAnkle', 'RAnkle'),
                  preproc=_pass, angproc=_pass, ppkwargs=None, gap_windows=None, channel_mask=None, time_step=1):
         'Initialization'
+
+        self.k_idx = list()
 
         self.batch_size = batch_size
         self.delay = delay
@@ -52,6 +54,7 @@ class TCNDataGenerator(Sequence):
         if self.angle_data:
             self.n_angles = len(self.angle_data[0])
         self.window_idx = np.arange(self.n_windows)
+
         self.on_epoch_end()
 
     def load_files(self):
@@ -81,11 +84,12 @@ class TCNDataGenerator(Sequence):
                     upsampled = np.apply_along_axis(interp_f, 0, dict_data[joint])
                     angles.append(self.angproc(upsampled))
                 self.angle_data.append(np.array(angles))
+        self.on_epoch_end()
         return
 
     def __len__(self):
         'Denotes the number of batches per epoch'
-        return int(np.ceil(self.n_windows / self.batch_size))
+        return int(np.ceil(len(self.window_idx) / self.batch_size))
 
     def __getitem__(self, batch_index):
         'Generate one batch of data'
@@ -114,7 +118,8 @@ class TCNDataGenerator(Sequence):
 
     def on_epoch_end(self):
         # Updates indexes after each epoch
-        self.window_idx = np.arange(self.n_windows)
+        if not self.k_idx:
+            self.window_idx = np.arange(self.n_windows)
         if self.shuffle:
             np.random.shuffle(self.window_idx)
 
@@ -125,8 +130,25 @@ class TCNDataGenerator(Sequence):
             self.angle_data = list()
             self.n_windows = 0
             self.window_index_heads = list()
+            self.window_idx = np.array([])
         with open(path, 'wb') as handle:
             pickle.dump(self, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
+    def validation_split(self, k=2):
+        self.k_idx = np.array_split(self.window_idx, k)
+
+    def get_k(self, cur_k, k=2):
+        if not self.k_idx:
+            self.validation_split(k)
+        ks = list(self.k_idx)
+        val_idx = ks.pop(cur_k)
+        train_idx = np.concatenate(ks)
+        valid_gen = copy.copy(self)
+        valid_gen.window_idx = val_idx
+        self.window_idx = train_idx
+        self.on_epoch_end()
+        valid_gen.on_epoch_end()
+        return valid_gen
 
 
 class EDTCNGenerator(TCNDataGenerator):
@@ -218,6 +240,103 @@ class TCNClassGenerator(TCNDataGenerator):
              for file_id, win_id in ids])
         Y = to_categorical([[i for i, e in enumerate(self.class_enum) if e in self.file_names[file_id]][0]
                             for file_id, _ in ids], num_classes=len(self.class_enum))
+        if self.gap_windows is not None:
+            return [X[:, :self.gap_windows[0], :], X[:, -self.gap_windows[1]:, :]], Y
+        return X, Y
+
+
+class StepTCNGenerator(TCNDataGenerator):
+    def __init__(self, **kwargs):
+        self.step_classes = list()
+        super(StepTCNGenerator, self).__init__(**kwargs)
+
+    def load_files(self):
+        self.emg_data = list()
+        self.angle_data = list()
+        for file in self.file_names:
+            with open(self.data_dir + '\\' + file) as json_file:
+                dict_data = json.load(json_file)
+                if self.channel_mask is None:
+                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
+                else:
+                    self.emg_data.append(
+                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
+                self.window_index_heads.append((self.n_windows,
+                                                self.n_windows +
+                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
+                self.n_windows = self.window_index_heads[-1][1]
+
+                step_class = np.repeat(dict_data["step_class"], self.freq_factor)
+                step_class = np.append(step_class, [step_class[-1]]*max(self.delay-self.window_size+1, 0))
+                self.step_classes.append(step_class)
+        return
+
+    def data_generation(self, cur_indexes):
+        head_tails = self.window_index_heads
+        ids = [(file_id, cur_idx - head_tails[file_id][0])
+               for cur_idx in cur_indexes for file_id, head_tail in enumerate(head_tails)
+               if head_tail[0] <= cur_idx < head_tail[1]]
+
+        X = np.array(
+            [self.emg_data[file_id][:,
+             win_id * self.stride:win_id * self.stride + self.window_size:self.time_step].transpose()
+             for file_id, win_id in ids])
+
+        Y = to_categorical(
+            [self.step_classes[file_id][win_id * self.stride + self.delay] for file_id, win_id in ids], num_classes=3)
+        if self.gap_windows is not None:
+            return [X[:, :self.gap_windows[0], :], X[:, -self.gap_windows[1]:, :]], Y
+        return X, Y
+
+
+class ParamTCNGenerator(TCNDataGenerator):
+    def __init__(self, params=("step_heights", "stride_lengths", "step_speed"), **kwargs):
+        self.step_params = list()
+        self.params = params
+        super(ParamTCNGenerator, self).__init__(**kwargs)
+
+    def load_files(self):
+        self.emg_data = list()
+        self.angle_data = list()
+        for file in self.file_names:
+            with open(self.data_dir + '\\' + file) as json_file:
+                dict_data = json.load(json_file)
+                if self.channel_mask is None:
+                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
+                else:
+                    self.emg_data.append(
+                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
+                self.window_index_heads.append((self.n_windows,
+                                                self.n_windows +
+                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
+                self.n_windows = self.window_index_heads[-1][1]
+
+                cur_params = list()
+                for p in self.params:
+                    cur_value = np.array(dict_data[p])
+                    cur_value[:] = 1
+                    cur_value[np.array(dict_data[p]) == 0] = 0
+                    cur_value[np.array(dict_data[p]) > np.abs(np.max(dict_data[p]))*0.8] = 2
+                    cur_params.append(np.atleast_2d(np.repeat(cur_value, self.freq_factor)))
+
+                step_param = np.vstack(cur_params)
+                step_param = np.hstack((step_param,
+                                        np.tile(np.atleast_2d(step_param[:, -1]).T,
+                                                (1, max(self.delay-self.window_size+1, 0)))))
+                self.step_params.append(self.angproc(step_param))
+        return
+
+    def data_generation(self, cur_indexes):
+        head_tails = self.window_index_heads
+        ids = [(file_id, cur_idx - head_tails[file_id][0])
+               for cur_idx in cur_indexes for file_id, head_tail in enumerate(head_tails)
+               if head_tail[0] <= cur_idx < head_tail[1]]
+        X = np.array(
+            [self.emg_data[file_id][:,
+             win_id * self.stride:win_id * self.stride + self.window_size:self.time_step].transpose()
+             for file_id, win_id in ids])
+        Y = to_categorical(
+            [self.step_params[file_id][:, win_id * self.stride + self.delay] for file_id, win_id in ids], num_classes=3)
         if self.gap_windows is not None:
             return [X[:, :self.gap_windows[0], :], X[:, -self.gap_windows[1]:, :]], Y
         return X, Y

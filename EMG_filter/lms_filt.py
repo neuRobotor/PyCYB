@@ -43,10 +43,11 @@ def ar_stack(x, order):
     return X
 
 
-def anc(s, ref, mu, order=1, delay=0, mode='GNGD', filter_in=None, pad=False, **kwargs):
+def anc(s, ref, mu, order=1, delay=0, mode='GNGD', pretrain=(None, None), filter_in=None, pad=False, **kwargs):
+    ref = np.atleast_2d(ref)
     if pad:
-        s = np.concatenate((np.zeros(order-delay+1), s))
-        ref = np.concatenate((np.zeros(ref.shape[0], order - delay + 1), ref), axis=1)
+        s = np.concatenate((np.zeros(order-delay-1), s))
+        ref = np.concatenate((np.zeros((ref.shape[0], order - delay - 1)), ref), axis=1)
     X = ar_stack(ref, order)
     X = X[:, :X.shape[1] - delay]
     s = s[order + delay - 1:]
@@ -58,6 +59,8 @@ def anc(s, ref, mu, order=1, delay=0, mode='GNGD', filter_in=None, pad=False, **
         F = GASS(X, s, mu, **kwargs)
     else:
         F = LMS(X, s, mu, **kwargs)
+    if pretrain[0] is not None:
+        F.pretrain(pretrain[0], pretrain[1])
     F.run()
     return F
 

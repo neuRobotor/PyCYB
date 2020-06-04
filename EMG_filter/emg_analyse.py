@@ -29,6 +29,27 @@ def main_ar():
     plt.plot(F.W.T)
     plt.show()
 
+
+def main_anc():
+    sns.set_style('darkgrid')
+    emg_stack = load_emg_stack(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data', task='Walk')
+    for i in range(10):
+        emg = emg_stack[i]
+        emg = norm_emg(emg)
+        s = emg[4, :]
+        ref = emg[7, :]
+        filt_ord = 4
+        mu = 0.5
+        F = anc(s=s, ref=ref, order=filt_ord, mu=mu, eps=1/mu, pad=True, rho=0, act='tanh', bias=0.1, pretrain=(400, 3))
+        plt.figure()
+        plt.plot(s)
+        plt.plot(ref)
+        plt.plot(F.e)
+        # plt.figure()
+        # plt.plot(F.W.T)
+    plt.show()
+
+
 def main_delay_sweep():
     # region Loading and setup
     sns.set_style('darkgrid')
@@ -207,4 +228,4 @@ def main_spectrum_visu():
 
 
 if __name__ == '__main__':
-    main_ar()
+    main_anc()

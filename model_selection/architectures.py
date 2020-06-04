@@ -3,6 +3,7 @@ from tensorflow.keras.losses import MeanSquaredError, CategoricalCrossentropy
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Dense, Flatten, Dropout, MaxPooling2D, DepthwiseConv2D, Reshape, Concatenate, \
     Input, BatchNormalization, Activation, Conv2D, InputLayer, UpSampling2D, AveragePooling2D
+from tensorflow.keras.regularizers import l1
 
 
 def conv_model(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=((1, 3), (1, 3)), dil=((1, 1), (1, 1)),

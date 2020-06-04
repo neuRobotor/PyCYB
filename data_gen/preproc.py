@@ -1,7 +1,24 @@
 import numpy as np
 from scipy import signal
+from EMG_filter.lms_filt import anc
 from EMG_filter.lms_filt import spectrum_lms
 
+
+def smooth(data):
+    return np.apply_along_axis(lambda d: signal.medfilt(d, kernel_size=21), axis=1, arr=data)
+
+
+def lms_anc(data, clear_ecg=False, filter_mask=None, **kwargs):
+    data = norm_emg(data)
+    filter_mask = np.arange(len(data)) if filter_mask is None else filter_mask
+    for ch in filter_mask:
+        s = data[ch]
+        ref = data[-1]
+        F = anc(s=s, ref=ref, **kwargs)
+        data[ch] = (F.e)
+    if clear_ecg:
+        data = data[1:-1]
+    return data
 
 def norm_emg(data, **kwargs):
     emg_std = np.std(data, axis=1)

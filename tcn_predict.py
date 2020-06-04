@@ -14,17 +14,15 @@ def plot_history(history, data_dir):
     sns.set_context('paper')
     plt.figure()
     f, axs = plt.subplots(nrows=1, ncols=2)
-    axs[0].plot(history.history['loss'])
-    axs[0].plot(history.history['val_loss'])
-    axs[0].legend(('MSE', 'Val MSE'), loc='upper right')
-    axs[0].set_xlabel('Epoch')
-    axs[0].set_ylabel('MSE')
+    legends = [[], []]
+    for i, (k, v) in enumerate(history.history.items()):
+        axs[i%2].plot(v)
+        legends[i%2].append(k)
 
-    axs[1].plot(history.history['mape'])
-    axs[1].plot(history.history['val_mape'])
-    axs[1].legend(('Mape', 'Val Mape'), loc='upper right')
-    axs[1].set_xlabel('Epoch')
-    axs[1].set_ylabel('MAPE')
+    for i in range(2):
+        axs[i].set_xlabel('Epoch')
+        axs[i].set_ylabel(legends[i][0])
+        axs[i].legend(legends[i], loc='upper right')
 
     fig = plt.gcf()
     fig.set_size_inches((15.6, 8.775), forward=False)
@@ -77,7 +75,7 @@ def main():
     sns.set()
     sns.set_context('paper')
 
-    model_num = 129
+    model_num = 239
     model = load_model('Models/model_' + str(model_num) + '/best_model_' + str(model_num) + '.h5')
 
     with open('Models/model_' + str(model_num) + '/gen_' + str(model_num) + '.pickle', "rb") as input_file:
@@ -94,6 +92,7 @@ def main():
 
     gen.data_dir = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Validation'
     gen.file_names = sorted([f for f in os.listdir(gen.data_dir) if f.endswith('.json') and "Walk" in f])
+    gen.stride = 1
     gen.load_files()
 
     cur_indexes = range(gen.window_index_heads[-1][-1])
@@ -103,7 +102,7 @@ def main():
            if head_tail[0] <= cur_idx < head_tail[1]]
 
     Y0 = np.array(
-        [np.squeeze(gen.angle_data[file_id][:, win_id + int(gen.delay / gen.stride), list(gen.dims)])
+        [np.squeeze(gen.angle_data[file_id][:, win_id + int(gen.delay / gen.stride), gen.dims])
          for file_id, win_id in ids])
     gen.window_idx = np.arange(gen.n_windows)
     raw = load_emg_stack(gen.data_dir, task='Walk', n_channels=8)

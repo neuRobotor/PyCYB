@@ -1,0 +1,89 @@
+Model: "Depthwise_model_classifier"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+reshape (Reshape)            (None, 1, 400, 8)         0         
+_________________________________________________________________
+depthwise_conv2d (DepthwiseC (None, 1, 400, 40)        640       
+_________________________________________________________________
+max_pooling2d (MaxPooling2D) (None, 1, 66, 40)         0         
+_________________________________________________________________
+depthwise_conv2d_1 (Depthwis (None, 1, 66, 120)        480       
+_________________________________________________________________
+max_pooling2d_1 (MaxPooling2 (None, 1, 13, 120)        0         
+_________________________________________________________________
+dropout (Dropout)            (None, 1, 13, 120)        0         
+_________________________________________________________________
+flatten (Flatten)            (None, 1560)              0         
+_________________________________________________________________
+dense (Dense)                (None, 200)               312200    
+_________________________________________________________________
+batch_normalization (BatchNo (None, 200)               800       
+_________________________________________________________________
+activation (Activation)      (None, 200)               0         
+_________________________________________________________________
+dropout_1 (Dropout)          (None, 200)               0         
+_________________________________________________________________
+dense_1 (Dense)              (None, 100)               20100     
+_________________________________________________________________
+batch_normalization_1 (Batch (None, 100)               400       
+_________________________________________________________________
+activation_1 (Activation)    (None, 100)               0         
+_________________________________________________________________
+dropout_2 (Dropout)          (None, 100)               0         
+_________________________________________________________________
+dense_2 (Dense)              (None, 50)                5050      
+_________________________________________________________________
+batch_normalization_2 (Batch (None, 50)                200       
+_________________________________________________________________
+activation_2 (Activation)    (None, 50)                0         
+_________________________________________________________________
+dropout_3 (Dropout)          (None, 50)                0         
+_________________________________________________________________
+dense_3 (Dense)              (None, 30)                1530      
+_________________________________________________________________
+batch_normalization_3 (Batch (None, 30)                120       
+_________________________________________________________________
+activation_3 (Activation)    (None, 30)                0         
+_________________________________________________________________
+dropout_4 (Dropout)          (None, 30)                0         
+_________________________________________________________________
+dense_4 (Dense)              (None, 20)                620       
+_________________________________________________________________
+batch_normalization_4 (Batch (None, 20)                80        
+_________________________________________________________________
+activation_4 (Activation)    (None, 20)                0         
+_________________________________________________________________
+dropout_5 (Dropout)          (None, 20)                0         
+_________________________________________________________________
+dense_5 (Dense)              (None, 5)                 105       
+=================================================================
+Total params: 342,325
+Trainable params: 341,525
+Non-trainable params: 800
+_________________________________________________________________
+data_dir: C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data
+window_size: 400
+delay: 400
+gap_windows: None
+stride: 20
+freq_factor: 20
+file_names: ['004_DownSit01.json', '004_DownSit03.json', '004_DownSit05.json', '004_DownSit07.json', '004_DownSit09.json', '004_DownSit11.json', '004_DownStair02.json', '004_DownStair04.json', '004_DownStair06.json', '004_DownStair08.json', '004_DownStair10.json', '004_DownStair12.json', '004_DownStair14.json', '004_DownStair16.json', '004_DownStair18.json', '004_DownStair20.json', '004_DownStair22.json', '004_DownStair24.json', '004_DownStair26.json', '004_DownStair28.json', '004_DownStair30.json', '004_DownStair32.json', '004_DownStair34.json', '004_UpSit02.json', '004_UpSit04.json', '004_UpSit06.json', '004_UpSit08.json', '004_UpSit10.json', '004_UpStair01.json', '004_UpStair03.json', '004_UpStair05.json', '004_UpStair07.json', '004_UpStair09.json', '004_UpStair11.json', '004_UpStair13.json', '004_UpStair15.json', '004_UpStair17.json', '004_UpStair19.json', '004_UpStair21.json', '004_UpStair23.json', '004_UpStair25.json', '004_UpStair27.json', '004_UpStair29.json', '004_UpStair31.json', '004_UpStair33.json', '004_Walk01.json', '004_Walk02.json', '004_Walk03.json', '004_Walk04.json', '004_Walk05.json', '004_Walk06.json', '004_Walk07.json', '004_Walk08.json', '004_Walk09.json', '004_Walk10.json', '004_Walk11.json', '004_Walk12.json', '004_Walk13.json', '004_Walk14.json', '004_Walk15.json', '004_Walk16.json', '004_Walk17.json', '004_Walk18.json', '004_Walk19.json']
+channel_mask: None
+time_step: 1
+preproc: <function norm_emg at 0x000001E4661D0CA8>
+batch_size: 64
+class_enum: ('Walk', 'UpSit', 'UpStair', 'DownSit', 'DownStair')
+input_shape: (400, 8)
+n_outputs: 5
+acts: ('relu', 'selu')
+krnl: ((1, 15), (1, 3))
+pad: same
+dil: ((1, 1), (1, 10))
+strides: ((1, 1), (1, 1))
+mpool: ((1, 6), (1, 5))
+depth_mul: (5, 3)
+drp: 0.5
+dense_drp: True
+dense: (200, 100, 50, 30, 20)
+b_norm: True

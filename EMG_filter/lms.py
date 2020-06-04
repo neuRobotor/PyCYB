@@ -79,6 +79,13 @@ class LMS:
                                   stepsize * self.d_act(self.W[:, round_in] @ self.X[:, round_in]) * \
                                   np.sign(self.X[:, round_in]) * np.sign(self.e[round_in])
 
+    def pretrain(self, n_samples, n_rounds):
+        old_round = self.round
+        for r in range(n_rounds):
+            self.run(n_samples)
+            self.W[:, old_round] = self.W[:, self.round]
+            self.round = old_round
+
 
 class CLMS(LMS):
     def __init__(self, x_in, d_in, mu, alg='reg', def_a_weights=0, **kwargs):
