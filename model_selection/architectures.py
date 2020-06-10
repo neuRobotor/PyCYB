@@ -4,6 +4,7 @@ from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.layers import Dense, Flatten, Dropout, MaxPooling2D, DepthwiseConv2D, Reshape, Concatenate, \
     Input, BatchNormalization, Activation, Conv2D, InputLayer, UpSampling2D, AveragePooling2D
 from tensorflow.keras.regularizers import l1
+from tensorflow.keras import backend as K
 
 
 def conv_model(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=((1, 3), (1, 3)), dil=((1, 1), (1, 1)),
@@ -12,14 +13,14 @@ def conv_model(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=((1, 3), 
     model = Sequential(name='Conv2D_Model')
     if len(input_shape) < 3:
         model.add(Reshape((1, *input_shape), input_shape=input_shape))
-        model.add(DepthwiseConv2D(kernel_size=krnl[0],
+        model.add(Conv2D(kernel_size=krnl[0],
                                   filters=depth_mul[0],
                                   activation=acts[0],
                                   padding=pad,
                                   dilation_rate=dil[0],
                                   strides=strides[0]))
     else:
-        model.add(DepthwiseConv2D(kernel_size=krnl[0],
+        model.add(Conv2D(kernel_size=krnl[0],
                                   depth_multiplier=depth_mul[0],
                                   activation=acts[0],
                                   padding=pad,
@@ -90,7 +91,7 @@ def depthwise_model(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=((1,
             if dense_drp:
                 model.add(Dropout(drp))
     model.add(Dense(n_outputs, activation='linear'))
-    model.compile(loss=MeanSquaredError(), optimizer=Adam(), metrics=['mape'])
+    model.compile(loss=MeanSquaredError(), optimizer=Adam())  # metrics=[coeff_determination]
     return model
 
 
@@ -234,3 +235,9 @@ def depthwise_model_gap(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=
     model = Model([input_old, input_recent], out, name='Depthwise_Gap_Model')
     model.compile(loss='mean_squared_error', optimizer='adam', metrics=['mse', 'mape'])
     return model
+
+
+def coeff_determination(y_true, y_pred):
+    SS_res = K.sum(K.square(y_true-y_pred))
+    SS_tot = K.sum(K.square(y_true - K.mean(y_true)))
+    return 1 - SS_res/(SS_tot + K.epsilon())

@@ -8,6 +8,18 @@ def smooth(data):
     return np.apply_along_axis(lambda d: signal.medfilt(d, kernel_size=21), axis=1, arr=data)
 
 
+def angle_shift(ang):
+    if np.mean(ang) > 2.8:
+        return ang - np.pi
+    if np.mean(ang) < -2.8:
+        return ang + np.pi
+    return ang
+
+
+def unwrap_shift(data):
+    return np.apply_along_axis(angle_shift, axis=1, arr=data)
+
+
 def lms_anc(data, clear_ecg=False, filter_mask=None, **kwargs):
     data = norm_emg(data)
     filter_mask = np.arange(len(data)) if filter_mask is None else filter_mask

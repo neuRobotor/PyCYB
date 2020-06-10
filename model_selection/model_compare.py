@@ -1,7 +1,17 @@
-from keras.models import Sequential, Model
-from keras.layers import DepthwiseConv2D, Reshape, Flatten, Dense, Input, Conv1D
-import keras
+from tensorflow.keras.models import Sequential, Model
+from tensorflow.keras.layers import DepthwiseConv2D, Reshape, Flatten, Dense, Input, Conv1D
+import tensorflow as tf
+import tensorflow.keras as keras
 import numpy as np
+from data_gen.datagenerator import TCNDataGenerator
+
+
+def revaluate(gen: TCNDataGenerator, model: Sequential):
+    x, y0 = gen.data_generation(np.sort(gen.window_idx))
+    y = model.predict(x)
+    mse = np.mean(np.square(y0-y), axis=0)
+    mst = np.mean(np.square(y0-np.mean(y0, axis=0)[None,:]), axis=0)
+    return mse, 1-mse/mst
 
 
 def depthwise_output():

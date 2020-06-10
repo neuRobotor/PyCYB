@@ -1,11 +1,120 @@
 from EMG_filter.lms import *
 from EMG_filter.lms_filt import *
-from utility.save_load_util import load_emg, load_emg_stack
+from utility.save_load_util import *
 import matplotlib.pyplot as plt
 import scipy.signal as sp
 import seaborn as sns
 import numpy as np
 from data_gen.preproc import norm_emg
+from matplotlib.gridspec import GridSpec
+from matplotlib import rc
+
+
+def rms(a):
+    return np.sqrt(np.mean(np.square(a)))
+
+
+def consecutive(data, stepsize=1):
+    return np.split(data, np.where(np.diff(data) != stepsize)[0]+1)
+
+
+def main_snr():
+    paths = (r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB003\Data',
+             r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data',
+             r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\Data',
+             r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB101\Data',
+             r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data',)
+    tasks = ['Walk','Stair']
+    bg = dict()
+    ecg = dict()
+    for path in paths:
+        print(path)
+        sig_at_peak = [[] for _ in range(7)]
+        sig_at_stand = [[] for _ in range(7)]
+        sig_at_walk = [[] for _ in range(7)]
+        for t in tasks:
+            print(t)
+            emg = load_emg_stack(path, task=[t])
+            stack = load_dict_stack(path + '_p', task=[t])
+            s_class = [np.repeat(d['step_class'], 20) for d in stack]
+            for ch in range(7):
+                for cl, f in zip(s_class, emg):
+                    pr = peak_regs(f[7, :], 100, 200, distance=800)
+                    peak_idx = np.concatenate(pr)
+                    step_idx = np.concatenate((consecutive(np.where(cl==0)[0]), consecutive(np.where(cl==2)[0])))
+                    step_idx = np.concatenate([st[:int(len(st)/2)] for st in step_idx])
+                    buff = np.zeros_like(cl)
+                    buff[step_idx] = 1
+                    step_idx = buff.astype(bool)
+                    stand_idx = 1 - step_idx
+                    stand_idx[peak_idx] = 0
+                    if np.max(stand_idx) != 0:
+                        sig_at_stand[ch].append(rms(f[ch, stand_idx]))
+                    else:
+                        sig_at_stand[ch].append(np.nan)
+
+                    sig_at_peak[ch].append(rms(f[ch, peak_idx]))
+
+                    sig_at_walk[ch].append(rms(f[ch, cl != 1]))
+
+        snr_ecg = [np.mean(np.divide(sig_at_walk[cur_ch], sig_at_peak[cur_ch])) for cur_ch in range(7)]
+        snr_bg = [np.mean(np.divide(np.array(sig_at_walk[cur_ch])[np.invert(np.isnan(sig_at_stand[cur_ch]))],
+                                        np.array(sig_at_stand[cur_ch])[np.invert(np.isnan(sig_at_stand[cur_ch]))]))
+                  for cur_ch in range(7)]
+        bg[path] = (snr_bg, np.mean(snr_bg))
+        ecg[path] = (snr_ecg, np.mean(snr_ecg))
+    bg['task'] = tasks
+    dirp,fp, _ = incr_file(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\EMG_filter', 'SNR', '.txt')
+    print_to_file(kw_summary(
+        background_snr=bg, ecg_snr=ecg).replace(',', ',\n').replace('{', '{\n').replace(': ', ':\n'), dirp+fp)
+    return
+
+
+def main_ecg():
+    emg = load_emg_stack(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data', task='Walk')
+    sns.set_style('darkgrid')
+    sns.set_context('poster')
+    lat = np.empty((0, 300))
+    ecg = np.empty((0, 300))
+    for f in emg:
+        pr = peak_regs(f[7,:], 100, 200, distance=800)
+        lat = np.vstack((lat, f[4, pr]))
+        ecg = np.vstack((ecg, f[7, pr]))
+
+    to_plot = norm_emg(np.vstack([np.mean(ecg, axis=0), np.mean(lat, axis=0)]))
+
+    fig: plt.Figure = plt.figure(constrained_layout=True)
+    spec = GridSpec(ncols=2, nrows=2, figure=fig)
+    ax = fig.add_subplot(spec[0,:])
+    ax.plot(np.linspace(-50, 99, 300), to_plot[0, :], ls='--')
+    ax.plot(np.linspace(-50, 99, 300), to_plot[1, :])
+    ax.get_yaxis().set_ticklabels([" "])
+    ax.set_ylabel("Arbitrary Units")
+    ax.set_xlabel("Time Relative to R peak (ms)")
+    plt.legend(["$\mathbb{E}\{V_{ECG}\}$", "$\mathbb{E}\{V_{Latissimus}\}$"])
+
+    ax2 = fig.add_subplot(spec[1, 0])
+    ax3 = fig.add_subplot(spec[1, 1])
+
+    def my_spec(ts_in, ax):
+        f, t, Sxx = sp.spectrogram(ts_in, 2000, nperseg=256, noverlap=128, nfft=500)
+        ax.pcolormesh(t, f[:50], np.log10(np.square(Sxx[:50, :])))
+        ax.set_ylabel('Frequency [Hz]')
+        ax.set_xlabel('Time [sec]')
+        ax.set_ylim((0, 200))
+
+    my_spec(emg[20][5,:], ax2)
+    ax2.set_title('Latissimus Spectrogram')
+    my_spec(emg[20][7,:], ax3)
+    ax3.set_title('ECG Spectrogram')
+
+    peaks, _ = sp.find_peaks(emg[20][7,:], distance=800, height=np.max(emg[20][7,:])*0.5)
+    ax2.plot(peaks / 2000, np.ones_like(peaks) * 40, 'k+')
+    ax3.plot(peaks / 2000, np.ones_like(peaks) * 40, 'k+')
+    plt.show()
+    print('yee')
+
+
 
 
 def main_ar():
@@ -32,19 +141,26 @@ def main_ar():
 
 def main_anc():
     sns.set_style('darkgrid')
-    emg_stack = load_emg_stack(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data', task='Walk')
-    for i in range(10):
+    sns.set_context('poster')
+    emg_stack = load_emg_stack(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data', task='Stair')
+    for i in range(4,5):
         emg = emg_stack[i]
         emg = norm_emg(emg)
         s = emg[4, :]
         ref = emg[7, :]
         filt_ord = 4
         mu = 0.5
-        F = anc(s=s, ref=ref, order=filt_ord, mu=mu, eps=1/mu, pad=True, rho=0, act='tanh', bias=0.1, pretrain=(400, 3))
+        F = anc(s=s, ref=ref, beta=1, order=filt_ord, mu=mu, eps=1/mu, pad=True, rho=0, act='tanh', pretrain=(400, 3))
         plt.figure()
-        plt.plot(s)
-        plt.plot(ref)
-        plt.plot(F.e)
+
+        plt.plot(np.linspace(0, len(s)/2, len(s)), s*4, lw=2)
+        plt.plot(np.linspace(0, len(s)/2, len(s)), ref, lw=2)
+        plt.plot(np.linspace(0, len(s)/2, len(s)), F.e*4, lw=2)
+        plt.xlabel('Time (ms)')
+        plt.ylabel('Voltage (arbitrary units)')
+        plt.legend(('Trapezius signal', 'ECG reference', 'Filtered signal'))
+        plt.gca().get_yaxis().set_ticklabels([" "])
+        plt.tight_layout()
         # plt.figure()
         # plt.plot(F.W.T)
     plt.show()
@@ -96,6 +212,8 @@ def main_delay_sweep():
     plt.ylabel('MSE'),
     plt.xlabel('delay (samples)')
     plt.title('Trap, GNGD, sign')
+
+
     plt.show()
     return
 
@@ -134,19 +252,37 @@ def main_cropped_lms():
 
 
 def main_spectrum_lms():
-    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Validation20.json')
+    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\Data\005_Walk20.json')
     emg = norm_emg(emg)
-    targ = 4
+    step_dict = load_dict(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\Data_p\005_ParamWalk20.json')
+
+    def consecutive(data, stepsize=1):
+        return np.split(data, np.where(np.diff(data) != stepsize)[0] + 1)
+    cl = np.array(step_dict["step_class"])
+    step_idx = consecutive(np.where(cl == 0)[0])
+
+    peaks, _ = sp.find_peaks(emg[7, :], distance=800, height=2.2)
+    targ = 6
+
+
+
     plt.plot(emg[targ, :])
     plt.figure()
     n_bins = 1000
     F = spectrum_lms(emg[targ, :], n_bins, gamma=0.01)
     #spec = norm_emg(np.abs(F.W[1:int(F.W.shape[0]/4), 3:]).T).T
     #spec = spec-np.min(spec)+1
-    spec = np.abs(F.W[1:int(F.W.shape[0] / 8), 1::2])
-    plt.pcolormesh(np.arange(spec.shape[1]), np.arange(spec.shape[0])/n_bins*2000, spec)
-    plt.xlabel('Time')
+    import seaborn as sns
+    sns.set_style('darkgrid')
+    sns.set_context('poster')
+    spec = np.log10(np.square(np.abs(F.W[1:int(F.W.shape[0] / 8), 1::2])))
+    plt.figure(figsize=(8,5))
+    plt.pcolormesh(np.linspace(0, spec.shape[1]/1000, spec.shape[1]), np.arange(spec.shape[0])/n_bins*2000, spec)
+    plt.xlabel('Time (s)')
     plt.ylabel('Frequency (Hz)')
+    plt.tight_layout()
+    plt.vlines([st[0]/100 for st in step_idx], ymin=0, ymax=(spec.shape[0]-1)/n_bins*2000)
+    plt.vlines([p / 2000for p in peaks], ymin=0, ymax=(spec.shape[0] - 1) / n_bins * 2000, lw=0.5, color='w' )
     plt.show()
     return
 
@@ -154,7 +290,8 @@ def main_spectrum_lms():
 def main_spectrum_visu():
     # region Loading and setup
     sns.set_style('darkgrid')
-    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data\004_Walk05.json', task='Stair')
+    sns.set_context('poster')
+    emg = load_emg(r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\Data\005_Walk05.json', task='')
     emg = norm_emg(emg)
     fig, axes = plt.subplots(2,4)
     names = ['L Internal Oblique','R Internal Oblique','L External Oblique','R External Oblique','L Trapezius', 'R Trapezius', 'Erector Spinae', 'ECG']
@@ -211,9 +348,13 @@ def main_spectrum_visu():
         from statsmodels.tsa.stattools import pacf
         pacs = [pacf(cur_ecg, method='ywm') for cur_ecg in qrs]
         plt.figure()
-        plt.stem(np.mean(pacs, axis=0), use_line_collection=True)
-        plt.axhline(1.96 / np.sqrt(qrs.shape[1]), color='red', ls='--')
-        plt.axhline(-1.96 / np.sqrt(qrs.shape[1]), color='red', ls='--')
+        plt.stem( np.mean(pacs, axis=0), use_line_collection=True)
+        a = plt.axhline(1.96 / np.sqrt(qrs.shape[1]), color='tab:red', ls='--', label='5% significance')
+        plt.axhline(-1.96 / np.sqrt(qrs.shape[1]), color='tab:red', ls='--')
+        plt.legend()
+        plt.tight_layout()
+        plt.xlabel('Delay (sample)')
+        plt.ylabel('Partial Autocorrelation')
         plt.title('ECG Partial Autocorrelation Function')
         plt.show()
 

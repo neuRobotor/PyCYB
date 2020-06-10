@@ -174,7 +174,7 @@ class GNGD(LMS):
         for n in self.get_range(rounds):
             self.predict(n)
             self.error(n)
-            eta = self.mu / (self.X[:, n] @ self.X[:, n] + self.eps[n])
+            eta = self.beta / (self.X[:, n] @ self.X[:, n] + self.eps[n])
             self.weight_update(n, eta)
             self.eps[n + 1] = self.eps[n] - \
                               self.rho * self.mu * self.e[n] * self.e[n - 1] * np.sign(

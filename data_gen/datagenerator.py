@@ -81,11 +81,24 @@ class TCNDataGenerator(Sequence):
                     def interp_f(data):
                         return np.interp(x, xp, data)
 
-                    upsampled = np.apply_along_axis(interp_f, 0, dict_data[joint])
-                    angles.append(self.angproc(upsampled))
+                    upsampled = np.apply_along_axis(interp_f, 0, self.angproc(dict_data[joint]))
+                    angles.append(upsampled)
                 self.angle_data.append(np.array(angles))
         self.on_epoch_end()
         return
+
+    def force_unwrap(self):  # only for first angle for now!
+        angle_means = list()
+        for i in range(self.n_angles):
+            angle_means.append(np.mean(self.angle_data[0][i][::self.freq_factor, 0]))
+
+        for f in range(1, len(self.angle_data)):
+            for a in range(self.n_angles):
+                self.angle_data[f][a][:, 0] = np.unwrap(self.angle_data[f][a][:, 0]*4)/4
+                if np.mean(np.mean(self.angle_data[f][a][::self.freq_factor, 0])) < angle_means[a] - 3:
+                    self.angle_data[f][a][:, 0] = self.angle_data[f][a][:, 0] + np.pi
+                elif np.mean(np.mean(self.angle_data[f][a][::self.freq_factor, 0])) > angle_means[a] + 3:
+                    self.angle_data[f][a][:, 0] = self.angle_data[f][a][:, 0] - np.pi
 
     def __len__(self):
         'Denotes the number of batches per epoch'
@@ -134,12 +147,23 @@ class TCNDataGenerator(Sequence):
         with open(path, 'wb') as handle:
             pickle.dump(self, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def validation_split(self, k=2):
-        self.k_idx = np.array_split(self.window_idx, k)
+    def validation_split(self, k=2, file_split=True):
+        if not file_split:
+            self.k_idx = np.array_split(self.window_idx, k)
+        else:
+            file_idx = np.array(self.window_index_heads)
+            np.random.shuffle(file_idx)
+            self.k_idx = np.array_split(file_idx, k)
+            for i in range(len(self.k_idx)):
+                buff = np.array([])
+                for j in range(len(self.k_idx[i])):
+                    buff = np.append(buff, np.arange(*self.k_idx[i][j]))
+                self.k_idx[i] = buff.astype(int)
 
-    def get_k(self, cur_k, k=2):
+    def get_k(self, cur_k, k=2, file_split=True):
         if not self.k_idx:
-            self.validation_split(k)
+            self.validation_split(k, file_split=file_split)
+
         ks = list(self.k_idx)
         val_idx = ks.pop(cur_k)
         train_idx = np.concatenate(ks)
@@ -150,6 +174,11 @@ class TCNDataGenerator(Sequence):
         valid_gen.on_epoch_end()
         return valid_gen
 
+    def show(self):
+        import matplotlib.pyplot as plt
+        _, y0 = self.data_generation(np.sort(self.window_idx))
+        plt.plot(y0)
+        plt.show()
 
 class EDTCNGenerator(TCNDataGenerator):
 

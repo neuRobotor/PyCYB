@@ -249,9 +249,9 @@ def param_est(dict_mkr_coords, asis_breadth=None):
     height_dist = dict_mkr_coords['RHEE'][:, 2] - dict_mkr_coords['LHEE'][:, 2]
 
     step_class = np.ones(dist.shape[0])
-    step_class[d_speed > 0.0005] = 0
-    step_class[d_speed < -0.0005] = 2
-    mode_w = 31
+    step_class[d_speed > 0.001] = 0
+    step_class[d_speed < -0.001] = 2
+    mode_w = 51
     step_window = rolling_window(step_class, mode_w)
 
     def mode_filter(a, classes=(0, 1, 2)):
@@ -426,9 +426,9 @@ def visu(diff=False, env=False):
     from matplotlib.ticker import MultipleLocator
     ax = fig.add_subplot(gs[:3, :3], projection='3d', proj_type='persp')
     ax.xaxis.set_major_locator(MultipleLocator(0.5))
-    ax.set_xlabel('X (m)')
-    ax.set_ylabel('Y (m)')
-    ax.set_zlabel('Z (m)')
+    ax.set_xlabel('X (m)', fontsize=16)
+    ax.set_ylabel('Y (m)', fontsize=16)
+    ax.set_zlabel('Z (m)', fontsize=16)
     ax.view_init(elev=20, azim=-135)
     title = ax.set_title('C3D viewer, frame={0:05d}'.format(start_frame))
 
@@ -449,7 +449,7 @@ def visu(diff=False, env=False):
     pts_obj = PointCloud('[MARKERS]', ax)
     pts_obj.set_point_names(mkr_names)
     pts_obj.set_from_points(mkr_pts[:, :len(mkr_names), :])
-    pts_obj.set_marker_style(2, 'tab:blue', 'tab:blue')
+    pts_obj.set_marker_style(3, 'tab:blue', 'tab:blue')
     pts_obj.draw_vis_objs(fr=0)
     geom_objs.append(pts_obj)
 
@@ -557,14 +557,16 @@ def visu(diff=False, env=False):
     sl_fr.on_changed(update)
     import seaborn
     with seaborn.axes_style("dark"):
+        seaborn.set_context('poster')
         sns.set_style("dark", {"axes.facecolor": ".95"})
-        f, axes = plt.subplots(8, 1, sharex='col', sharey='col', figsize=(8, 6))
+        f, axes = plt.subplots(8, 1, sharex='col', figsize=(12,8))
+
         axes[7].get_shared_y_axes().remove(axes[7])
         if env:
             axes[0].set_title("EMG envelopes, low-pass = {0}".format(cf[0]))
         else:
-            axes[0].set_title("EMG signals, $F_s={}$".format(emg_freq))
-        emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
+            axes[0].set_title("Subject 4 Walking EMG signals, $F_s={}$".format(emg_freq), fontsize=16)
+        emg_names = ["LIO", "RIO", "LEO", "REO", "MT$_R$", "MT$_L$", "ES", "ECG"]
         x = np.arange(len(emg_data[0])) / emg_freq
 
         def sc(axis):
@@ -574,22 +576,23 @@ def visu(diff=False, env=False):
         for row, ax in enumerate(axes):
             ax.plot(x, emg_data[row], linewidth=0.8, c=seaborn.color_palette()[0])
             d = sc(ax.yaxis)
-            ax.set_ylabel(emg_names[row])
+            ax.set_ylabel(emg_names[row], fontsize=14)
             if row is not 7:
                 seaborn.despine(ax=ax, bottom=True)
         ax.spines["top"].set_linewidth(2)
         f.subplots_adjust(hspace=-0.01)
 
         from utility.scalebars import add_scalebar
-        add_scalebar(ax, sizex=0, matchx=False, sizey=3 * d, matchy=False, hidex=False, hidey=False,
-                     labely='\n{0:.3f} mV'.format(d * 3000), borderpad=0.2)
+        add_scalebar(ax, sizex=0, matchx=False, sizey=1 * d, matchy=False, hidex=False, hidey=False,
+                     labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
         ax = axes[0]
         d = sc(ax.yaxis)
-        add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
-                     labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
+        # add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
+        #              labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
         for ax in axes:
             ax.get_yaxis().set_ticks([])
-        ax.set_xlabel("Time (s)")
+        ax.set_xlabel("Time (s)", fontsize=16)
+        plt.gcf().subplots_adjust(bottom=0.15)
         plt.savefig("emg.png", transparent=True)
         # f, axes = plt.subplots(8, 1, sharex='col', sharey='col')
         #

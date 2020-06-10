@@ -10,7 +10,7 @@ def document_model(dir_path, end, model, history, **kwargs):
     model.save(dir_path + '\\model_' + str(end) +'.h5')
     import pickle
     with open(dir_path + '\\history_' + str(end) + '.pickle', 'wb') as handle:
-        pickle.dump(history.history, handle, protocol=pickle.HIGHEST_PROTOCOL)
+        pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
     str_sum = model_summary_to_string(model) + '\n'
     str_sum += kw_summary(**kwargs)
     print_to_file(str_sum, dir_path + '\\summary_' + str(end) + '.txt')
@@ -81,7 +81,7 @@ def incr_file(dir_path, file_name, ext):
 
 
 def incr_dir(dir_path, dir_name, make=True):
-    ends = [int(re.search(r'(\d+)$', d).group(0)) for d in next(os.walk(dir_path))[1] if dir_name in d]
+    ends = [int(re.search(r'(\d+)', d).group(0)) for d in next(os.walk(dir_path))[1] if dir_name in d]
     if not ends:
         ends = [0]
     new_dir = dir_path + '\\' + dir_name + str(max(ends) + 1)
@@ -101,6 +101,18 @@ def load_dict(file_path):
     return dict_data
 
 
+def load_dict_stack(path, task='None'):
+    dict_stack = list()
+
+    def f_check(f):
+        return np.any([n in f for n in task or task is 'None'])
+    for file in sorted([f for f in os.listdir(path) if f.endswith('.json') and f_check(f)]):
+        with open(path + '\\' + file) as json_file:
+            dict_data = json.load(json_file)
+            dict_stack.append(dict_data)
+    return dict_stack
+
+
 def save_dict(file_path, dict_in):
     with open(file_path, 'w') as fp:
         json.dump(dict_in, fp, indent=4)
@@ -109,7 +121,11 @@ def save_dict(file_path, dict_in):
 
 def load_emg_stack(path, task='None', n_channels=8):
     emg_stack = list()
-    for file in sorted([f for f in os.listdir(path) if f.endswith('.json') and (task in f or task is 'None')]):
+
+    def f_check(f):
+        return np.any([n in f for n in task or task is 'None'])
+
+    for file in sorted([f for f in os.listdir(path) if f.endswith('.json') and f_check(f)]):
         with open(path + '\\' + file) as json_file:
             dict_data = json.load(json_file)
             emg_stack.append(np.array(dict_data["EMG"]))
