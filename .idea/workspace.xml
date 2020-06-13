@@ -4,16 +4,14 @@
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EMG_filter/emg_analyse.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMG_filter/emg_analyse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EMG_filter/lms.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMG_filter/lms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_407/summary_407.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_407_101_lms/summary_407.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_408/summary_408.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_408_102_lms/summary_408.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c3dcyb.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/data_gen/datagenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen/datagenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_gen/preproc.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen/preproc.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/emg.png" beforeDir="false" afterPath="$PROJECT_DIR$/emg.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/model_selection/architectures.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_selection/architectures.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_selection/model_compare.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_selection/model_compare.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tcn_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn_predict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utility/save_load_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/save_load_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +74,7 @@
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\ECG_filter" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.tcn">
+  <component name="RunManager" selected="Python.c3dcyb">
     <configuration name="c3dcyb" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -91,7 +89,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/c3dcyb.py" />
-      <option name="PARAMETERS" value="-p C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\004_Walk C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data" />
+      <option name="PARAMETERS" value="-v C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\005_Stair\005_Stair21.c3d" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -196,10 +194,10 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.tcn" />
-        <item itemvalue="Python.emg_analyse" />
         <item itemvalue="Python.c3dcyb" />
+        <item itemvalue="Python.emg_analyse" />
         <item itemvalue="Python.tcn_predict" />
+        <item itemvalue="Python.tcn" />
         <item itemvalue="Python.filter_plot" />
       </list>
     </recent_temporary>
@@ -293,7 +291,7 @@
       <workItem from="1591011004034" duration="49339000" />
       <workItem from="1591135700845" duration="33396000" />
       <workItem from="1591261603144" duration="75017000" />
-      <workItem from="1591564660746" duration="123841000" />
+      <workItem from="1591564660746" duration="180993000" />
     </task>
     <servers />
   </component>
@@ -323,10 +321,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="142" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591808222870">
+    <state x="142" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592052591999">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="142" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1591808222870" />
+    <state x="142" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1592052591999" />
     <state x="522" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591634067657">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -335,46 +333,46 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="274" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1585844865938" />
-    <state x="326" y="365" width="1006" height="459" key="#xdebugger.evaluate" timestamp="1591814462207">
+    <state x="470" y="330" width="1006" height="459" key="#xdebugger.evaluate" timestamp="1591956426603">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="326" y="365" width="1006" height="459" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1591814462207" />
+    <state x="470" y="330" width="1006" height="459" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1591956426603" />
     <state x="334" y="219" key="FileChooserDialogImpl" timestamp="1585916681521">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="334" y="219" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1585916681521" />
-    <state width="1493" height="257" key="GridCell.Tab.0.bottom" timestamp="1591814537512">
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom" timestamp="1592052592857">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.0.center" timestamp="1591814537512">
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
+    <state width="1493" height="237" key="GridCell.Tab.0.center" timestamp="1592052592857">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.0.left" timestamp="1591814537512">
+    <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
+    <state width="1493" height="237" key="GridCell.Tab.0.left" timestamp="1592052592857">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.0.right" timestamp="1591814537512">
+    <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
+    <state width="1493" height="237" key="GridCell.Tab.0.right" timestamp="1592052592857">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.1.bottom" timestamp="1591814537512">
+    <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
+    <state width="1493" height="301" key="GridCell.Tab.1.bottom" timestamp="1591961442513">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.1.center" timestamp="1591814537512">
+    <state width="1493" height="301" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
+    <state width="1493" height="301" key="GridCell.Tab.1.center" timestamp="1591961442513">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.1.left" timestamp="1591814537512">
+    <state width="1493" height="301" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
+    <state width="1493" height="301" key="GridCell.Tab.1.left" timestamp="1591961442513">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
-    <state width="1493" height="257" key="GridCell.Tab.1.right" timestamp="1591814537512">
+    <state width="1493" height="301" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
+    <state width="1493" height="301" key="GridCell.Tab.1.right" timestamp="1591961442513">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="257" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1591814537512" />
+    <state width="1493" height="301" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
     <state x="18" y="7" width="982" height="707" key="SettingsEditor" timestamp="1589630971350">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -459,22 +457,22 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>613</line>
+          <line>616</line>
           <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>609</line>
+          <line>612</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>564</line>
+          <line>567</line>
           <option name="timeStamp" value="146" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>563</line>
+          <line>566</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -659,12 +657,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMG_filter/emg_analyse.py</url>
-          <line>337</line>
+          <line>338</line>
           <option name="timeStamp" value="400" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMG_filter/emg_analyse.py</url>
-          <line>333</line>
+          <line>334</line>
           <option name="timeStamp" value="401" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -679,7 +677,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tcn_predict.py</url>
-          <line>151</line>
+          <line>159</line>
           <option name="timeStamp" value="529" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -737,6 +735,16 @@
           <line>311</line>
           <option name="timeStamp" value="624" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
+          <line>270</line>
+          <option name="timeStamp" value="625" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
+          <line>164</line>
+          <option name="timeStamp" value="637" />
+        </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
@@ -761,7 +769,7 @@
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/PyCYB$convoutput.coverage" NAME="convoutput Coverage Results" MODIFIED="1583280621138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/model_selection" />
-    <SUITE FILE_PATH="coverage/PyCYB$tcn.coverage" NAME="tcn Coverage Results" MODIFIED="1591811687575" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$tcn.coverage" NAME="tcn Coverage Results" MODIFIED="1591915003028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$flatten_plot.coverage" NAME="flatten_plot Coverage Results" MODIFIED="1583873692142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$ARcoeffs.coverage" NAME="ARcoeffs Coverage Results" MODIFIED="1580050199770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Model Selection" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_chi.coverage" NAME="convmemnet_chi Coverage Results" MODIFIED="1575895033953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -783,12 +791,12 @@
     <SUITE FILE_PATH="coverage/PyCYB$lms.coverage" NAME="lms Coverage Results" MODIFIED="1585857494598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$box_cox_fit.coverage" NAME="box-cox_fit Coverage Results" MODIFIED="1575835159929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$dist_fit.coverage" NAME="dist_fit Coverage Results" MODIFIED="1578878096494" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$emg_analyse.coverage" NAME="emg_analyse Coverage Results" MODIFIED="1591811455243" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/EMG_filter" />
+    <SUITE FILE_PATH="coverage/PyCYB$emg_analyse.coverage" NAME="emg_analyse Coverage Results" MODIFIED="1591961687654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/EMG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$convnet.coverage" NAME="convnet Coverage Results" MODIFIED="1575376444708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$disttest.coverage" NAME="disttest Coverage Results" MODIFIED="1575498057152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$model_compare.coverage" NAME="model_compare Coverage Results" MODIFIED="1579793350946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1591808225646" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$tcn_predict.coverage" NAME="tcn_predict Coverage Results" MODIFIED="1591288722212" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1592052592850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$tcn_predict.coverage" NAME="tcn_predict Coverage Results" MODIFIED="1591956126539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_ecdf.coverage" NAME="convmemnet_ecdf Coverage Results" MODIFIED="1575910250396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$fqz.coverage" NAME="fqz Coverage Results" MODIFIED="1575128559197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$CYBNET.coverage" NAME="CYBNET Coverage Results" MODIFIED="1574873978924" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

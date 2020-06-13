@@ -147,12 +147,13 @@ class TCNDataGenerator(Sequence):
         with open(path, 'wb') as handle:
             pickle.dump(self, handle, protocol=pickle.HIGHEST_PROTOCOL)
 
-    def validation_split(self, k=2, file_split=True):
+    def validation_split(self, k=2, file_split=True, file_shuffle=True):
         if not file_split:
             self.k_idx = np.array_split(self.window_idx, k)
         else:
             file_idx = np.array(self.window_index_heads)
-            np.random.shuffle(file_idx)
+            if file_shuffle:
+                np.random.shuffle(file_idx)
             self.k_idx = np.array_split(file_idx, k)
             for i in range(len(self.k_idx)):
                 buff = np.array([])
@@ -160,9 +161,9 @@ class TCNDataGenerator(Sequence):
                     buff = np.append(buff, np.arange(*self.k_idx[i][j]))
                 self.k_idx[i] = buff.astype(int)
 
-    def get_k(self, cur_k, k=2, file_split=True):
+    def get_k(self, cur_k, k=2, **kwargs):
         if not self.k_idx:
-            self.validation_split(k, file_split=file_split)
+            self.validation_split(k, **kwargs)
 
         ks = list(self.k_idx)
         val_idx = ks.pop(cur_k)

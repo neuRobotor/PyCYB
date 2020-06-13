@@ -268,21 +268,22 @@ def main_spectrum_lms():
 
     plt.plot(emg[targ, :])
     plt.figure()
-    n_bins = 1000
+    n_bins = 50
     F = spectrum_lms(emg[targ, :], n_bins, gamma=0.01)
     #spec = norm_emg(np.abs(F.W[1:int(F.W.shape[0]/4), 3:]).T).T
     #spec = spec-np.min(spec)+1
     import seaborn as sns
     sns.set_style('darkgrid')
     sns.set_context('poster')
-    spec = np.log10(np.square(np.abs(F.W[1:int(F.W.shape[0] / 8), 1::2])))
+    spec = np.log10(np.square(np.abs(F.W[1:int(F.W.shape[0] / 8), 1::40])))
     plt.figure(figsize=(8,5))
-    plt.pcolormesh(np.linspace(0, spec.shape[1]/1000, spec.shape[1]), np.arange(spec.shape[0])/n_bins*2000, spec)
+    plt.pcolormesh(np.linspace(0, spec.shape[1]/50, spec.shape[1]), np.arange(spec.shape[0])/n_bins*2000, spec)
     plt.xlabel('Time (s)')
     plt.ylabel('Frequency (Hz)')
     plt.tight_layout()
-    plt.vlines([st[0]/100 for st in step_idx], ymin=0, ymax=(spec.shape[0]-1)/n_bins*2000)
-    plt.vlines([p / 2000for p in peaks], ymin=0, ymax=(spec.shape[0] - 1) / n_bins * 2000, lw=0.5, color='w' )
+    plt.vlines([st[0]/100 for st in step_idx], ymin=0, ymax=(spec.shape[0]-1)/n_bins*2000, label='Stride start')
+    plt.vlines([p / 2000for p in peaks], ymin=0, ymax=(spec.shape[0] - 1) / n_bins * 2000, lw=1, color='w', label='Heartbeat')
+    plt.legend()
     plt.show()
     return
 
@@ -369,4 +370,4 @@ def main_spectrum_visu():
 
 
 if __name__ == '__main__':
-    main_anc()
+    main_spectrum_lms()

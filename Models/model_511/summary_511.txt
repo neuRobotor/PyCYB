@@ -1,0 +1,86 @@
+Model: "Depthwise_model_classifier"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+reshape_20 (Reshape)         (None, 1, 1000, 8)        0         
+_________________________________________________________________
+depthwise_conv2d_40 (Depthwi (None, 1, 1000, 40)       640       
+_________________________________________________________________
+max_pooling2d_40 (MaxPooling (None, 1, 166, 40)        0         
+_________________________________________________________________
+depthwise_conv2d_41 (Depthwi (None, 1, 166, 120)       480       
+_________________________________________________________________
+max_pooling2d_41 (MaxPooling (None, 1, 33, 120)        0         
+_________________________________________________________________
+dropout_120 (Dropout)        (None, 1, 33, 120)        0         
+_________________________________________________________________
+flatten_20 (Flatten)         (None, 3960)              0         
+_________________________________________________________________
+dense_120 (Dense)            (None, 1000)              3961000   
+_________________________________________________________________
+dropout_121 (Dropout)        (None, 1000)              0         
+_________________________________________________________________
+dense_121 (Dense)            (None, 100)               100100    
+_________________________________________________________________
+dropout_122 (Dropout)        (None, 100)               0         
+_________________________________________________________________
+dense_122 (Dense)            (None, 100)               10100     
+_________________________________________________________________
+dropout_123 (Dropout)        (None, 100)               0         
+_________________________________________________________________
+dense_123 (Dense)            (None, 50)                5050      
+_________________________________________________________________
+dropout_124 (Dropout)        (None, 50)                0         
+_________________________________________________________________
+dense_124 (Dense)            (None, 20)                1020      
+_________________________________________________________________
+dropout_125 (Dropout)        (None, 20)                0         
+_________________________________________________________________
+dense_125 (Dense)            (None, 3)                 63        
+=================================================================
+Total params: 4,078,453
+Trainable params: 4,077,333
+Non-trainable params: 1,120
+_________________________________________________________________
+data_dir: C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data_p
+window_size: 1000
+delay: 1000
+gap_windows: None
+stride: 20
+freq_factor: 20
+file_names: ['102_ParamWalk01.json', '102_ParamWalk02.json', '102_ParamWalk03.json', '102_ParamWalk04.json', '102_ParamWalk05.json', '102_ParamWalk06.json', '102_ParamWalk07.json', '102_ParamWalk08.json', '102_ParamWalk09.json', '102_ParamWalk10.json', '102_ParamWalk11.json', '102_ParamWalk12.json', '102_ParamWalk13.json', '102_ParamWalk14.json', '102_ParamWalk15.json', '102_ParamWalk16.json', '102_ParamWalk17.json', '102_ParamWalk18.json', '102_ParamWalk19.json', '102_ParamWalk20.json', '102_ParamWalk21.json', '102_ParamWalk22.json', '102_ParamWalk23.json', '102_ParamWalk24.json', '102_ParamWalk25.json', '102_ParamWalk26.json', '102_ParamWalk27.json', '102_ParamWalk28.json', '102_ParamWalk29.json', '102_ParamWalk30.json', '102_ParamWalk31.json', '102_ParamWalk32.json', '102_ParamWalk33.json', '102_ParamWalk34.json', '102_ParamWalk35.json', '102_ParamWalk36.json', '102_ParamWalk37.json', '102_ParamWalk38.json', '102_ParamWalk39.json', '102_ParamWalk40.json', '102_ParamWalk41.json', '102_ParamWalk42.json', '102_ParamWalk43.json', '102_ParamWalk44.json', '102_ParamWalk45.json', '102_ParamWalk46.json', '102_ParamWalk47.json', '102_ParamWalk48.json', '102_ParamWalk49.json', '102_ParamWalk50.json']
+channel_mask: None
+time_step: 1
+preproc: <function norm_emg at 0x0000023D5764F678>
+batch_size: 64
+params: ('stride_lengths',)
+input_shape: (1000, 8)
+n_outputs: 3
+acts: ('relu', 'selu')
+krnl: ((1, 15), (1, 3))
+pad: same
+dil: ((1, 1), (1, 10))
+strides: ((1, 1), (1, 1))
+mpool: ((1, 6), (1, 5))
+depth_mul: (5, 3)
+drp: 0.5
+dense_drp: True
+dense: (1000, 100, 100, 50, 20)
+b_norm: False
+loss: ([0.34699728023738957, 0.3459434190277932, 0.3420138578222822, 0.500035557628709, 0.4324589618714322], 0.39348981531752125)
+accuracy: ([0.86387223, 0.86376554, 0.8644832, 0.7855622, 0.8141013], 0.83835685)
+val_loss: ([0.5201910333555253, 0.4431045661538334, 0.46154554907617895, 0.5069033140485937, 0.49899746553372526], 0.4861483856335713)
+val_accuracy: ([0.78124195, 0.8028244, 0.81557375, 0.79136896, 0.8051392], 0.7992296)
+mse: (array([0.02715574, 0.09163216, 0.07408627], dtype=float32), array([0.02589525, 0.03427203, 0.01824278], dtype=float32))
+rsq: (array([0.80486   , 0.54346365, 0.6929506 ], dtype=float32), array([0.18130438, 0.10856728, 0.06640808], dtype=float32))
+mse_stack: [[0.06298878 0.14166252 0.10525195]
+ [0.05439911 0.12407389 0.08269895]
+ [0.00573732 0.0686213  0.0665366 ]
+ [0.006038   0.06506693 0.06256416]
+ [0.00661547 0.05873614 0.05337973]]
+rsq_stack: [[0.55208623 0.37489307 0.57852566]
+ [0.6163752  0.45676553 0.6684296 ]
+ [0.9541716  0.6384493  0.72306895]
+ [0.9473143  0.59979284 0.7197331 ]
+ [0.95435286 0.64741755 0.77499574]]
+datagenerator: <class 'data_gen.datagenerator.ParamTCNGenerator'>

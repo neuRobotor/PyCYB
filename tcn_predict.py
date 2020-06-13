@@ -4,6 +4,8 @@ from tensorflow.keras.models import load_model
 import numpy as np
 import pickle
 from scipy.signal import medfilt, savgol_filter
+
+from data_gen.datagenerator import TCNDataGenerator
 from data_gen.preproc import bp_filter, norm_emg, spec_proc
 from utility.save_load_util import load_emg_stack
 import os
@@ -116,11 +118,11 @@ def main():
     sns.set()
     sns.set_context('paper')
 
-    model_num = 239
-    model = load_model('Models/model_' + str(model_num) + '/best_model_' + str(model_num) + '.h5')
+    model_num = 519
+    model = load_model('Models/model_' + str(model_num) + '/model_' + str(4) + '.h5')
 
     with open('Models/model_' + str(model_num) + '/gen_' + str(model_num) + '.pickle', "rb") as input_file:
-        gen = pickle.load(input_file)
+        gen: TCNDataGenerator = pickle.load(input_file)
 
     gen.emg_data = list()
     gen.angle_data = list()
@@ -131,23 +133,29 @@ def main():
     s = gen.stride
     delay = gen.delay
 
-    gen.data_dir = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Validation'
-    gen.file_names = sorted([f for f in os.listdir(gen.data_dir) if f.endswith('.json') and "Walk" in f])
-    gen.stride = 1
+    # gen.data_dir = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Validation'
+    # gen.file_names = sorted([f for f in os.listdir(gen.data_dir) if f.endswith('.json') and "Walk" in f])
+    # gen.stride = 1
+    # gen.load_files()
+    #
+    # cur_indexes = range(gen.window_index_heads[-1][-1])
+    # head_tails = gen.window_index_heads
+    # ids = [(file_id, cur_idx - head_tails[file_id][0])
+    #        for cur_idx in cur_indexes for file_id, head_tail in enumerate(head_tails)
+    #        if head_tail[0] <= cur_idx < head_tail[1]]
+    #
+    # Y0 = np.array(
+    #     [np.squeeze(gen.angle_data[file_id][:, win_id + int(gen.delay / gen.stride), gen.dims])
+    #      for file_id, win_id in ids])
+    # gen.window_idx = np.arange(gen.n_windows)
+    gen.stride = 20
     gen.load_files()
+    ks = list(gen.k_idx)
+    gen.window_idx = np.sort(ks[4])
 
-    cur_indexes = range(gen.window_index_heads[-1][-1])
-    head_tails = gen.window_index_heads
-    ids = [(file_id, cur_idx - head_tails[file_id][0])
-           for cur_idx in cur_indexes for file_id, head_tail in enumerate(head_tails)
-           if head_tail[0] <= cur_idx < head_tail[1]]
-
-    Y0 = np.array(
-        [np.squeeze(gen.angle_data[file_id][:, win_id + int(gen.delay / gen.stride), gen.dims])
-         for file_id, win_id in ids])
-    gen.window_idx = np.arange(gen.n_windows)
-    raw = load_emg_stack(gen.data_dir, task='Walk', n_channels=8)
-    ecg = raw[0][7]
+    # raw = load_emg_stack(gen.data_dir, task='Walk', n_channels=8)
+    _, y0 = gen.data_generation(gen.window_idx)
+    # ecg = raw[0][7]
     y = model.predict(gen)
     N = 20
 

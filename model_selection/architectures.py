@@ -21,12 +21,12 @@ def conv_model(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=((1, 3), 
                                   strides=strides[0]))
     else:
         model.add(Conv2D(kernel_size=krnl[0],
-                                  depth_multiplier=depth_mul[0],
                                   activation=acts[0],
                                   padding=pad,
                                   input_shape=input_shape,
                                   dilation_rate=dil[0],
-                                  strides=strides[0]))
+                                  strides=strides[0],
+                         filters=depth_mul[0]))
     if mpool[0][0]:
         model.add(MaxPooling2D(pool_size=mpool[0]))
 
@@ -53,7 +53,7 @@ def conv_model(input_shape, n_outputs, depth_mul=(4, 4), drp=0.3, krnl=((1, 3), 
             if dense_drp:
                 model.add(Dropout(drp))
     model.add(Dense(n_outputs, activation='linear'))
-    model.compile(loss=MeanSquaredError(), optimizer=Adam(), metrics=['mape'])
+    model.compile(loss=MeanSquaredError(), optimizer=Adam())
     return model
 
 

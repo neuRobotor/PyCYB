@@ -457,7 +457,7 @@ def visu(diff=False, env=False):
     vpts_obj = PointCloud('[VMARKERS]', ax)
     vpts_obj.set_point_names(virtual_names)
     vpts_obj.set_from_points(mkr_pts[:, -len(virtual_names):, :])
-    vpts_obj.set_marker_style(8, 'tab:orange', 'none', )
+    vpts_obj.set_marker_style(8, 'tab:orange', 'none')
     vpts_obj.draw_vis_objs(fr=0)
     geom_objs.append(vpts_obj)
 
@@ -506,7 +506,8 @@ def visu(diff=False, env=False):
     # endregion
     # endregion
     import seaborn as sns
-    sns.set_style("whitegrid")
+    sns.set_style("darkgrid")
+    sns.set_context('paper')
     # region Plotting angles
     joint_names = ['Hip', 'Knee', 'Ankle'] if not diff else ['HipW', 'KneeW', 'AnkleW']
     vlines = []
@@ -514,22 +515,24 @@ def visu(diff=False, env=False):
     for row in range(3):
         for col, side in enumerate(['L', 'R']):
             cur_ax = fig.add_subplot(gs[row, 3 + col])
-            cur_ax.set_xlim(start_frame, end_frame)
+            cur_ax.set_xlim(start_frame/100, end_frame/100)
             # cur_ax.set_ylim(-2, 2)
-            vlines.append(cur_ax.axvline(x=start_frame, ymin=0, ymax=1, color=(0, 1, 0), linewidth=1.0, linestyle='--'))
+            vlines.append(cur_ax.axvline(x=start_frame/100, ymin=0, ymax=1, color=(0, 1, 0), linewidth=2.0, linestyle='--'))
             # cur_ax.set_title(side + joint_names[row])
-            cur_ax.plot(arr_frames, joint_angles[side + joint_names[row]][:, 0] / np.pi * 180,
-                        linewidth=1.0, color='tab:blue', label=side + joint_names[row] + ' Flexion')
-            cur_ax.legend(loc='upper right', fontsize='small')
+            cur_ax.plot(arr_frames/100, joint_angles[side + joint_names[row]][:, 0] / np.pi * 180,
+                         color='tab:blue', lw=2, label=side + joint_names[row] + ' Flexion-Extension')
+            cur_ax.set_title(side + joint_names[row] + ' Flexion-Extension', fontsize=14)
+            cur_ax.tick_params(axis='both', which='major', labelsize=12)
             if row == 2:
-                cur_ax.set_xlabel("Frame")
+                cur_ax.set_xlabel("Time (s)", fontsize=14)
             else:
                 cur_ax.set_xticklabels([])
             if col == 0:
-                cur_ax.set_ylabel("Angle (Degrees°)")
+                cur_ax.set_ylabel("Degrees", verticalalignment='top', labelpad=20, fontsize=14)
             else:
                 cur_ax.set_yticklabels([])
             axes_list.append(cur_ax)
+    fig.align_ylabels()
     for i, cur_ax in enumerate(axes_list):
         cur_ax.get_shared_x_axes().join(cur_ax, axes_list[i % 2])
         cur_ax.get_shared_y_axes().join(cur_ax, axes_list[int(i / 2) * 2])
@@ -550,7 +553,7 @@ def visu(diff=False, env=False):
         for geom in geom_objs:
             geom.update_vis_objs(fr_idx)
         for vl in vlines:
-            vl.set_xdata(fr_no)
+            vl.set_xdata(fr_no/100)
         fig.canvas.draw()
         fig.canvas.flush_events()
 
@@ -565,8 +568,8 @@ def visu(diff=False, env=False):
         if env:
             axes[0].set_title("EMG envelopes, low-pass = {0}".format(cf[0]))
         else:
-            axes[0].set_title("Subject 4 Walking EMG signals, $F_s={}$".format(emg_freq), fontsize=16)
-        emg_names = ["LIO", "RIO", "LEO", "REO", "MT$_R$", "MT$_L$", "ES", "ECG"]
+            axes[0].set_title("Subject 4 Walking EMG signals, $F_s={}$".format(emg_freq))
+        emg_names = ["LIO", "RIO", "LEO", "REO", "LD", "MT", "ES", "ECG"]
         x = np.arange(len(emg_data[0])) / emg_freq
 
         def sc(axis):
@@ -587,11 +590,11 @@ def visu(diff=False, env=False):
                      labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
         ax = axes[0]
         d = sc(ax.yaxis)
-        # add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
-        #              labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
+        add_scalebar(ax, sizex=0, matchx=False, sizey=d, matchy=False, hidex=False, hidey=False,
+                     labely='\n{0:.3f} mV'.format(d * 1000), borderpad=0.2)
         for ax in axes:
             ax.get_yaxis().set_ticks([])
-        ax.set_xlabel("Time (s)", fontsize=16)
+        ax.set_xlabel("Time (s)")
         plt.gcf().subplots_adjust(bottom=0.15)
         plt.savefig("emg.png", transparent=True)
         # f, axes = plt.subplots(8, 1, sharex='col', sharey='col')

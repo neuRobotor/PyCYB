@@ -12,7 +12,7 @@ from model_selection.model_compare import revaluate
 import tensorflow as tf
 
 
-def main(data_dir=None, target_files=None):
+def main(data_dir=None, target_files=None, old_layers=None):
     if data_dir is None:
         data_dir = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data'
     val_dir = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Validation'
@@ -24,7 +24,6 @@ def main(data_dir=None, target_files=None):
 
     generator = TCNDataGenerator
     model_type = depthwise_model
-    old_layers = None
     cross_val_k = 5
     make_plot = True
     new_dir, ends = incr_dir(target_dir, child_dir, make=True)
@@ -39,7 +38,7 @@ def main(data_dir=None, target_files=None):
         'delay': 1000,
         'gap_windows': None,
         ###################
-        'stride': 20,
+        'stride': 80,
         'freq_factor': 20,
         'file_names': sorted([f for f in os.listdir(data_dir)
                               if f.endswith('.json') and target_files(f)]),
@@ -92,8 +91,8 @@ def main(data_dir=None, target_files=None):
     model.summary()
 
     if cross_val_k is not None:
-        model, history, metrics = cross_validate(cross_val_k, tcn_generator, model_type, model_params, patience=20,
-                                                 selection_methods=(np.min, np.max))
+        model, history, metrics = cross_validate(cross_val_k, tcn_generator, model_type, model_params, patience=30,
+                                                 selection_methods=(np.min, np.max), model_save_dir=new_dir, old_model=old_layers)
         tcn_generator.save(new_dir + '\\gen_' + str(max(ends) + 1) + '.pickle', unload=True)
         document_model(new_dir, max(ends) + 1, model, history,
                        **{**gen_params, **model_params, **metrics}, datagenerator=generator)
@@ -140,7 +139,7 @@ def main(data_dir=None, target_files=None):
 
 
 def cross_validate(k, generator: TCNDataGenerator, model_type, model_params, patience,
-                   selection_methods=(np.min,), old_model=None, old_layers=10):
+                   selection_methods=(np.min,), old_model=None, n_old_layers=7, model_save_dir=None):
     metrics = {}
     from tensorflow.keras.models import load_model
     from tensorflow.keras.callbacks import History
@@ -152,14 +151,18 @@ def cross_validate(k, generator: TCNDataGenerator, model_type, model_params, pat
     es = EarlyStopping(monitor='val_loss', mode='min', verbose=1, patience=patience)
     mc = ModelCheckpoint('best_model.h5', monitor='val_loss', mode='min', save_best_only=True)
 
-    generator.force_unwrap()
+    if model_type is not depthwise_model_class:
+        generator.force_unwrap()
     for cur_k in range(k):
-        valid_gen = generator.get_k(cur_k=cur_k, k=k)
+        valid_gen = generator.get_k(cur_k=cur_k, k=k, file_shuffle=True)
         model = model_type(**model_params)
         if old_model is not None:
-            model = learning_transfer(model, old_model_num=old_layers, n_old_layers=10, trainable=True, classify=False)
-        history = model.fit(generator, callbacks=[es, mc], validation_data=valid_gen, verbose=1, epochs=200)
+            model = cross_val_transfer(model, old_model_num=old_model, k_num=cur_k, n_old_layers=n_old_layers,
+                                       trainable=False, classify=model_type is depthwise_model_class)
+        history = model.fit(generator, callbacks=[es, mc], validation_data=valid_gen, verbose=1, epochs=300)
         model = load_model('best_model.h5')
+        if model_save_dir is not None:
+            model.save(model_save_dir+'\\model_'+ str(cur_k) + '.h5')
         cur_mse, cur_rsq = revaluate(valid_gen, model)
         mse.append(cur_mse)
         rsq.append(cur_rsq)
@@ -185,6 +188,23 @@ def cross_validate(k, generator: TCNDataGenerator, model_type, model_params, pat
     return model, histories, metrics
 
 
+def cross_val_transfer(model, old_model_num, k_num, n_old_layers=10, trainable=True, classify=False):
+    old_model = load_model('Models/model_' + str(old_model_num) + '/model_' + str(k_num) + '.h5')
+    for _ in range(len(old_model.layers) - n_old_layers):
+        old_model.pop()
+    for i in range(n_old_layers):
+        old_model.layers[i]._name = model.layers[i]._name
+    old_model.save_weights('old_weights.h5')
+    model.load_weights('old_weights.h5', by_name=True)
+    for i in range(n_old_layers):
+        model.layers[i].trainable = trainable
+    if classify:
+        model.compile(loss=CategoricalCrossentropy(), optimizer=Adam(), metrics=['accuracy'])
+    else:
+        model.compile(loss=MeanSquaredError(), optimizer=Adam(), metrics=['mape'])
+    return model
+
+
 def learning_transfer(model, old_model_num, n_old_layers=10, trainable=True, classify=False):
     old_model = load_model('Models/model_' + str(old_model_num) + '/best_model_' + str(old_model_num) + '.h5')
     for _ in range(len(old_model.layers) - n_old_layers):
@@ -208,15 +228,18 @@ def callback_gen(dir_path, end, patience=8, verbose=(1, 1)):
 
 
 if __name__ == '__main__':
+
+    main()
+
     data_dirs = (r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data',
                  r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\Data',
                  r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB101\Data',
                  r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data',)
     file_names = ("Walk",)
+    # old_models = (473, 474, 475, 476)
     for data_dir in data_dirs:
         for file_name in file_names:
             def target(f):
-                return file_name in f
-
+                return True
 
             main(data_dir=data_dir, target_files=target)
