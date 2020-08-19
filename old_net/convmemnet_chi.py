@@ -2,10 +2,10 @@ import numpy as np
 import os
 import csv
 from scipy.stats import norm, chi
-from convnet import summary
-from convmemnet import data_proc
-from convmemnet import train_net
-from convmemnet import norm_emg
+from Archive.convnet import summary
+from Archive.convmemnet import data_proc
+from Archive.convmemnet import train_net
+from Archive.convmemnet import norm_emg
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 

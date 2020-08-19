@@ -1,11 +1,10 @@
 import numpy as np
 import os
-import csv
-from scipy.stats import norm, chi
-from convnet import summary
-from convmemnet import data_proc
-from convmemnet import train_net
-from convmemnet import norm_emg
+from scipy.stats import norm
+from Archive.convnet import summary
+from Archive.convmemnet import data_proc
+from Archive.convmemnet import train_net
+from Archive.convmemnet import norm_emg
 import pickle
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
@@ -45,10 +44,10 @@ def train_n_time():
     dil = 0
     poolsize = 2
     ep, ba = 100, 128
-    from convmemnet import  conv1d_model
+    from Archive.convmemnet import  conv1d_model
     from functools import partial
     import json
-    from convmemnet import stack_emg
+    from Archive.convmemnet import stack_emg
     cur_model = partial(conv1d_model, n_timesteps=X.shape[1], n_features=X.shape[2],
                         n_outputs=Y.shape[1], drp=drop, krnl=kernel, dilate=dil, mpool=poolsize)
     model = cur_model()

@@ -15,6 +15,13 @@ import re
 global sl_fr
 
 
+def norm(a: np.ndarray, **kwargs):
+    if type(a) is not np.ndarray or a.ndim is not 2:
+        raise Exception('Incorrect array in user defined function norm')
+    return a / np.linalg.norm(a, axis=1, **kwargs)[:, None] if a.shape[0] > a.shape[1] \
+        else a / np.linalg.norm(a, axis=0, **kwargs)[None, :]
+
+
 def rolling_window(a, window):
     shape = a.shape[:-1] + (a.shape[-1] - window + 1, window)
     strides = a.strides + (a.strides[-1],)
@@ -155,8 +162,57 @@ def v_markers(dict_mkr_coords, asis_breadth=None):
     # endregion
 
 
-def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
+def jcs_angle_est(dict_mkr_coords, asis_breadth=None):
+    v_markers(dict_mkr_coords, asis_breadth=asis_breadth)
+    
+    return
 
+
+def default_feet_sys(reference_sys: dict, dict_mkr: dict):
+    # region Left Foot
+    k_vect = norm(dict_mkr['LHEE']-dict_mkr['LTOE'])
+    i_vect = norm(np.cross(dict_mkr['LVAN'] - dict_mkr['LHEE'], k_vect, axis=1))
+    j_vect = np.cross(k_vect, i_vect, axis=1)
+    reference_sys['LFoot'] = np.dstack((i_vect, j_vect, k_vect))
+    # endregion
+
+    # region Right Foot
+    # endregion
+    return
+
+
+def coord_sys_angle(reference_sys: dict, diff=False, segment_names=('Thigh', 'Shank', 'Foot'),
+                    ang_method=calc_floating_angles):
+    cnt_frames = reference_sys['Pelvis'].shape[0]
+    joint_names = ['Hip', 'Knee', 'Ankle'] if not diff else ['HipW', 'KneeW', 'AnkleW']
+    joint_angles = {}
+    for cur_side in ['L', 'R']:
+        # Hip joint
+        joint_angles[cur_side + joint_names[0]] = np.zeros((cnt_frames, 3), dtype=np.float32)
+        for i in range(cnt_frames):
+            joint_angles[cur_side + joint_names[0]][i] = ang_method(reference_sys['Pelvis'][i],
+                                                                    reference_sys[cur_side + 'Thigh'][i],
+                                                                    in_deg=False)
+        # Rest of the joints
+        for seg in range(len(segment_names) - 1):
+            joint_angles[cur_side + joint_names[seg + 1]] = np.zeros((cnt_frames, 3), dtype=np.float32)
+            for i in range(cnt_frames):
+                joint_angles[cur_side + joint_names[seg + 1]][i] = \
+                    ang_method(reference_sys[cur_side + segment_names[seg]][i],
+                               reference_sys[cur_side + segment_names[seg + 1]][i], side=cur_side,
+                               in_deg=False)
+
+    for name in joint_angles.keys():
+        for ang in range(3):
+            joint_angles[name][:, ang] = np.unwrap(joint_angles[name][:, ang])
+            if diff:
+                joint_angles[name][:, ang] = np.gradient(joint_angles[name][:, ang])
+
+    # endregion
+    return joint_angles
+
+
+def angle_est(dict_mkr_coords, asis_breadth=None):
     v_markers(dict_mkr_coords, asis_breadth=asis_breadth)
 
     # region Calculation of local coordinate systems
@@ -167,13 +223,11 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
     ref_markers = [['VHI', 'VKN', 'THI'], ['VKN', 'VAN', 'TIB'], ['HEE', 'TOE', 'VAN']]
     for side in ['L', 'R']:
         for seg_enum, cur_seg in enumerate(segment_names):
-            k_vect = (dict_mkr_coords[side + ref_markers[seg_enum][0]] - dict_mkr_coords[
-                side + ref_markers[seg_enum][1]])
-            k_vect = k_vect / np.linalg.norm(k_vect, axis=1)[:, None]
-            j_vect = np.cross(k_vect,
+            k_vect = norm((dict_mkr_coords[side + ref_markers[seg_enum][0]] - dict_mkr_coords[
+                side + ref_markers[seg_enum][1]]))
+            j_vect = (-1 if side == 'L' else 1) * norm(np.cross(k_vect,
                               dict_mkr_coords[side + ref_markers[seg_enum][2]] -
-                              dict_mkr_coords[side + ref_markers[seg_enum][0]], axis=1)
-            j_vect = (-1 if side == 'L' else 1) * j_vect / np.linalg.norm(j_vect, axis=1)[:, None]
+                              dict_mkr_coords[side + ref_markers[seg_enum][0]], axis=1))
             i_vect = np.cross(j_vect, k_vect)
             reference_sys[side + cur_seg] = np.dstack((i_vect, j_vect, k_vect))
 
@@ -187,34 +241,12 @@ def angle_est(dict_mkr_coords, asis_breadth=None, diff=False):
     reference_sys['Pelvis'] = np.dstack((i_vect, j_vect, k_vect))
     # endregion
 
-    # region Angle estimation
-    cnt_frames = len(dict_mkr_coords['SACR'])
-    joint_names = ['Hip', 'Knee', 'Ankle'] if not diff else ['HipW', 'KneeW', 'AnkleW']
-    joint_angles = {}
-    for cur_side in ['L', 'R']:
-        # Hip joint
-        joint_angles[cur_side + joint_names[0]] = np.zeros((cnt_frames, 3), dtype=np.float32)
-        for i in range(cnt_frames):
-            joint_angles[cur_side + joint_names[0]][i] = calc_floating_angles(reference_sys['Pelvis'][i],
-                                                                              reference_sys[cur_side + 'Thigh'][i],
-                                                                              in_deg=False)
-        # Rest of the joints
-        for seg in range(len(segment_names) - 1):
-            joint_angles[cur_side + joint_names[seg + 1]] = np.zeros((cnt_frames, 3), dtype=np.float32)
-            for i in range(cnt_frames):
-                joint_angles[cur_side + joint_names[seg + 1]][i] = \
-                    calc_floating_angles(reference_sys[cur_side + segment_names[seg]][i],
-                                         reference_sys[cur_side + segment_names[seg + 1]][i], side=cur_side,
-                                         in_deg=False)
+    from jcs import Segment, JCS
+    pelv = Segment(reference_sys['Pelvis'][:,:,0], reference_sys['Pelvis'][:,:,1], reference_sys['Pelvis'][:,:,2])
+    lth = Segment(reference_sys['LThigh'][:,:,0], reference_sys['LThigh'][:,:,1], reference_sys['LThigh'][:,:,2])
+    lhip = JCS(pelv, lth, side='L')
 
-    for name in joint_angles.keys():
-        for ang in range(3):
-            joint_angles[name][:, ang] = np.unwrap(joint_angles[name][:, ang])
-            if diff:
-                joint_angles[name][:, ang] = np.gradient(joint_angles[name][:, ang])
-
-    # endregion
-    return joint_angles, dict_mkr_coords
+    return coord_sys_angle(reference_sys=reference_sys), dict_mkr_coords
 
 
 def param_est(dict_mkr_coords, asis_breadth=None):
@@ -235,10 +267,10 @@ def param_est(dict_mkr_coords, asis_breadth=None):
     la_speed = np.linalg.norm(np.apply_along_axis(sm_med, 0, np.gradient(dict_mkr_coords['LHEE'], axis=0)), axis=1)
     ra_speed = np.linalg.norm(np.apply_along_axis(sm_med, 0, np.gradient(dict_mkr_coords['RHEE'], axis=0)), axis=1)
 
-    d_speed = ra_speed-la_speed
+    d_speed = ra_speed - la_speed
 
     direc = j_vect
-    direc[:,2] = 0
+    direc[:, 2] = 0
     dist = dict_mkr_coords['RHEE'] - dict_mkr_coords['LHEE']
     ap_dist = np.empty(dist.shape[0])
     sacr_speed = np.apply_along_axis(med, 0, np.gradient(dict_mkr_coords['SACR'], axis=0))
@@ -263,8 +295,8 @@ def param_est(dict_mkr_coords, asis_breadth=None):
         return classes[int(np.argmax(scores))]
 
     step_class = np.apply_along_axis(mode_filter, 1, step_window)
-    step_class = np.append(step_class, np.ones(int((mode_w-1)/2))*step_class[-1])
-    step_class = np.append(np.ones(int((mode_w-1)/2))*step_class[0], step_class)
+    step_class = np.append(step_class, np.ones(int((mode_w - 1) / 2)) * step_class[-1])
+    step_class = np.append(np.ones(int((mode_w - 1) / 2)) * step_class[0], step_class)
 
     step_durations = []
     step_starts = []
@@ -286,7 +318,7 @@ def param_est(dict_mkr_coords, asis_breadth=None):
         tend = t0 + step_durations[int(np.sum(a > np.array(step_starts)) - 1)]
         if int(np.sum(a > np.array(step_starts)) - 1) == 0:
             return max(np.max(dist[t0:tend]), 0) - min(np.min(dist[t0:tend]), 0)
-        if int(np.sum(a > np.array(step_starts)) - 1) == len(step_starts)-1:
+        if int(np.sum(a > np.array(step_starts)) - 1) == len(step_starts) - 1:
             return max(np.max(dist[t0:tend]), 0) - min(np.min(dist[t0:tend]), 0)
         return np.max(dist[t0:tend]) - np.min(dist[t0:tend])
 
@@ -298,17 +330,18 @@ def param_est(dict_mkr_coords, asis_breadth=None):
     for i, step_start in enumerate(step_starts):
         if step_class[step_start] == 1:
             continue
-        stride_lengths[step_start:step_start+step_durations[i]] = \
-            v_get_stride_length(np.arange(step_start, step_start+step_durations[i]))
-        stride_lengths[step_start:step_start+step_durations[i]] = \
-            mode_filter(stride_lengths[step_start:step_start+step_durations[i]], classes=None)
+        stride_lengths[step_start:step_start + step_durations[i]] = \
+            v_get_stride_length(np.arange(step_start, step_start + step_durations[i]))
+        stride_lengths[step_start:step_start + step_durations[i]] = \
+            mode_filter(stride_lengths[step_start:step_start + step_durations[i]], classes=None)
         step_heights[step_start:step_start + step_durations[i]] = \
             v_get_step_height(np.arange(step_start, step_start + step_durations[i]))
         step_heights[step_start:step_start + step_durations[i]] = \
             mode_filter(step_heights[step_start:step_start + step_durations[i]], classes=None)
 
     def get_speed(a):
-        return stride_lengths[a]/step_durations[int(np.sum(a >= np.array(step_starts)) - 1)]
+        return stride_lengths[a] / step_durations[int(np.sum(a >= np.array(step_starts)) - 1)]
+
     step_speed = np.vectorize(get_speed)(np.arange(stride_lengths.shape[0]))
 
     dict_out = {
@@ -515,12 +548,13 @@ def visu(diff=False, env=False):
     for row in range(3):
         for col, side in enumerate(['L', 'R']):
             cur_ax = fig.add_subplot(gs[row, 3 + col])
-            cur_ax.set_xlim(start_frame/100, end_frame/100)
+            cur_ax.set_xlim(start_frame / 100, end_frame / 100)
             # cur_ax.set_ylim(-2, 2)
-            vlines.append(cur_ax.axvline(x=start_frame/100, ymin=0, ymax=1, color=(0, 1, 0), linewidth=2.0, linestyle='--'))
+            vlines.append(
+                cur_ax.axvline(x=start_frame / 100, ymin=0, ymax=1, color=(0, 1, 0), linewidth=2.0, linestyle='--'))
             # cur_ax.set_title(side + joint_names[row])
-            cur_ax.plot(arr_frames/100, joint_angles[side + joint_names[row]][:, 0] / np.pi * 180,
-                         color='tab:blue', lw=2, label=side + joint_names[row] + ' Flexion-Extension')
+            cur_ax.plot(arr_frames / 100, joint_angles[side + joint_names[row]][:, 0] / np.pi * 180,
+                        color='tab:blue', lw=2, label=side + joint_names[row] + ' Flexion-Extension')
             cur_ax.set_title(side + joint_names[row] + ' Flexion-Extension', fontsize=14)
             cur_ax.tick_params(axis='both', which='major', labelsize=12)
             if row == 2:
@@ -553,7 +587,7 @@ def visu(diff=False, env=False):
         for geom in geom_objs:
             geom.update_vis_objs(fr_idx)
         for vl in vlines:
-            vl.set_xdata(fr_no/100)
+            vl.set_xdata(fr_no / 100)
         fig.canvas.draw()
         fig.canvas.flush_events()
 
@@ -562,7 +596,7 @@ def visu(diff=False, env=False):
     with seaborn.axes_style("dark"):
         seaborn.set_context('poster')
         sns.set_style("dark", {"axes.facecolor": ".95"})
-        f, axes = plt.subplots(8, 1, sharex='col', figsize=(12,8))
+        f, axes = plt.subplots(8, 1, sharex='col', figsize=(12, 8))
 
         axes[7].get_shared_y_axes().remove(axes[7])
         if env:

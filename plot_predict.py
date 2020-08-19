@@ -2,11 +2,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import json
 from tensorflow.keras.models import load_model
-from convmemnet import stack_emg, norm_emg
+from Archive.convmemnet import stack_emg, norm_emg
 import numpy as np
-from sklearn.preprocessing import normalize
-import tensorflow as tf
-import keras
 
 file_path = r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment_Balint\CYB004\Data\004_Validation20.json'
 sns.set()

@@ -1,0 +1,87 @@
+Model: "Depthwise_model"
+_________________________________________________________________
+Layer (type)                 Output Shape              Param #   
+=================================================================
+reshape_17 (Reshape)         (None, 1, 1000, 8)        0         
+_________________________________________________________________
+depthwise_conv2d_34 (Depthwi (None, 1, 1000, 40)       640       
+_________________________________________________________________
+max_pooling2d_34 (MaxPooling (None, 1, 166, 40)        0         
+_________________________________________________________________
+depthwise_conv2d_35 (Depthwi (None, 1, 166, 120)       480       
+_________________________________________________________________
+max_pooling2d_35 (MaxPooling (None, 1, 33, 120)        0         
+_________________________________________________________________
+dropout_102 (Dropout)        (None, 1, 33, 120)        0         
+_________________________________________________________________
+flatten_17 (Flatten)         (None, 3960)              0         
+_________________________________________________________________
+dense_102 (Dense)            (None, 1000)              3961000   
+_________________________________________________________________
+dropout_103 (Dropout)        (None, 1000)              0         
+_________________________________________________________________
+dense_103 (Dense)            (None, 200)               200200    
+_________________________________________________________________
+dropout_104 (Dropout)        (None, 200)               0         
+_________________________________________________________________
+dense_104 (Dense)            (None, 200)               40200     
+_________________________________________________________________
+dropout_105 (Dropout)        (None, 200)               0         
+_________________________________________________________________
+dense_105 (Dense)            (None, 100)               20100     
+_________________________________________________________________
+dropout_106 (Dropout)        (None, 100)               0         
+_________________________________________________________________
+dense_106 (Dense)            (None, 50)                5050      
+_________________________________________________________________
+dropout_107 (Dropout)        (None, 50)                0         
+_________________________________________________________________
+dense_107 (Dense)            (None, 6)                 306       
+=================================================================
+Total params: 4,227,976
+Trainable params: 4,227,976
+Non-trainable params: 0
+_________________________________________________________________
+data_dir: C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB101\Data
+window_size: 1000
+delay: 1000
+gap_windows: None
+stride: 80
+freq_factor: 20
+file_names: ['101_DownSit01.json', '101_DownSit03.json', '101_DownSit05.json', '101_DownSit07.json', '101_DownSit09.json', '101_DownSit11.json', '101_DownSit13.json', '101_DownSit15.json', '101_DownSit17.json', '101_DownSit19.json', '101_DownSit21.json', '101_DownSit23.json', '101_DownSit25.json', '101_DownSit27.json', '101_DownSit29.json', '101_DownSit31.json', '101_DownSit33.json', '101_DownSit35.json', '101_DownSit37.json', '101_DownSit39.json', '101_DownStair02.json', '101_DownStair04.json', '101_DownStair06.json', '101_DownStair08.json', '101_DownStair10.json', '101_DownStair12.json', '101_DownStair14.json', '101_DownStair16.json', '101_DownStair18.json', '101_DownStair20.json', '101_DownStair22.json', '101_DownStair24.json', '101_DownStair26.json', '101_DownStair28.json', '101_DownStair30.json', '101_DownStair32.json', '101_DownStair34.json', '101_DownStair36.json', '101_DownStair38.json', '101_DownStair40.json', '101_DownStair42.json', '101_DownStair44.json', '101_DownStair46.json', '101_DownStair48.json', '101_UpSit02.json', '101_UpSit04.json', '101_UpSit06.json', '101_UpSit08.json', '101_UpSit10.json', '101_UpSit12.json', '101_UpSit14.json', '101_UpSit16.json', '101_UpSit18.json', '101_UpSit20.json', '101_UpSit22.json', '101_UpSit24.json', '101_UpSit26.json', '101_UpSit28.json', '101_UpSit30.json', '101_UpSit32.json', '101_UpSit34.json', '101_UpSit36.json', '101_UpSit38.json', '101_UpSit40.json', '101_UpStair01.json', '101_UpStair03.json', '101_UpStair05.json', '101_UpStair07.json', '101_UpStair09.json', '101_UpStair11.json', '101_UpStair13.json', '101_UpStair15.json', '101_UpStair17.json', '101_UpStair19.json', '101_UpStair21.json', '101_UpStair23.json', '101_UpStair25.json', '101_UpStair27.json', '101_UpStair29.json', '101_UpStair31.json', '101_UpStair33.json', '101_UpStair35.json', '101_UpStair37.json', '101_UpStair39.json', '101_UpStair41.json', '101_UpStair43.json', '101_UpStair45.json', '101_UpStair47.json', '101_Walk01.json', '101_Walk02.json', '101_Walk03.json', '101_Walk04.json', '101_Walk05.json', '101_Walk06.json', '101_Walk07.json', '101_Walk08.json', '101_Walk09.json', '101_Walk10.json', '101_Walk11.json', '101_Walk12.json', '101_Walk13.json', '101_Walk14.json', '101_Walk15.json', '101_Walk16.json', '101_Walk17.json', '101_Walk18.json', '101_Walk19.json', '101_Walk20.json', '101_Walk21.json', '101_Walk22.json', '101_Walk23.json', '101_Walk24.json', '101_Walk25.json', '101_Walk26.json', '101_Walk27.json', '101_Walk28.json', '101_Walk29.json', '101_Walk30.json', '101_Walk31.json', '101_Walk32.json', '101_Walk33.json', '101_Walk34.json', '101_Walk35.json', '101_Walk36.json', '101_Walk37.json', '101_Walk38.json', '101_Walk39.json', '101_Walk40.json']
+channel_mask: None
+time_step: 1
+preproc: <function norm_emg at 0x000001E8773AF678>
+batch_size: 64
+input_shape: (1000, 8)
+n_outputs: 6
+acts: ('relu', 'selu')
+krnl: ((1, 15), (1, 3))
+pad: same
+dil: ((1, 1), (1, 10))
+strides: ((1, 1), (1, 1))
+mpool: ((1, 6), (1, 5))
+depth_mul: (5, 3)
+drp: 0.5
+dense_drp: True
+dense: (1000, 200, 200, 100, 50)
+b_norm: False
+loss: ([0.033359544286152835, 0.037243584793403894, 0.0387274986436337, 0.03349652049787376, 0.03599873009849997], 0.03576517566391283)
+val_loss: ([0.11101294159889222, 0.1254596465013244, 0.1047693111289006, 0.16056180145682358, 0.11657058849930763], 0.12367485783704968)
+mse: (array([0.02824783, 0.02644613, 0.04892031, 0.03857134, 0.01199091,
+       0.01233627]), array([0.00572003, 0.00683876, 0.01876666, 0.0139585 , 0.00187825,
+       0.00285242]))
+rsq: (array([0.69923439, 0.69501473, 0.74551375, 0.78072226, 0.42733389,
+       0.40404541]), array([0.08574831, 0.11268197, 0.10746342, 0.08604536, 0.02031505,
+       0.01552895]))
+mse_stack: [[0.02778895 0.0318873  0.06649565 0.05384201 0.01402276 0.01626078]
+ [0.03296901 0.02928717 0.06384041 0.05150347 0.01347184 0.01336009]
+ [0.02014462 0.01834941 0.02042402 0.0182765  0.00864519 0.00749402]
+ [0.02433497 0.01827283 0.03261337 0.026536   0.01167308 0.01290718]
+ [0.0360016  0.03443396 0.06122808 0.04269874 0.01214169 0.0116593 ]]
+rsq_stack: [[0.6101628  0.54644081 0.65533253 0.69010706 0.45406872 0.38296436]
+ [0.63939908 0.63607511 0.67665872 0.70857694 0.40855275 0.39246102]
+ [0.8068815  0.81514401 0.88947379 0.88947521 0.41104267 0.42072681]
+ [0.79989791 0.83792631 0.86266511 0.87954993 0.45015558 0.42255214]
+ [0.63983064 0.63948741 0.64343862 0.73590214 0.41284975 0.40152274]]
+datagenerator: <class 'data_gen.datagenerator.TCNDataGenerator'>

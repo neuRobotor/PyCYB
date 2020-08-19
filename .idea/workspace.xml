@@ -2,16 +2,78 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/EXTEND SCI_Samples/extendc3d.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/c3d2json.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/jcs.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotting/alter_metrics.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotting/boxplot_loss.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotting/boxplot_mse.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotting/boxplot_r2.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plotting/boxplot_r2_gen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/hbkm9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/hbkm9.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EMG_filter/emg_analyse.py" beforeDir="false" afterPath="$PROJECT_DIR$/EMG_filter/emg_analyse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_407/summary_407.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_407_101_lms/summary_407.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_408/summary_408.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_408_102_lms/summary_408.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/20.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_364_004_Walk/summary_364.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_364_004_Walk500/summary_364.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_388/summary_388.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_388_102_upsit/summary_388.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_389/summary_389.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_389_102_downsit/summary_389.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_390/summary_390.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_390_003_bp1000/summary_390.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_391/summary_391.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_391_004_bp1000/summary_391.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_392/summary_392.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_392_005_bp1000/summary_392.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_393/summary_393.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_393_04_bp/summary_393.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_394/summary_394.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_394_005_bp/summary_394.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_395/summary_395.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_395_101_bp/summary_395.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_396/summary_396.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_396_102_bp/summary_396.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_397/summary_397.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_397_004_control/summary_397.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_398/summary_398.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_398_005_control/summary_398.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_399/summary_399.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_399_101_control/summary_399.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_400/summary_400.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_400_102_control/summary_400.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_401/summary_401.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_401_004_8channel/summary_401.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_402/summary_402.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_402_005_8channel/summary_402.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_403/summary_403.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_403_101_8channel/summary_403.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_404/summary_404.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_404_102_8channel/summary_404.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_405/summary_405.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_405_004_lms/summary_405.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_406/summary_406.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_406_005_lms/summary_406.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_454/summary_454.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_454_102_class_less_walk/summary_454.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_455/summary_455.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_455_102_class/summary_455.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_460/summary_460.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_460_102_step/summary_460.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_462/summary_462.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_462_004_step/summary_462.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_463/summary_463.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_463_005_step/summary_463.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_464/summary_464.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_464_101_step/summary_464.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_465/summary_465.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_465_004_stride/summary_465.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_466/summary_466.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_466_005_stride/summary_466.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_467/summary_467.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_467_101_stride/summary_467.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_468/summary_468.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_468_102_stride/summary_468.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_473/summary_473.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_473_004_walk+/summary_473.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_474/summary_474.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_474_005_walk+/summary_474.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_475/summary_475.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_475_101_walk+/summary_475.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_476/summary_476.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_476_102_walk+/summary_476.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_504/summary_504.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_504_004_step+/summary_504.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_505/summary_505.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_505_005_step+/summary_505.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_506/summary_506.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_506_101_step+/summary_506.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_507/summary_507.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_507_102_step+/summary_507.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_508/summary_508.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_508_004_stride+/summary_508.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_509/summary_509.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_509_005_stride+/summary_509.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_510/summary_510.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_510_101_stride+/summary_510.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_511/summary_511.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_511_102_stride+/summary_511.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_513/summary_513.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_513_004_general/summary_513.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_516/summary_516.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_516_004_general/summary_516.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_517/summary_517.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_517_005_general/summary_517.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_518/summary_518.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_518_101_general/summary_518.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Models/model_519/summary_519.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_519_102_general/summary_519.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/c3dcyb.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data_gen/datagenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen/datagenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emg.png" beforeDir="false" afterPath="$PROJECT_DIR$/emg.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_selection/architectures.py" beforeDir="false" afterPath="$PROJECT_DIR$/model_selection/architectures.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/convgapnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/convgapnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/convmemnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/convmemnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/convnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/convnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cybnet_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/cybnet_class.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/emg.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/filters_trans.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/old_net/convmemnet_bc.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_net/convmemnet_bc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/old_net/convmemnet_chi.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_net/convmemnet_chi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/old_net/convmemnet_ecdf.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_net/convmemnet_ecdf.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plot_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/plot_predict.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/tcn_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn_predict.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/save_load_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/save_load_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -54,27 +116,71 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/Models/model_185" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\plotting" />
+      <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Archive" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_5" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_3" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\EMG_filter" />
-      <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\ECG_filter" />
-      <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_185" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_110" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\data_gen" />
-      <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB" />
       <recent name="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\ECG_filter" />
     </key>
   </component>
   <component name="RunManager" selected="Python.c3dcyb">
+    <configuration name="boxplot_mse" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PyCYB" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\plotting\boxplot_mse.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="boxplot_r2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PyCYB" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\plotting\boxplot_r2.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="c3dcyb" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -89,7 +195,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/c3dcyb.py" />
-      <option name="PARAMETERS" value="-v C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\005_Stair\005_Stair21.c3d" />
+      <option name="PARAMETERS" value="-v C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\005_Stair11.c3d" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -97,7 +203,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="emg_analyse" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="extendc3d" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -105,12 +211,12 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EMG_filter" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/EXTEND SCI_Samples" />
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/EMG_filter/emg_analyse.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\EXTEND SCI_Samples\extendc3d.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -119,29 +225,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="filter_plot" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PyCYB" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/filter_plot.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="tcn" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="tcn" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PyCYB" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -163,42 +247,20 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="tcn_predict" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="PyCYB" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tcn_predict.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <list>
-      <item itemvalue="Python.emg_analyse" />
-      <item itemvalue="Python.tcn" />
-      <item itemvalue="Python.tcn_predict" />
-      <item itemvalue="Python.filter_plot" />
+      <item itemvalue="Python.boxplot_r2" />
+      <item itemvalue="Python.boxplot_mse" />
       <item itemvalue="Python.c3dcyb" />
+      <item itemvalue="Python.tcn" />
+      <item itemvalue="Python.extendc3d" />
     </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.c3dcyb" />
-        <item itemvalue="Python.emg_analyse" />
-        <item itemvalue="Python.tcn_predict" />
         <item itemvalue="Python.tcn" />
-        <item itemvalue="Python.filter_plot" />
+        <item itemvalue="Python.extendc3d" />
+        <item itemvalue="Python.boxplot_mse" />
+        <item itemvalue="Python.boxplot_r2" />
       </list>
     </recent_temporary>
   </component>
@@ -291,18 +353,24 @@
       <workItem from="1591011004034" duration="49339000" />
       <workItem from="1591135700845" duration="33396000" />
       <workItem from="1591261603144" duration="75017000" />
-      <workItem from="1591564660746" duration="180993000" />
+      <workItem from="1591564660746" duration="198834000" />
+      <workItem from="1592124590088" duration="65012000" />
+      <workItem from="1592273486756" duration="27000" />
+      <workItem from="1592273525510" duration="7218000" />
+      <workItem from="1593004954259" duration="3000" />
+      <workItem from="1593085883188" duration="613000" />
+      <workItem from="1596892160743" duration="6363000" />
+      <workItem from="1597086598899" duration="7363000" />
+      <workItem from="1597404873584" duration="3597000" />
+      <workItem from="1597586587985" duration="3690000" />
+      <workItem from="1597667186259" duration="9735000" />
+      <workItem from="1597760397912" duration="16880000" />
+      <workItem from="1597833439860" duration="4185000" />
+      <workItem from="1597839373100" duration="795000" />
+      <workItem from="1597848830911" duration="265000" />
+      <workItem from="1597849299378" duration="1436000" />
     </task>
     <servers />
-  </component>
-  <component name="TodoView">
-    <todo-panel id="selected-file">
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
-    <todo-panel id="all">
-      <are-packages-shown value="true" />
-      <is-autoscroll-to-source value="true" />
-    </todo-panel>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -321,86 +389,78 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="142" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1592052591999">
+    <state x="270" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597508650169">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="142" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1592052591999" />
-    <state x="522" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1591634067657">
+    <state x="270" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597508650169" />
+    <state x="522" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596894261614">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="522" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1591634067657" />
-    <state x="274" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1585844865938">
+    <state x="522" y="215" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1536.824@0.0.1536.824" timestamp="1596894261614" />
+    <state x="467" y="185" key="#com.intellij.ide.macro.MacrosDialog" timestamp="1597508615345">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="274" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1536.824@0.0.1536.824" timestamp="1585844865938" />
-    <state x="470" y="330" width="1006" height="459" key="#xdebugger.evaluate" timestamp="1591956426603">
+    <state x="467" y="185" key="#com.intellij.ide.macro.MacrosDialog/0.0.1536.824@0.0.1536.824" timestamp="1597508615345" />
+    <state x="640" y="399" width="689" height="425" key="#xdebugger.evaluate" timestamp="1597837333017">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="470" y="330" width="1006" height="459" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1591956426603" />
-    <state x="334" y="219" key="FileChooserDialogImpl" timestamp="1585916681521">
+    <state x="640" y="399" width="689" height="425" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1597837333017" />
+    <state width="1493" height="277" key="GridCell.Tab.0.bottom" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="334" y="219" key="FileChooserDialogImpl/0.0.1536.824@0.0.1536.824" timestamp="1585916681521" />
-    <state width="1493" height="237" key="GridCell.Tab.0.bottom" timestamp="1592052592857">
+    <state width="1493" height="277" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="277" key="GridCell.Tab.0.center" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
-    <state width="1493" height="237" key="GridCell.Tab.0.center" timestamp="1592052592857">
+    <state width="1493" height="277" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="277" key="GridCell.Tab.0.left" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
-    <state width="1493" height="237" key="GridCell.Tab.0.left" timestamp="1592052592857">
+    <state width="1493" height="277" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="277" key="GridCell.Tab.0.right" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
-    <state width="1493" height="237" key="GridCell.Tab.0.right" timestamp="1592052592857">
+    <state width="1493" height="277" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="277" key="GridCell.Tab.1.bottom" timestamp="1597837579153">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1592052592857" />
-    <state width="1493" height="301" key="GridCell.Tab.1.bottom" timestamp="1591961442513">
+    <state width="1493" height="277" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597837579153" />
+    <state width="1493" height="277" key="GridCell.Tab.1.center" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="301" key="GridCell.Tab.1.bottom/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
-    <state width="1493" height="301" key="GridCell.Tab.1.center" timestamp="1591961442513">
+    <state width="1493" height="277" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="277" key="GridCell.Tab.1.left" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="301" key="GridCell.Tab.1.center/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
-    <state width="1493" height="301" key="GridCell.Tab.1.left" timestamp="1591961442513">
+    <state width="1493" height="277" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="277" key="GridCell.Tab.1.right" timestamp="1597837579152">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="301" key="GridCell.Tab.1.left/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
-    <state width="1493" height="301" key="GridCell.Tab.1.right" timestamp="1591961442513">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state width="1493" height="301" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1591961442513" />
+    <state width="1493" height="277" key="GridCell.Tab.1.right/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
     <state x="18" y="7" width="982" height="707" key="SettingsEditor" timestamp="1589630971350">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="18" y="7" width="982" height="707" key="SettingsEditor/0.0.1536.824@0.0.1536.824" timestamp="1589630971350" />
-    <state width="775" height="419" key="XDebugger.FullValuePopup" timestamp="1590755695301">
+    <state width="775" height="419" key="XDebugger.FullValuePopup" timestamp="1592311534702">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1590755695301" />
+    <state width="775" height="419" key="XDebugger.FullValuePopup/0.0.1536.824@0.0.1536.824" timestamp="1592311534702" />
     <state x="278" y="117" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1" timestamp="1589577086672">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="278" y="117" key="com.intellij.execution.console.ConsoleHistoryController$MyBrowseAction$1/0.0.1536.824@0.0.1536.824" timestamp="1589577086672" />
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog" timestamp="1583280117424">
+    <state x="398" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1592236886821">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="465" y="236" key="com.intellij.ide.util.TipDialog/0.0.1536.824@0.0.1536.824" timestamp="1583280117424" />
-    <state x="578" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1583788801011">
+    <state x="398" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824@0.0.1536.824" timestamp="1592236886821" />
+    <state x="462" y="144" width="611" height="536" key="find.popup" timestamp="1596895583068">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="578" y="329" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1536.824@0.0.1536.824" timestamp="1583788801011" />
-    <state x="463" y="10" width="738" height="804" key="find.popup" timestamp="1583855919150">
+    <state x="462" y="144" width="611" height="536" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1596895583068" />
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1592167936127">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="463" y="10" width="738" height="804" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1583855919150" />
-    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1591785927818">
-      <screen x="0" y="0" width="1536" height="824" />
-    </state>
-    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1591785927818" />
+    <state x="425" y="66" width="672" height="676" key="search.everywhere.popup/0.0.1536.824@0.0.1536.824" timestamp="1592167936127" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -441,7 +501,7 @@
           <option name="timeStamp" value="105" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convnet.py</url>
+          <url>file://$PROJECT_DIR$/Archive/convnet.py</url>
           <line>53</line>
           <option name="timeStamp" value="122" />
         </line-breakpoint>
@@ -457,26 +517,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>616</line>
+          <line>650</line>
           <option name="timeStamp" value="143" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>612</line>
+          <line>646</line>
           <option name="timeStamp" value="144" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>567</line>
-          <option name="timeStamp" value="146" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>566</line>
-          <option name="timeStamp" value="147" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convnet.py</url>
+          <url>file://$PROJECT_DIR$/Archive/convnet.py</url>
           <line>124</line>
           <option name="timeStamp" value="152" />
         </line-breakpoint>
@@ -542,7 +592,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/old_net/convmemnet_ecdf.py</url>
-          <line>37</line>
+          <line>36</line>
           <option name="timeStamp" value="223" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -561,7 +611,7 @@
           <option name="timeStamp" value="244" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <url>file://$PROJECT_DIR$/Archive/convmemnet.py</url>
           <line>217</line>
           <option name="timeStamp" value="246" />
         </line-breakpoint>
@@ -581,12 +631,12 @@
           <option name="timeStamp" value="256" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <url>file://$PROJECT_DIR$/Archive/convmemnet.py</url>
           <line>205</line>
           <option name="timeStamp" value="273" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convmemnet.py</url>
+          <url>file://$PROJECT_DIR$/Archive/convmemnet.py</url>
           <line>204</line>
           <option name="timeStamp" value="274" />
         </line-breakpoint>
@@ -616,7 +666,7 @@
           <option name="timeStamp" value="289" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/convgapnet.py</url>
+          <url>file://$PROJECT_DIR$/Archive/convgapnet.py</url>
           <line>107</line>
           <option name="timeStamp" value="299" />
         </line-breakpoint>
@@ -652,7 +702,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/plot_predict.py</url>
-          <line>32</line>
+          <line>29</line>
           <option name="timeStamp" value="399" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -667,7 +717,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/plot_predict.py</url>
-          <line>29</line>
+          <line>26</line>
           <option name="timeStamp" value="455" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -677,7 +727,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/tcn_predict.py</url>
-          <line>159</line>
+          <line>163</line>
           <option name="timeStamp" value="529" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -711,11 +761,6 @@
           <option name="timeStamp" value="599" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>210</line>
-          <option name="timeStamp" value="615" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/EMG_filter/emg_analyse.py</url>
           <line>67</line>
           <option name="timeStamp" value="616" />
@@ -727,23 +772,98 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utility/save_load_util.py</url>
-          <line>74</line>
+          <line>96</line>
           <option name="timeStamp" value="623" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/c3dcyb.py</url>
-          <line>311</line>
+          <line>344</line>
           <option name="timeStamp" value="624" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>270</line>
-          <option name="timeStamp" value="625" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
           <line>164</line>
           <option name="timeStamp" value="637" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_loss.py</url>
+          <line>89</line>
+          <option name="timeStamp" value="639" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tcn.py</url>
+          <line>155</line>
+          <option name="timeStamp" value="641" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_r2.py</url>
+          <line>215</line>
+          <option name="timeStamp" value="650" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_r2.py</url>
+          <line>213</line>
+          <option name="timeStamp" value="654" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/alter_metrics.py</url>
+          <line>14</line>
+          <option name="timeStamp" value="655" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_r2.py</url>
+          <line>203</line>
+          <option name="timeStamp" value="659" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_r2_gen.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="665" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_r2_gen.py</url>
+          <line>63</line>
+          <option name="timeStamp" value="666" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_mse.py</url>
+          <line>201</line>
+          <option name="timeStamp" value="669" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/plotting/boxplot_r2.py</url>
+          <line>198</line>
+          <option name="timeStamp" value="671" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EXTEND SCI_Samples/extendc3d.py</url>
+          <line>119</line>
+          <option name="timeStamp" value="672" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/EXTEND SCI_Samples/extendc3d.py</url>
+          <line>65</line>
+          <option name="timeStamp" value="674" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
+          <line>115</line>
+          <option name="timeStamp" value="675" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
+          <line>85</line>
+          <option name="timeStamp" value="678" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
+          <line>62</line>
+          <option name="timeStamp" value="679" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/c3dcyb.py</url>
+          <line>248</line>
+          <option name="timeStamp" value="681" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
@@ -764,15 +884,19 @@
         <watch expression="gen.class_enum" />
         <watch expression="tcn_generator" />
         <watch expression="tcn_generator" />
+        <watch expression="gen.class_enum" />
       </configuration>
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/PyCYB$boxplot_loss.coverage" NAME="boxplot_loss Coverage Results" MODIFIED="1592175882304" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$convert2json.coverage" NAME="convert2json Coverage Results" MODIFIED="1597138828697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/EXTEND SCI_Samples" />
     <SUITE FILE_PATH="coverage/PyCYB$convoutput.coverage" NAME="convoutput Coverage Results" MODIFIED="1583280621138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/model_selection" />
-    <SUITE FILE_PATH="coverage/PyCYB$tcn.coverage" NAME="tcn Coverage Results" MODIFIED="1591915003028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$tcn.coverage" NAME="tcn Coverage Results" MODIFIED="1597668306446" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$flatten_plot.coverage" NAME="flatten_plot Coverage Results" MODIFIED="1583873692142" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$ARcoeffs.coverage" NAME="ARcoeffs Coverage Results" MODIFIED="1580050199770" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Model Selection" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_chi.coverage" NAME="convmemnet_chi Coverage Results" MODIFIED="1575895033953" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$boxplot_r2_gen.coverage" NAME="boxplot_r2_gen Coverage Results" MODIFIED="1592306476697" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$anc_y.coverage" NAME="anc.y Coverage Results" MODIFIED="1580148060866" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$chi_fit.coverage" NAME="chi_fit Coverage Results" MODIFIED="1575829095820" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$plot_predict.coverage" NAME="plot_predict Coverage Results" MODIFIED="1587764725456" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -787,6 +911,8 @@
     <SUITE FILE_PATH="coverage/PyCYB$anc.coverage" NAME="anc Coverage Results" MODIFIED="1581015173874" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$ecg_remove.coverage" NAME="ecg_remove Coverage Results" MODIFIED="1580240249272" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$ale.coverage" NAME="ale Coverage Results" MODIFIED="1579710660062" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
+    <SUITE FILE_PATH="coverage/PyCYB$boxplot_mse.coverage" NAME="boxplot_mse Coverage Results" MODIFIED="1592312473725" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$boxplot_r2.coverage" NAME="boxplot_r2 Coverage Results" MODIFIED="1592311598248" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$convgapnet.coverage" NAME="convgapnet Coverage Results" MODIFIED="1583859558837" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$lms.coverage" NAME="lms Coverage Results" MODIFIED="1585857494598" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ECG_filter" />
     <SUITE FILE_PATH="coverage/PyCYB$box_cox_fit.coverage" NAME="box-cox_fit Coverage Results" MODIFIED="1575835159929" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
@@ -795,8 +921,8 @@
     <SUITE FILE_PATH="coverage/PyCYB$convnet.coverage" NAME="convnet Coverage Results" MODIFIED="1575376444708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$disttest.coverage" NAME="disttest Coverage Results" MODIFIED="1575498057152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$model_compare.coverage" NAME="model_compare Coverage Results" MODIFIED="1579793350946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1592052592850" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$tcn_predict.coverage" NAME="tcn_predict Coverage Results" MODIFIED="1591956126539" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1597837213032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$tcn_predict.coverage" NAME="tcn_predict Coverage Results" MODIFIED="1592307390733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_ecdf.coverage" NAME="convmemnet_ecdf Coverage Results" MODIFIED="1575910250396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$fqz.coverage" NAME="fqz Coverage Results" MODIFIED="1575128559197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$CYBNET.coverage" NAME="CYBNET Coverage Results" MODIFIED="1574873978924" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

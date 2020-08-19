@@ -34,11 +34,11 @@ def main(data_dir=None, target_files=None, old_layers=None):
     gen_params = {
         'data_dir': data_dir,
         ###################
-        'window_size': 1000,
-        'delay': 1000,
+        'window_size': 100,
+        'delay': 100,
         'gap_windows': None,
         ###################
-        'stride': 80,
+        'stride': 20,
         'freq_factor': 20,
         'file_names': sorted([f for f in os.listdir(data_dir)
                               if f.endswith('.json') and target_files(f)]),
@@ -81,9 +81,9 @@ def main(data_dir=None, target_files=None, old_layers=None):
         'mpool': ((1, 6), (1, 5)),  # (feature, time)
         'depth_mul': (5, 3),
 
-        'drp': 0.5,
+        'drp': 0.0,
         'dense_drp': True,
-        'dense': (1000, 200, 200, 100, 50),
+        'dense': (200, 5),
         'b_norm': False
     }
 
@@ -91,8 +91,8 @@ def main(data_dir=None, target_files=None, old_layers=None):
     model.summary()
 
     if cross_val_k is not None:
-        model, history, metrics = cross_validate(cross_val_k, tcn_generator, model_type, model_params, patience=30,
-                                                 selection_methods=(np.min, np.max), model_save_dir=new_dir, old_model=old_layers)
+        model, history, metrics = cross_validate(cross_val_k, tcn_generator, model_type, model_params, patience=25,
+                                                 selection_methods=(np.min,), model_save_dir=new_dir, old_model=old_layers)
         tcn_generator.save(new_dir + '\\gen_' + str(max(ends) + 1) + '.pickle', unload=True)
         document_model(new_dir, max(ends) + 1, model, history,
                        **{**gen_params, **model_params, **metrics}, datagenerator=generator)
@@ -156,10 +156,12 @@ def cross_validate(k, generator: TCNDataGenerator, model_type, model_params, pat
     for cur_k in range(k):
         valid_gen = generator.get_k(cur_k=cur_k, k=k, file_shuffle=True)
         model = model_type(**model_params)
+        for i in range(9):
+            model.layers[i].trainable=True
         if old_model is not None:
             model = cross_val_transfer(model, old_model_num=old_model, k_num=cur_k, n_old_layers=n_old_layers,
                                        trainable=False, classify=model_type is depthwise_model_class)
-        history = model.fit(generator, callbacks=[es, mc], validation_data=valid_gen, verbose=1, epochs=300)
+        history = model.fit(generator, callbacks=[es, mc], validation_data=valid_gen, verbose=1, epochs=200)
         model = load_model('best_model.h5')
         if model_save_dir is not None:
             model.save(model_save_dir+'\\model_'+ str(cur_k) + '.h5')
@@ -228,18 +230,12 @@ def callback_gen(dir_path, end, patience=8, verbose=(1, 1)):
 
 
 if __name__ == '__main__':
-
-    main()
-
-    data_dirs = (r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data',
-                 r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB005\Data',
-                 r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB101\Data',
-                 r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment2\CYB102\Data',)
+    data_dirs = ( r'C:\Users\hbkm9\Documents\Projects\CYB\Experiment1\CYB004\Data',)
     file_names = ("Walk",)
     # old_models = (473, 474, 475, 476)
     for data_dir in data_dirs:
         for file_name in file_names:
             def target(f):
-                return True
+                return file_name in f
 
             main(data_dir=data_dir, target_files=target)

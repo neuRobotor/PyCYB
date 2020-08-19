@@ -1,29 +1,11 @@
 import numpy as np
-import sys
 import os
-import json
-import re
 import csv
-from keras.utils.vis_utils import plot_model
-from keras.models import Sequential
-from keras.layers import Dense
-from keras.layers import Flatten
-from keras.layers import Dropout
-from keras import optimizers
-from keras.layers import MaxPooling1D
-from keras.layers import Reshape
-from keras.layers.convolutional import Conv1D
-from keras.layers.convolutional import Conv2D
-from sklearn.model_selection import train_test_split
-from keras.wrappers.scikit_learn import KerasRegressor
-from sklearn.model_selection import cross_val_score
-from sklearn.model_selection import KFold
-from functools import partial
-from scipy.stats import norm, chi
-from convnet import summary
-from convmemnet import data_proc
-from convmemnet import train_net
-from sklearn.preprocessing import PowerTransformer
+from Archive.convnet import summary
+from Archive.convmemnet import data_proc
+from Archive.convmemnet import train_net
+
+
 #os.environ["PATH"] += os.pathsep + 'C:/Program Files (x86)/Graphviz2.38/bin/'
 
 

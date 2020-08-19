@@ -5,6 +5,28 @@ import re
 import sys
 
 
+def fix_stack(s):
+    import os
+
+    command = 'echo | set /p nul=' + s.replace('\n', ',').replace(' ', ',').replace(',,', ',').replace(',,', ',').\
+        replace(',,', ',').replace('[,', '[').strip() + '| clip'
+    os.system(command)
+    return
+
+
+def get_min_loss(s):
+    import pickle
+    import os
+    import numpy as np
+    with open(s, "rb") as input_file:
+        h = pickle.load(input_file)
+    text = str([np.min(d['val_loss']) for d in h])
+    command = 'echo | set /p nul=' + text.strip() + '| clip'
+    os.system(command)
+
+
+
+
 def document_model(dir_path, end, model, history, **kwargs):
     os.makedirs(dir_path, exist_ok=True)
     model.save(dir_path + '\\model_' + str(end) +'.h5')
@@ -121,7 +143,7 @@ def save_dict(file_path, dict_in):
 
 def load_emg_stack(path, task='None', n_channels=8):
     emg_stack = list()
-
+    print(task)
     def f_check(f):
         return np.any([n in f for n in task or task is 'None'])
 

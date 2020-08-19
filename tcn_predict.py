@@ -118,10 +118,14 @@ def main():
     sns.set()
     sns.set_context('paper')
 
-    model_num = 519
-    model = load_model('Models/model_' + str(model_num) + '/model_' + str(4) + '.h5')
+    model_num = 432
+    model = load_model(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_518_101_general\model_1.h5')
+    #model = load_model('Models/model_' + str(model_num) + '/model_' + str(model_num) + '.h5')
 
-    with open('Models/model_' + str(model_num) + '/gen_' + str(model_num) + '.pickle', "rb") as input_file:
+    # with open('Models/model_' + str(model_num) + '/gen_' + str(model_num) + '.pickle', "rb") as input_file:
+    #     gen: TCNDataGenerator = pickle.load(input_file)
+
+    with open(r'C:\Users\hbkm9\Documents\Projects\CYB\PyCYB\Models\model_518_101_general\gen_518.pickle', "rb") as input_file:
         gen: TCNDataGenerator = pickle.load(input_file)
 
     gen.emg_data = list()
@@ -148,10 +152,10 @@ def main():
     #     [np.squeeze(gen.angle_data[file_id][:, win_id + int(gen.delay / gen.stride), gen.dims])
     #      for file_id, win_id in ids])
     # gen.window_idx = np.arange(gen.n_windows)
-    gen.stride = 20
+    gen.stride = 80
     gen.load_files()
     ks = list(gen.k_idx)
-    gen.window_idx = np.sort(ks[4])
+    gen.window_idx = np.sort(ks[1])
 
     # raw = load_emg_stack(gen.data_dir, task='Walk', n_channels=8)
     _, y0 = gen.data_generation(gen.window_idx)
