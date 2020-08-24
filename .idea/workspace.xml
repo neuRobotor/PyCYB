@@ -2,78 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/EXTEND SCI_Samples/extendc3d.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/c3d2json.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/jcs.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plotting/alter_metrics.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plotting/boxplot_loss.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plotting/boxplot_mse.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plotting/boxplot_r2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plotting/boxplot_r2_gen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/hbkm9.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/hbkm9.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/20.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_364_004_Walk/summary_364.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_364_004_Walk500/summary_364.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_388/summary_388.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_388_102_upsit/summary_388.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_389/summary_389.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_389_102_downsit/summary_389.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_390/summary_390.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_390_003_bp1000/summary_390.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_391/summary_391.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_391_004_bp1000/summary_391.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_392/summary_392.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_392_005_bp1000/summary_392.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_393/summary_393.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_393_04_bp/summary_393.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_394/summary_394.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_394_005_bp/summary_394.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_395/summary_395.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_395_101_bp/summary_395.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_396/summary_396.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_396_102_bp/summary_396.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_397/summary_397.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_397_004_control/summary_397.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_398/summary_398.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_398_005_control/summary_398.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_399/summary_399.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_399_101_control/summary_399.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_400/summary_400.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_400_102_control/summary_400.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_401/summary_401.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_401_004_8channel/summary_401.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_402/summary_402.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_402_005_8channel/summary_402.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_403/summary_403.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_403_101_8channel/summary_403.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_404/summary_404.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_404_102_8channel/summary_404.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_405/summary_405.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_405_004_lms/summary_405.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_406/summary_406.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_406_005_lms/summary_406.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_454/summary_454.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_454_102_class_less_walk/summary_454.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_455/summary_455.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_455_102_class/summary_455.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_460/summary_460.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_460_102_step/summary_460.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_462/summary_462.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_462_004_step/summary_462.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_463/summary_463.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_463_005_step/summary_463.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_464/summary_464.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_464_101_step/summary_464.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_465/summary_465.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_465_004_stride/summary_465.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_466/summary_466.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_466_005_stride/summary_466.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_467/summary_467.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_467_101_stride/summary_467.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_468/summary_468.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_468_102_stride/summary_468.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_473/summary_473.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_473_004_walk+/summary_473.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_474/summary_474.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_474_005_walk+/summary_474.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_475/summary_475.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_475_101_walk+/summary_475.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_476/summary_476.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_476_102_walk+/summary_476.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_504/summary_504.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_504_004_step+/summary_504.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_505/summary_505.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_505_005_step+/summary_505.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_506/summary_506.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_506_101_step+/summary_506.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_507/summary_507.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_507_102_step+/summary_507.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_508/summary_508.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_508_004_stride+/summary_508.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_509/summary_509.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_509_005_stride+/summary_509.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_510/summary_510.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_510_101_stride+/summary_510.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_511/summary_511.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_511_102_stride+/summary_511.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_513/summary_513.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_513_004_general/summary_513.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_516/summary_516.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_516_004_general/summary_516.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_517/summary_517.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_517_005_general/summary_517.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_518/summary_518.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_518_101_general/summary_518.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Models/model_519/summary_519.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Models/model_519_102_general/summary_519.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/c3dcyb.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/convgapnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/convgapnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/convmemnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/convmemnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/convnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/convnet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cybnet_class.py" beforeDir="false" afterPath="$PROJECT_DIR$/Archive/cybnet_class.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/emg.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/filters_trans.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/old_net/convmemnet_bc.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_net/convmemnet_bc.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old_net/convmemnet_chi.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_net/convmemnet_chi.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/old_net/convmemnet_ecdf.py" beforeDir="false" afterPath="$PROJECT_DIR$/old_net/convmemnet_ecdf.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plot_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/plot_predict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tcn.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tcn_predict.py" beforeDir="false" afterPath="$PROJECT_DIR$/tcn_predict.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utility/save_load_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/save_load_util.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_gen/datagenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen/datagenerator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/jcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/jcs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/C3D.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/C3D.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -368,7 +300,10 @@
       <workItem from="1597833439860" duration="4185000" />
       <workItem from="1597839373100" duration="795000" />
       <workItem from="1597848830911" duration="265000" />
-      <workItem from="1597849299378" duration="1436000" />
+      <workItem from="1597849299378" duration="3136000" />
+      <workItem from="1598007015186" duration="7549000" />
+      <workItem from="1598188924943" duration="596000" />
+      <workItem from="1598277275096" duration="6523000" />
     </task>
     <servers />
   </component>
@@ -782,7 +717,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>164</line>
+          <line>166</line>
           <option name="timeStamp" value="637" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -847,17 +782,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>115</line>
+          <line>117</line>
           <option name="timeStamp" value="675" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>85</line>
+          <line>87</line>
           <option name="timeStamp" value="678" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>62</line>
+          <line>61</line>
           <option name="timeStamp" value="679" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

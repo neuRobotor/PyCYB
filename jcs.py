@@ -2,8 +2,11 @@
 # Joint Coordinate System (JCS) as per Grood and Suntay (1983)
 ##############################################################
 import numpy as np
-from typing import List
-import abs
+import json
+from typing import List, Dict, Any, Callable, Union
+from abc import ABC, abstractmethod
+
+from utility.C3D import C3DServer
 
 
 def norm(a):
@@ -117,7 +120,7 @@ class JCS:
         self.rotation = np.arctan2(sin_gamma, cos_gamma)
         return self.floating_axis, self.flexion, self.abduction, self.rotation
 
-    #region Property setters and getters (and update)
+    # region Property setters and getters (and update)
     @property
     def e1(self):
         return self._segment_a.axes[self.body_fixed_axes[0]]
@@ -143,6 +146,10 @@ class JCS:
         return self._segment_b.axes[self.remainder_axes[1]]
 
     @property
+    def angle_array(self):
+        return np.array([self.flexion, self.abduction, self.rotation]).T
+
+    @property
     def segment_a(self):
         # Getter of segment a
         return self._segment_a
@@ -164,4 +171,65 @@ class JCS:
         self._segment_b.parent_joints.append(self)
         self.update()
 
-    #endregion
+    # endregion
+
+
+class MarkerSet(ABC):
+    dict_joint: Dict[str, Union[JCS, tuple]]
+    dict_segment: Dict[str, Union[Segment, Callable]]
+
+    # Does not remove nans!
+    @abstractmethod
+    def __init__(self, c3d_file, emg_file=None):
+        self.c3d_file = c3d_file
+        self.emg_file = emg_file
+
+        self.list_marker = []
+        self.dict_marker = {}
+
+        self.list_emg = []
+        self.dict_emg = {}
+
+        self.dict_segment = {}  # Populate with methods for getting segments, will be replaced by actual segments
+        self.dict_joint = {}    # Populate with 'JCS_name': ('Seg A', 'Seg B'), will be replaced by actual JCSs
+        self.c3d_freq = 0
+        self.emg_freq = 0
+
+    def load_c3d(self, load_emg=True):
+        with C3DServer() as c3d:
+            c3d.open_c3d(self.c3d_file)
+            self.dict_marker = c3d.get_marker_dict(self.list_marker)
+            self.c3d_freq = c3d.get_video_frame_rate()
+            if load_emg:
+                if self.emg_file is None:
+                    self.dict_emg = c3d.get_analog_dict(self.list_emg)
+                    self.emg_freq = c3d.get_analog_frame_rate()
+                else:
+                    self.dict_emg, self.emg_freq = self.get_emg_data()
+
+    def proc_joints(self):
+        if not self.dict_marker:
+            self.load_c3d()
+        self.marker_preproc()
+
+        for key in self.dict_joint.keys():
+            self.dict_segment[key] = self.dict_segment[key]()
+        for key, (seg_a, seg_b) in self.dict_joint.items():
+            self.dict_joint[key] = JCS(seg_a, seg_b)
+
+    def save_json(self, save_path):
+        dict_out = {k: i.angle_array.tolist() for k, i in self.dict_joint.items()}
+        dict_out['EMG'] = {k: i for k, i in self.dict_emg.items()}
+        dict_out['Framerate'] = self.c3d_freq
+        dict_out['Sampling Frequency'] = self.emg_freq
+
+        with open(save_path, 'w') as fp:
+            json.dump(dict_out, fp, indent=4)
+            
+        return
+
+    def marker_preproc(self):
+        return
+
+    def get_emg_data(self):
+        raise NotImplementedError('No default emg data loading!')

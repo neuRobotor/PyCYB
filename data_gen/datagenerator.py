@@ -17,7 +17,6 @@ class TCNDataGenerator(Sequence):
     def __init__(self, data_dir, file_names, window_size=32, stride=1, batch_size=32, freq_factor=20, delay=1,
                  dims=(0,), shuffle=True, joint_names=('LHip', 'RHip', 'LKnee', 'RKnee', 'LAnkle', 'RAnkle'),
                  preproc=_pass, angproc=_pass, ppkwargs=None, gap_windows=None, channel_mask=None, time_step=1):
-        'Initialization'
 
         self.k_idx = list()
 
@@ -65,7 +64,10 @@ class TCNDataGenerator(Sequence):
             with open(self.data_dir + '\\' + file) as json_file:
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
-                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
+                    if type(dict_data["EMG"]) is dict:
+                        self.emg_data.append(self.preproc(np.array(dict_data["EMG"].values()), **self.ppkwargs))
+                    else:
+                        self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
                 else:
                     self.emg_data.append(
                         self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))

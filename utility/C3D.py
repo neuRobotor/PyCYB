@@ -218,7 +218,14 @@ class C3DServer:
             return None
         unit = self.itf.GetParameterValue(par_idx, n_items-1)
         return unit
-    
+
+    def get_marker_dict(self, names_in):
+        scale = 0.001 if self.get_marker_unit() == 'mm' else 1.0
+        return {k: self.get_marker_data(k, residual=False)[:, :3]*scale for k in names_in}
+
+    def get_analog_dict(self, names_in):
+        return {k: self.get_analog_data(k) for k in names_in}
+
     def get_analog_names(self):
         analog_names = []
         par_idx = self.itf.GetParameterIndex('ANALOG', 'LABELS')
