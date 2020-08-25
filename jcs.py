@@ -5,6 +5,7 @@ import numpy as np
 import json
 from typing import List, Dict, Any, Callable, Union
 from abc import ABC, abstractmethod
+from functools import partial
 
 from utility.C3D import C3DServer
 
@@ -212,10 +213,10 @@ class MarkerSet(ABC):
             self.load_c3d()
         self.marker_preproc()
 
-        for key in self.dict_joint.keys():
+        for key in self.dict_segment.keys():
             self.dict_segment[key] = self.dict_segment[key]()
-        for key, (seg_a, seg_b) in self.dict_joint.items():
-            self.dict_joint[key] = JCS(seg_a, seg_b)
+        for key, (seg_a, seg_b, s) in self.dict_joint.items():
+            self.dict_joint[key] = JCS(self.dict_segment[seg_a], self.dict_segment[seg_b], side=s)
 
     def save_json(self, save_path):
         dict_out = {k: i.angle_array.tolist() for k, i in self.dict_joint.items()}
