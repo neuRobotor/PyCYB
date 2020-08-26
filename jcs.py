@@ -5,7 +5,6 @@ import numpy as np
 import json
 from typing import List, Dict, Any, Callable, Union
 from abc import ABC, abstractmethod
-from functools import partial
 
 from utility.C3D import C3DServer
 
@@ -21,25 +20,29 @@ def vec_dot(a, b):
 class Segment:
     parent_joints: List['JCS']
 
-    def __init__(self, lateral, frontal, longitudinal, name=None, normalize=True):
+    def __init__(self, lateral, frontal, longitudinal, name=None, normalize=True, update=False):
         self._lateral = Segment.check_input(lateral)
         self._frontal = Segment.check_input(frontal)
         self._longitudinal = Segment.check_input(longitudinal)
-        self.axes = [self.lateral, self.frontal, self.longitudinal]
         self.name = name
         self.parent_joints = []
+        self.update_mode = update
         if normalize:
             self.normalize_axes()
 
     def normalize_axes(self):
-        for idx in range(3):
-            self.axes[idx] = norm(self.axes[idx])
+        self._lateral = norm(self._lateral)
+        self._frontal = norm(self._frontal)
+        self._longitudinal = norm(self._longitudinal)
+        self.update_parents()
 
     def update_parents(self):
+        if not self.update_mode:
+            return
         for joint in self.parent_joints:
             joint.update()
 
-    #region Axis getters-setters, parent JCS update
+    # region Axis getters-setters, parent JCS update
     @property
     def lateral(self):
         return self._lateral
@@ -66,17 +69,23 @@ class Segment:
     def longitudinal(self, value):
         self._longitudinal = Segment.check_input(value)
         self.update_parents()
-    #endregion
+
+    @property
+    def axes(self):
+        return [self.lateral, self.frontal, self.longitudinal]
+    # endregion
 
     @staticmethod
     def check_input(a: np.ndarray):
-        if type(a) is not np.ndarray:
-            raise Exception('Use numpy ndarrays for Segment objects')
-        if 3 not in a.shape:
-            raise Exception('JCS only works in 3D')
-        if a.ndim > 2:
-            raise Exception('Too many dimensions of input array')
-        return np.atleast_2d(a) if a.shape[-1] is 3 else a.T
+        try:
+            if 3 not in a.shape:
+                raise Exception('JCS only works in 3D')
+            if a.ndim > 2:
+                raise Exception('Too many dimensions of input array')
+            return np.atleast_2d(a) if a.shape[-1] is 3 else a.T
+        except (AttributeError, TypeError):
+            raise Exception('Use numpy ndarray-like for Segment objects')
+
 
 
 class JCS:

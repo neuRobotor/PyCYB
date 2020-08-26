@@ -65,7 +65,7 @@ class TCNDataGenerator(Sequence):
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
                     if type(dict_data["EMG"]) is dict:
-                        self.emg_data.append(self.preproc(np.array(dict_data["EMG"].values()), **self.ppkwargs))
+                        self.emg_data.append(self.preproc(np.array(list(dict_data["EMG"].values())), **self.ppkwargs))
                     else:
                         self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
                 else:

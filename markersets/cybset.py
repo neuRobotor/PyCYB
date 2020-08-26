@@ -20,11 +20,13 @@ class CybSet(MarkerSet):
         self.dict_segment = {'Pelvis': self.pelvis_seg,
                              'RThigh': p(self.thigh_seg, s='R'), 'LThigh': p(self.thigh_seg, s='L'),
                              'RShank': p(self.shank_seg, s='R'), 'LShank': p(self.shank_seg, s='L'),
-                             'RFoot': p(self.foot_seg, s='R'), 'LFoot': p(self.foot_seg, s='L')}
+                             'RFoot': p(self.foot_seg, s='R'),   'LFoot': p(self.foot_seg, s='L')}
 
-        self.dict_joint = {'RHip': ('Pelvis', 'RThigh', 'R'), 'LHip': ('Pelvis', 'LThigh', 'L'),
-                           'RKnee': ('RThigh', 'RShank', 'R'), 'LKnee': ('LThigh', 'LShank', 'L'),
-                           'RFoot': ('RShank', 'RFoot', 'R'), 'LFoot': ('LShank', 'LFoot', 'L')}
+        self.dict_joint = {'RHip': ('Pelvis', 'RThigh', 'R'),   'LHip': ('Pelvis', 'LThigh', 'L'),
+                           'RKnee': ('RThigh', 'RShank', 'R'),  'LKnee': ('LThigh', 'LShank', 'L'),
+                           'RFoot': ('RShank', 'RFoot', 'R'),   'LFoot': ('LShank', 'LFoot', 'L')}
+
+        self.list_emg = ["Sensor {}.EMG{}".format(i, i) for i in range(1, 9)]
 
     def marker_preproc(self):
         # Define virtual markers
@@ -47,6 +49,7 @@ class CybSet(MarkerSet):
         self.dict_marker['RVHI'] = self.dict_marker['SACR'] + asis_breadth * (
                 0.598 * u_hip - 0.344 * v_hip - 0.29 * w_hip)
 
+    # region Segment definitions
     def pelvis_seg(self):
         i_vect = (self.dict_marker['RASI'] - self.dict_marker['LASI'])
         k_vect = np.cross(self.dict_marker['RASI'] - self.dict_marker['SACR'],
@@ -67,7 +70,16 @@ class CybSet(MarkerSet):
                  np.cross(k_vect, self.dict_marker[s + 'TIB'] - self.dict_marker[s + 'VKN'], axis=1)
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Shank')
-        return
 
     def foot_seg(self, s='R'):
-        return
+        k_vect = self.dict_marker[s + 'HEE'] - self.dict_marker[s + 'TOE']
+        j_vect = (-1 if s == 'L' else 1) * \
+                 np.cross(k_vect, self.dict_marker[s + 'ANK'] - self.dict_marker[s + 'ANM'], axis=1)
+        i_vect = np.cross(j_vect, k_vect)
+        return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Shank')
+    # endregion
+
+    def get_emg_data(self):
+        if not self.dict_marker:
+            self.load_c3d()
+        return self.dict_emg

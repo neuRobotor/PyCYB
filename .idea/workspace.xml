@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/markersets/cybset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c3dcyb.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_gen/datagenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen/datagenerator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/jcs.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/markersets/cybset.py" beforeDir="false" afterPath="$PROJECT_DIR$/markersets/cybset.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,7 +305,9 @@
       <workItem from="1598007015186" duration="7549000" />
       <workItem from="1598188924943" duration="596000" />
       <workItem from="1598277275096" duration="7108000" />
-      <workItem from="1598355718589" duration="3537000" />
+      <workItem from="1598355718589" duration="3736000" />
+      <workItem from="1598386345714" duration="2529000" />
+      <workItem from="1598437576891" duration="2411000" />
     </task>
     <servers />
   </component>
@@ -324,10 +328,10 @@
     </option>
   </component>
   <component name="WindowStateProjectService">
-    <state x="270" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1597508650169">
+    <state x="270" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1598437945168">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="270" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1597508650169" />
+    <state x="270" y="135" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1536.824@0.0.1536.824" timestamp="1598437945168" />
     <state x="522" y="215" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1596894261614">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -344,22 +348,22 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="640" y="399" width="689" height="425" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1597837333017" />
-    <state width="1493" height="277" key="GridCell.Tab.0.bottom" timestamp="1597837579152">
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom" timestamp="1598438921707">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="277" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
-    <state width="1493" height="277" key="GridCell.Tab.0.center" timestamp="1597837579152">
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598438921707" />
+    <state width="1493" height="237" key="GridCell.Tab.0.center" timestamp="1598438921707">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="277" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
-    <state width="1493" height="277" key="GridCell.Tab.0.left" timestamp="1597837579152">
+    <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1598438921707" />
+    <state width="1493" height="237" key="GridCell.Tab.0.left" timestamp="1598438921707">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="277" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
-    <state width="1493" height="277" key="GridCell.Tab.0.right" timestamp="1597837579152">
+    <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1598438921707" />
+    <state width="1493" height="237" key="GridCell.Tab.0.right" timestamp="1598438921707">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="277" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1597837579152" />
+    <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1598438921707" />
     <state width="1493" height="277" key="GridCell.Tab.1.bottom" timestamp="1597837579153">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -852,7 +856,7 @@
     <SUITE FILE_PATH="coverage/PyCYB$convnet.coverage" NAME="convnet Coverage Results" MODIFIED="1575376444708" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$disttest.coverage" NAME="disttest Coverage Results" MODIFIED="1575498057152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$model_compare.coverage" NAME="model_compare Coverage Results" MODIFIED="1579793350946" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1597837213032" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PyCYB$c3dcyb.coverage" NAME="c3dcyb Coverage Results" MODIFIED="1598438006503" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$tcn_predict.coverage" NAME="tcn_predict Coverage Results" MODIFIED="1592307390733" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$convmemnet_ecdf.coverage" NAME="convmemnet_ecdf Coverage Results" MODIFIED="1575910250396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PyCYB$fqz.coverage" NAME="fqz Coverage Results" MODIFIED="1575128559197" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

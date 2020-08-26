@@ -446,7 +446,7 @@ def visu(diff=False, env=False):
     end_frame = arr_frames[-1]
     # endregion
 
-    joint_angles, dict_mkr_coords = angle_est(dict_mkr_coords, None, diff=diff)
+    joint_angles, dict_mkr_coords = angle_est(dict_mkr_coords, None)
     new_mkr_pts = np.stack((dict_mkr_coords['LVHI'], dict_mkr_coords['LVKN'], dict_mkr_coords['LVAN'],
                             dict_mkr_coords['RVHI'], dict_mkr_coords['RVKN'], dict_mkr_coords['RVAN']))
     new_mkr_pts = np.rollaxis(new_mkr_pts, 1)
