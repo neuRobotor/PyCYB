@@ -1,10 +1,14 @@
 ##############################################################
 # Joint Coordinate System (JCS) as per Grood and Suntay (1983)
 ##############################################################
+import multiprocessing
+
 import numpy as np
 import json
 from typing import List, Dict, Any, Callable, Union
 from abc import ABC, abstractmethod
+import os
+from functools import partial
 
 from utility.C3D import C3DServer
 
@@ -85,7 +89,6 @@ class Segment:
             return np.atleast_2d(a) if a.shape[-1] is 3 else a.T
         except (AttributeError, TypeError):
             raise Exception('Use numpy ndarray-like for Segment objects')
-
 
 
 class JCS:
@@ -205,7 +208,7 @@ class MarkerSet(ABC):
         self.c3d_freq = 0
         self.emg_freq = 0
 
-    def load_c3d(self, load_emg=True):
+    def load_mocap(self, load_emg=True):
         with C3DServer() as c3d:
             c3d.open_c3d(self.c3d_file)
             self.dict_marker = c3d.get_marker_dict(self.list_marker)
@@ -219,22 +222,22 @@ class MarkerSet(ABC):
 
     def proc_joints(self):
         if not self.dict_marker:
-            self.load_c3d()
+            self.load_mocap()
         self.marker_preproc()
 
         for key in self.dict_segment.keys():
             self.dict_segment[key] = self.dict_segment[key]()
         for key, (seg_a, seg_b, s) in self.dict_joint.items():
-            self.dict_joint[key] = JCS(self.dict_segment[seg_a], self.dict_segment[seg_b], side=s)
+            self.dict_joint[key] = JCS(self.dict_segment[seg_a], self.dict_segment[seg_b], side=s, name=key)
 
-    def save_json(self, save_path):
+    def save_json(self, save_path, indent=None, **kwargs):
         dict_out = {k: i.angle_array.tolist() for k, i in self.dict_joint.items()}
-        dict_out['EMG'] = {k: i for k, i in self.dict_emg.items()}
+        dict_out['EMG'] = {k: i.tolist() for k, i in self.dict_emg.items()}
         dict_out['Framerate'] = self.c3d_freq
         dict_out['Sampling Frequency'] = self.emg_freq
 
         with open(save_path, 'w') as fp:
-            json.dump(dict_out, fp, indent=4)
+            json.dump(dict_out, fp, indent=indent, **kwargs)
             
         return
 
@@ -243,3 +246,58 @@ class MarkerSet(ABC):
 
     def get_emg_data(self):
         raise NotImplementedError('No default emg data loading!')
+
+
+class LegSet(MarkerSet):
+    def __init__(self, c3d_file, emg_file=None):
+        super(LegSet, self).__init__(c3d_file=c3d_file, emg_file=emg_file)
+
+        self.dict_segment = {'Pelvis': self.pelvis_seg,
+                             'RThigh': partial(self.thigh_seg, s='R'), 'LThigh': partial(self.thigh_seg, s='L'),
+                             'RShank': partial(self.shank_seg, s='R'), 'LShank': partial(self.shank_seg, s='L'),
+                             'RFoot': partial(self.foot_seg, s='R'), 'LFoot': partial(self.foot_seg, s='L')}
+
+        self.dict_joint = {'RHip': ('Pelvis', 'RThigh', 'R'), 'LHip': ('Pelvis', 'LThigh', 'L'),
+                           'RKnee': ('RThigh', 'RShank', 'R'), 'LKnee': ('LThigh', 'LShank', 'L'),
+                           'RFoot': ('RShank', 'RFoot', 'R'), 'LFoot': ('LShank', 'LFoot', 'L')}
+
+    @abstractmethod
+    def pelvis_seg(self):
+        raise NotImplementedError
+
+    @abstractmethod
+    def thigh_seg(self, side='R'):
+        raise NotImplementedError
+
+    @abstractmethod
+    def shank_seg(self, side='R'):
+        raise NotImplementedError
+
+    @abstractmethod
+    def foot_seg(self, side='R'):
+        raise NotImplementedError
+
+
+def worker(args_in, set_class, dir_path):
+    ms: MarkerSet = set_class(*args_in)
+    ms.proc_joints()
+    ms.save_json(dir_path + '\\' + os.path.splitext(os.path.basename(args_in[0]))[0] + '.json')
+
+
+def parallel_proc(set_class: type, c3d_files, emg_files=None, dir_path='.'):
+    if emg_files is None:
+        inp = zip(c3d_files)
+    else:
+        inp = zip(c3d_files, emg_files)
+
+    w = partial(worker, set_class=set_class, dir_path=dir_path)
+    import time
+    t1 = time.perf_counter()
+    with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
+        pool.map(w, inp)
+    print("Elapsed time: {}".format(time.perf_counter() - t1))
+
+
+def dir_proc(set_class: type, dir_in, extension='.c3d', **kwargs):
+    file_names = [dir_in + '\\' + f for f in os.listdir(dir_in) if f.endswith(extension)]
+    parallel_proc(set_class, file_names, **kwargs)
