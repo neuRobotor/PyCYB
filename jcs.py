@@ -214,11 +214,7 @@ class MarkerSet(ABC):
             self.dict_marker = c3d.get_marker_dict(self.list_marker)
             self.c3d_freq = c3d.get_video_frame_rate()
             if load_emg:
-                if self.emg_file is None:
-                    self.dict_emg = c3d.get_analog_dict(self.list_emg)
-                    self.emg_freq = c3d.get_analog_frame_rate()
-                else:
-                    self.dict_emg, self.emg_freq = self.get_emg_data()
+                self.dict_emg, self.emg_freq = self.get_emg_data(c3d)
 
     def proc_joints(self):
         if not self.dict_marker:
@@ -244,7 +240,7 @@ class MarkerSet(ABC):
     def marker_preproc(self):
         return
 
-    def get_emg_data(self):
+    def get_emg_data(self, c3d=None):
         raise NotImplementedError('No default emg data loading!')
 
 
@@ -281,7 +277,7 @@ class LegSet(MarkerSet):
 def worker(args_in, set_class, dir_path):
     ms: MarkerSet = set_class(*args_in)
     ms.proc_joints()
-    ms.save_json(dir_path + '\\' + os.path.splitext(os.path.basename(args_in[0]))[0] + '.json')
+    ms.save_json(os.path.join(dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
 
 
 def parallel_proc(set_class: type, c3d_files, emg_files=None, dir_path='.'):
@@ -299,5 +295,5 @@ def parallel_proc(set_class: type, c3d_files, emg_files=None, dir_path='.'):
 
 
 def dir_proc(set_class: type, dir_in, extension='.c3d', **kwargs):
-    file_names = [dir_in + '\\' + f for f in os.listdir(dir_in) if f.endswith(extension)]
+    file_names = [os.path.join(dir_in, f) for f in os.listdir(dir_in) if f.endswith(extension)]
     parallel_proc(set_class, file_names, **kwargs)

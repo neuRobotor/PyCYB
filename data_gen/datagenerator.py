@@ -2,6 +2,7 @@ import numpy as np
 import json
 from tensorflow.keras.utils import Sequence, to_categorical
 import copy
+import os
 
 
 def _raise(ex):
@@ -61,7 +62,7 @@ class TCNDataGenerator(Sequence):
         self.angle_data = list()
         self.window_index_heads = list()
         for file in self.file_names:
-            with open(self.data_dir + '\\' + file) as json_file:
+            with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
                     if type(dict_data["EMG"]) is dict:
@@ -183,6 +184,7 @@ class TCNDataGenerator(Sequence):
         plt.plot(y0)
         plt.show()
 
+
 class EDTCNGenerator(TCNDataGenerator):
 
     def __init__(self, decode_length=400, **kwargs):
@@ -193,7 +195,7 @@ class EDTCNGenerator(TCNDataGenerator):
         self.emg_data = list()
         self.angle_data = list()
         for file in self.file_names:
-            with open(self.data_dir + '\\' + file) as json_file:
+            with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
                     self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
@@ -247,7 +249,7 @@ class TCNClassGenerator(TCNDataGenerator):
         self.emg_data = list()
         self.angle_data = list()
         for file in self.file_names:
-            with open(self.data_dir + '\\' + file) as json_file:
+            with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
                     self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
@@ -286,7 +288,7 @@ class StepTCNGenerator(TCNDataGenerator):
         self.emg_data = list()
         self.angle_data = list()
         for file in self.file_names:
-            with open(self.data_dir + '\\' + file) as json_file:
+            with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
                     self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
@@ -331,7 +333,7 @@ class ParamTCNGenerator(TCNDataGenerator):
         self.emg_data = list()
         self.angle_data = list()
         for file in self.file_names:
-            with open(self.data_dir + '\\' + file) as json_file:
+            with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
                 if self.channel_mask is None:
                     self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))

@@ -4,6 +4,7 @@ from jcs import Segment, JCS
 from functools import partial
 import multiprocessing
 
+
 def proc_input(list_in):
     list_out = list(list_in[1:])
     options_out = list()

@@ -25,17 +25,16 @@ def get_min_loss(s):
     os.system(command)
 
 
-
-
+# Sorry if you ever have to port these to linux! (just change to os.path.join()
 def document_model(dir_path, end, model, history, **kwargs):
     os.makedirs(dir_path, exist_ok=True)
-    model.save(dir_path + '\\model_' + str(end) +'.h5')
+    model.save(os.path.join(dir_path, 'model_' + str(end) +'.h5'))
     import pickle
-    with open(dir_path + '\\history_' + str(end) + '.pickle', 'wb') as handle:
+    with open(os.path.join(dir_path, 'history_' + str(end) + '.pickle'), 'wb') as handle:
         pickle.dump(history, handle, protocol=pickle.HIGHEST_PROTOCOL)
     str_sum = model_summary_to_string(model) + '\n'
     str_sum += kw_summary(**kwargs)
-    print_to_file(str_sum, dir_path + '\\summary_' + str(end) + '.txt')
+    print_to_file(str_sum, os.path.join(dir_path, 'summary_' + str(end) + '.txt'))
 
 
 def model_summary_to_string(model):

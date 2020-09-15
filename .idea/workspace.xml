@@ -2,10 +2,24 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="308ad224-0d22-45d4-b440-8004db14f894" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/markersets/extendset.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-23/C3D/EXTEND_IV_01/walking3.c3d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-23/EMG/EXTEND_IV_01/muscle_list.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-23/EMG/EXTEND_IV_01/walking3.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-24/C3D/EXTEND_V_01/walking4.c3d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-24/EMG/EXTEND_V_01/muscle_list.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-24/EMG/EXTEND_V_01/walking4.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-25/C3D/EXTEND_VI_01/walking3.c3d" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-25/EMG/EXTEND_VI_01/muscle_list.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/2019-09-25/EMG/EXTEND_VI_01/walking3.mat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/EXTEND SCI_Samples/extendc3d.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/c3d2json.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3d2json.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/c3dcyb.py" beforeDir="false" afterPath="$PROJECT_DIR$/c3dcyb.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data_gen/datagenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/data_gen/datagenerator.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/jcs.py" beforeDir="false" afterPath="$PROJECT_DIR$/jcs.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/markersets/cybset.py" beforeDir="false" afterPath="$PROJECT_DIR$/markersets/cybset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/markersets/extendset.py" beforeDir="false" afterPath="$PROJECT_DIR$/markersets/extendset.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utility/save_load_util.py" beforeDir="false" afterPath="$PROJECT_DIR$/utility/save_load_util.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -307,7 +321,8 @@
       <workItem from="1598355718589" duration="3736000" />
       <workItem from="1598386345714" duration="2529000" />
       <workItem from="1598437576891" duration="4562000" />
-      <workItem from="1598700035990" duration="11419000" />
+      <workItem from="1598700035990" duration="11992000" />
+      <workItem from="1600171733134" duration="12387000" />
     </task>
     <servers />
   </component>
@@ -348,22 +363,26 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="640" y="399" width="689" height="425" key="#xdebugger.evaluate/0.0.1536.824@0.0.1536.824" timestamp="1597837333017" />
-    <state width="1493" height="237" key="GridCell.Tab.0.bottom" timestamp="1598721268395">
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog" timestamp="1600177474090">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598721268395" />
-    <state width="1493" height="237" key="GridCell.Tab.0.center" timestamp="1598721268395">
+    <state x="93" y="93" width="1350" height="638" key="DiffContextDialog/0.0.1536.824@0.0.1536.824" timestamp="1600177474090" />
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom" timestamp="1598722295219">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1598721268395" />
-    <state width="1493" height="237" key="GridCell.Tab.0.left" timestamp="1598721268395">
+    <state width="1493" height="237" key="GridCell.Tab.0.bottom/0.0.1536.824@0.0.1536.824" timestamp="1598722295219" />
+    <state width="1493" height="237" key="GridCell.Tab.0.center" timestamp="1598722295219">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1598721268395" />
-    <state width="1493" height="237" key="GridCell.Tab.0.right" timestamp="1598721268395">
+    <state width="1493" height="237" key="GridCell.Tab.0.center/0.0.1536.824@0.0.1536.824" timestamp="1598722295219" />
+    <state width="1493" height="237" key="GridCell.Tab.0.left" timestamp="1598722295219">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1598721268395" />
+    <state width="1493" height="237" key="GridCell.Tab.0.left/0.0.1536.824@0.0.1536.824" timestamp="1598722295219" />
+    <state width="1493" height="237" key="GridCell.Tab.0.right" timestamp="1598722295219">
+      <screen x="0" y="0" width="1536" height="824" />
+    </state>
+    <state width="1493" height="237" key="GridCell.Tab.0.right/0.0.1536.824@0.0.1536.824" timestamp="1598722295219" />
     <state width="1493" height="277" key="GridCell.Tab.1.bottom" timestamp="1598464497500">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -388,10 +407,10 @@
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="398" y="27" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1536.824@0.0.1536.824" timestamp="1592236886821" />
-    <state x="462" y="144" width="611" height="536" key="find.popup" timestamp="1596895583068">
+    <state x="462" y="144" width="611" height="536" key="find.popup" timestamp="1600180925790">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
-    <state x="462" y="144" width="611" height="536" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1596895583068" />
+    <state x="462" y="144" width="611" height="536" key="find.popup/0.0.1536.824@0.0.1536.824" timestamp="1600180925790" />
     <state x="425" y="66" width="672" height="676" key="search.everywhere.popup" timestamp="1598355792143">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
@@ -707,7 +726,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/utility/save_load_util.py</url>
-          <line>96</line>
+          <line>95</line>
           <option name="timeStamp" value="623" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -717,7 +736,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>166</line>
+          <line>167</line>
           <option name="timeStamp" value="637" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -782,17 +801,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>117</line>
+          <line>118</line>
           <option name="timeStamp" value="675" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>87</line>
+          <line>88</line>
           <option name="timeStamp" value="678" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/data_gen/datagenerator.py</url>
-          <line>61</line>
+          <line>62</line>
           <option name="timeStamp" value="679" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -802,7 +821,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/jcs.py</url>
-          <line>235</line>
+          <line>231</line>
           <option name="timeStamp" value="684" />
         </line-breakpoint>
       </breakpoints>

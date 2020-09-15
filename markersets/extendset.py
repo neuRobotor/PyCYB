@@ -3,6 +3,34 @@ from functools import partial as p
 import sys
 import scipy.io
 
+
+def get_file_pairs(dir_name):
+
+    sub_dirs = [f.path for f in os.scandir(dir_name) if f.is_dir()]
+    subjects = list()
+    for sub_dir in sub_dirs:
+        subjects.extend([f.path for f in os.scandir(sub_dir) if f.is_dir()])
+
+    subject_files = list()
+    for subject in subjects:
+        os.makedirs(os.path.join(subject, 'Data'), exist_ok=True)
+        c3d_list = list()
+        mat_list = list()
+        for root, dirs, files in os.walk(subject):
+            for file in files:
+                if '.c3d' in file:
+                    c3d_list.append(os.path.join(root, file))
+                elif '.mat' in file:
+                    mat_list.append(os.path.join(root, file))
+
+        trials = [os.path.splitext(os.path.basename(p))[0]+'.' for p in c3d_list]
+
+        pairs = [(p_c3d, p_mat) for tr in trials for p_c3d in c3d_list if tr in p_c3d
+                 for p_mat in mat_list if tr in p_mat]
+        subject_files.append(pairs)
+
+    return subject_files
+
 class ExtendSet(LegSet):
 
     def __init__(self, c3d_file, emg_file=None):
@@ -51,13 +79,29 @@ class ExtendSet(LegSet):
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Foot')
     # endregion
 
-    def get_emg_data(self):
-        if not self.dict_emg:
+    def get_emg_data(self, c3d=None):
+        if not self.dict_emg and self.emg_freq:
             mat = scipy.io.loadmat(self.emg_file)
             self.dict_emg = {desc: emg for desc, emg in zip(mat['Description'].T, mat['Data'].T)}
-        return self.dict_emg
+            self.emg_freq = mat['SamplingFrequency']
+            return self.dict_emg, self.emg_freq
+        return self.dict_emg, self.emg_freq
+
+
+def worker(args_in, set_class, dir_path):
+    ms: MarkerSet = set_class(*args_in)
+    ms.proc_joints()
+    ms.save_json(os.path.join(dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
+
+
+def parallel_proc(set_class: type, inp, dir_path='.'):
+    w = partial(worker, set_class=set_class, dir_path=dir_path)
+    import time
+    t1 = time.perf_counter()
+    with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
+        pool.map(w, inp)
+    print("Elapsed time: {}".format(time.perf_counter() - t1))
 
 
 if __name__ == '__main__':
-    dir_proc(ExtendSet, sys.argv[1],
-             dir_path=sys.argv[2])
+    parallel_proc(ExtendSet, get_file_pairs(sys.argv[1]), dir_path=sys.argv[2])

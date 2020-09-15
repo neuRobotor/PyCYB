@@ -71,10 +71,14 @@ class CybSet(LegSet):
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Foot')
     # endregion
 
-    def get_emg_data(self):
-        if not self.dict_marker:
-            self.load_mocap()
-        return self.dict_emg
+    def get_emg_data(self, c3d=None):
+        if self.dict_emg and self.emg_freq:
+            return self.dict_emg, self.emg_freq
+        if c3d is None:
+            with C3DServer() as c3d:
+                c3d.open_c3d(self.c3d_file)
+                return c3d.get_analog_dict(self.list_emg), c3d.get_analog_frame_rate()
+        return c3d.get_analog_dict(self.list_emg), c3d.get_analog_frame_rate()
 
 
 if __name__ == '__main__':

@@ -79,7 +79,7 @@ def calc_floating_angles(mat_a, mat_b, side='R', in_deg=True):
 
 def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv, pz, pp):
     print('Processing file ' + fname + '...')
-    joint_angles, emg_data, direc = c3d_proc(pdir_in + '\\' + fname,
+    joint_angles, emg_data, direc = c3d_proc(os.path.join(pdir_in, fname),
                                              diff=pdiff, emg_lowpass=pcf, env=penv, z_dir=pz, param=pp)
     name = os.path.splitext(fname)[0] if not pdiff else os.path.splitext(fname)[0] + '_w'
 
@@ -98,7 +98,7 @@ def parallel_proc(fname, pdiff, ptarget_dir, pdir_in, pcf, penv, pz, pp):
         name = re.sub(r'(_)', r'\1' + prefix, name)
     if penv:
         name += "_Env"
-    with open(ptarget_dir + '\\' + name + '.json', 'w') as fp:
+    with open(os.path.join(ptarget_dir, name) + '.json', 'w') as fp:
         json.dump(save_angles, fp, indent=4)
 
 
