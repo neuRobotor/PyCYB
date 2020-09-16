@@ -4,39 +4,29 @@ import sys
 import scipy.io
 
 
-def get_file_pairs(dir_name):
+def get_file_pairs(subject_dir):
+    c3d_list = list()
+    mat_list = list()
+    for root, dirs, files in os.walk(subject_dir):
+        for file in files:
+            if '.c3d' in file:
+                c3d_list.append(os.path.join(root, file))
+            elif '.mat' in file:
+                mat_list.append(os.path.join(root, file))
 
-    sub_dirs = [f.path for f in os.scandir(dir_name) if f.is_dir()]
-    subjects = list()
-    for sub_dir in sub_dirs:
-        subjects.extend([f.path for f in os.scandir(sub_dir) if f.is_dir()])
+    trials = [os.path.splitext(os.path.basename(p))[0]+'.' for p in c3d_list]
 
-    subject_files = list()
-    for subject in subjects:
-        os.makedirs(os.path.join(subject, 'Data'), exist_ok=True)
-        c3d_list = list()
-        mat_list = list()
-        for root, dirs, files in os.walk(subject):
-            for file in files:
-                if '.c3d' in file:
-                    c3d_list.append(os.path.join(root, file))
-                elif '.mat' in file:
-                    mat_list.append(os.path.join(root, file))
+    pairs = [(p_c3d, p_mat) for tr in trials for p_c3d in c3d_list if tr in p_c3d
+             for p_mat in mat_list if tr in p_mat]
+    return pairs
 
-        trials = [os.path.splitext(os.path.basename(p))[0]+'.' for p in c3d_list]
-
-        pairs = [(p_c3d, p_mat) for tr in trials for p_c3d in c3d_list if tr in p_c3d
-                 for p_mat in mat_list if tr in p_mat]
-        subject_files.append(pairs)
-
-    return subject_files
 
 class ExtendSet(LegSet):
 
     def __init__(self, c3d_file, emg_file=None):
         super(ExtendSet, self).__init__(c3d_file=c3d_file, emg_file=emg_file)
         self.list_marker = ['VSACR',
-                            'RASI',  'LASI',
+                            'VRASI',  'VLASI',
                             'VRHJC', 'VLHJC',
                             'RPFE',  'LPFE',
                             'RAFE',  'LAFE',
@@ -49,32 +39,34 @@ class ExtendSet(LegSet):
                             'RLCA',  'LLCA']
 
     def marker_preproc(self):
+        for key in self.dict_marker.keys():
+            self.dict_marker[key][np.sum(self.dict_marker[key], 1) == 0, :] = np.nan
         return
 
     # region Segment definitions
     def pelvis_seg(self):
-        i_vect = (self.dict_marker['RASI'] - self.dict_marker['LASI'])
-        k_vect = np.cross(self.dict_marker['RASI'] - self.dict_marker['VSACR'],
-                          self.dict_marker['LASI'] - self.dict_marker['VSACR'], axis=1)
+        i_vect = (self.dict_marker['VRASI'] - self.dict_marker['VLASI'])
+        k_vect = np.cross(self.dict_marker['VRASI'] - self.dict_marker['VSACR'],
+                          self.dict_marker['VLASI'] - self.dict_marker['VSACR'], axis=1)
         j_vect = np.cross(k_vect, i_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name='Pelvis')
 
     def thigh_seg(self, s='R'):
-        k_vect = self.dict_marker[s + 'VHJC'] - self.dict_marker[s + 'VKJC']
+        k_vect = self.dict_marker['V' + s + 'HJC'] - self.dict_marker['V' + s + 'KJC']
         j_vect = self.dict_marker[s + 'AFE'] - self.dict_marker[s + 'PFE']
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Thigh')
 
     def shank_seg(self, s='R'):
-        k_vect = self.dict_marker[s + 'VKJC'] - self.dict_marker[s + 'VAJC']
+        k_vect = self.dict_marker['V' + s + 'KJC'] - self.dict_marker['V' + s + 'AJC']
         j_vect = np.cross(k_vect, self.dict_marker[s + 'ATI'] - self.dict_marker[s + 'PTI'])
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Shank')
 
     def foot_seg(self, s='R'):
-        k_vect = self.dict_marker[s + 'VHEE'] - self.dict_marker[s + 'VTOE']
+        k_vect = self.dict_marker['V' + s + 'HEE'] - self.dict_marker['V' + s + 'TOE']
         j_vect = (-1 if s == 'L' else 1) * \
-                 np.cross(k_vect, self.dict_marker[s + 'VHEE'] - self.dict_marker[s + 'LCA'])
+                 np.cross(k_vect, self.dict_marker['V' + s + 'HEE'] - self.dict_marker[s + 'LCA'])
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Foot')
     # endregion
@@ -88,20 +80,17 @@ class ExtendSet(LegSet):
         return self.dict_emg, self.emg_freq
 
 
-def worker(args_in, set_class, dir_path):
-    ms: MarkerSet = set_class(*args_in)
-    ms.proc_joints()
-    ms.save_json(os.path.join(dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
-
-
-def parallel_proc(set_class: type, inp, dir_path='.'):
-    w = partial(worker, set_class=set_class, dir_path=dir_path)
+def parallel_proc(set_class: type, dir_path='.'):
+    inp = get_file_pairs(dir_path)
+    os.makedirs(os.path.join(dir_path, 'Data'), exist_ok=True)
+    w = partial(worker, set_class=set_class, save_dir_path=os.path.join(dir_path, 'Data'))
     import time
     t1 = time.perf_counter()
-    with multiprocessing.Pool(multiprocessing.cpu_count()) as pool:
+    with multiprocessing.Pool(1) as pool:
         pool.map(w, inp)
     print("Elapsed time: {}".format(time.perf_counter() - t1))
 
 
 if __name__ == '__main__':
-    parallel_proc(ExtendSet, get_file_pairs(sys.argv[1]), dir_path=sys.argv[2])
+    np.seterr(all='warn')
+    parallel_proc(ExtendSet, sys.argv[1])

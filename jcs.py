@@ -14,7 +14,13 @@ from utility.C3D import C3DServer
 
 
 def norm(a):
-    return a / np.linalg.norm(a, axis=1)[:, None]
+    try:
+        #print(multiprocessing.current_process().name)
+        out = a / np.linalg.norm(a, axis=1)[:, None]
+        return out
+    except RuntimeWarning:
+        print(multiprocessing.current_process().name)
+        pass
 
 
 def vec_dot(a, b):
@@ -219,6 +225,8 @@ class MarkerSet(ABC):
     def proc_joints(self):
         if not self.dict_marker:
             self.load_mocap()
+        if not self.dict_emg:
+            self.dict_emg, self.emg_freq = self.get_emg_data(None)
         self.marker_preproc()
 
         for key in self.dict_segment.keys():
@@ -255,7 +263,7 @@ class LegSet(MarkerSet):
 
         self.dict_joint = {'RHip': ('Pelvis', 'RThigh', 'R'), 'LHip': ('Pelvis', 'LThigh', 'L'),
                            'RKnee': ('RThigh', 'RShank', 'R'), 'LKnee': ('LThigh', 'LShank', 'L'),
-                           'RFoot': ('RShank', 'RFoot', 'R'), 'LFoot': ('LShank', 'LFoot', 'L')}
+                           'RAnkle': ('RShank', 'RFoot', 'R'), 'LAnkle': ('LShank', 'LFoot', 'L')}
 
     @abstractmethod
     def pelvis_seg(self):
@@ -274,10 +282,12 @@ class LegSet(MarkerSet):
         raise NotImplementedError
 
 
-def worker(args_in, set_class, dir_path):
+def worker(args_in, set_class, save_dir_path, verbose=True):
+    if verbose:
+        print(multiprocessing.current_process().name + ' working on ' + args_in[0])
     ms: MarkerSet = set_class(*args_in)
     ms.proc_joints()
-    ms.save_json(os.path.join(dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
+    ms.save_json(os.path.join(save_dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
 
 
 def parallel_proc(set_class: type, c3d_files, emg_files=None, dir_path='.'):
