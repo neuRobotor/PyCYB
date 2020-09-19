@@ -4,6 +4,7 @@ import sys
 import scipy.io
 from scipy.signal import resample
 
+
 def get_file_pairs(subject_dir):
     c3d_list = list()
     mat_list = list()
@@ -14,7 +15,7 @@ def get_file_pairs(subject_dir):
             elif '.mat' in file:
                 mat_list.append(os.path.join(root, file))
 
-    trials = [os.path.splitext(os.path.basename(p))[0]+'.' for p in c3d_list]
+    trials = [os.path.splitext(os.path.basename(p))[0] + '.' for p in c3d_list]
 
     pairs = [(p_c3d, p_mat) for tr in trials for p_c3d in c3d_list if tr in p_c3d
              for p_mat in mat_list if tr in p_mat]
@@ -26,18 +27,25 @@ class ExtendSet(LegSet):
     def __init__(self, c3d_file, emg_file=None, target_f=4000):
         super(ExtendSet, self).__init__(c3d_file=c3d_file, emg_file=emg_file)
         self.list_marker = ['VSACR',
-                            'VRASI',  'VLASI',
+                            'VRASI', 'VLASI',
                             'VRHJC', 'VLHJC',
-                            'RPFE',  'LPFE',
-                            'RAFE',  'LAFE',
+                            'RPFE', 'LPFE',
+                            'RAFE', 'LAFE',
                             'VRKJC', 'VLKJC',
-                            'RPTI',  'LPTI',
-                            'RATI',  'LATI',
+                            'RPTI', 'LPTI',
+                            'RATI', 'LATI',
                             'VRAJC', 'VLAJC',
                             'VRTOE', 'VLTOE',
                             'VRHEE', 'VLHEE',
-                            'RLCA',  'LLCA']
+                            'RLCA', 'LLCA']
         self.target_f = target_f
+        self.list_emg = ['Vastus Lateralis - Right   \niEMGb',
+                         'Soleus - Right   \niEMGb',
+                         'Gastrocnemio Medialis - Right   \niEMGb',
+                         'Tibialis Anterior - Right   \niEMGb',
+                         'Rectus Femoris - Right   \niEMGb',
+                         'Vastus Medialis - Right   \niEMGb',
+                         'Biceps Femoris - Right   \niEMGb',]
 
     def marker_preproc(self):
         for key in self.dict_marker.keys():
@@ -71,6 +79,7 @@ class ExtendSet(LegSet):
                  np.cross(k_vect, self.dict_marker['V' + s + 'HEE'] - self.dict_marker[s + 'LCA'])
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Foot')
+
     # endregion
 
     def get_emg_data(self, c3d=None):
@@ -78,13 +87,14 @@ class ExtendSet(LegSet):
             mat = scipy.io.loadmat(self.emg_file)
             descs = [d[0][0] for d in mat['Description']]
 
-            self.dict_emg = {desc: emg for desc, emg in zip(descs, mat['Data'].T)}
+            self.dict_emg = {desc: emg[mat['Data'][:, -1] > 4.99] for desc, emg in zip(descs, mat['Data'].T)
+                             if desc in self.list_emg}
             self.emg_freq = mat['SamplingFrequency'][0][0]
 
             if self.target_f is not None:
-                factor = self.target_f/self.emg_freq
+                factor = self.target_f / self.emg_freq
                 for key in self.dict_emg.keys():
-                    self.dict_emg[key] = resample(self.dict_emg[key], int(len(self.dict_emg[key])*factor))
+                    self.dict_emg[key] = resample(self.dict_emg[key], int(len(self.dict_emg[key]) * factor))
                 self.emg_freq = self.target_f
             return self.dict_emg, self.emg_freq
         return self.dict_emg, self.emg_freq
