@@ -69,14 +69,14 @@ class ExtendSet(LegSet):
 
     def shank_seg(self, s='R'):
         k_vect = self.dict_marker['V' + s + 'KJC'] - self.dict_marker['V' + s + 'AJC']
-        j_vect = np.cross(k_vect, self.dict_marker[s + 'ATI'] - self.dict_marker[s + 'PTI'])
+        j_vect = self.dict_marker[s + 'ATI'] - self.dict_marker[s + 'PTI']
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Shank')
 
     def foot_seg(self, s='R'):
         k_vect = self.dict_marker['V' + s + 'HEE'] - self.dict_marker['V' + s + 'TOE']
         j_vect = (-1 if s == 'L' else 1) * \
-                 np.cross(k_vect, self.dict_marker['V' + s + 'HEE'] - self.dict_marker[s + 'LCA'])
+                 np.cross(k_vect, self.dict_marker[s + 'LCA'] - self.dict_marker['V' + s + 'HEE'])
         i_vect = np.cross(j_vect, k_vect)
         return Segment(lateral=i_vect, frontal=j_vect, longitudinal=k_vect, name=s + 'Foot')
 
@@ -112,5 +112,4 @@ def parallel_proc(set_class: type, dir_path='.'):
 
 
 if __name__ == '__main__':
-    np.seterr(all='warn')
     parallel_proc(ExtendSet, sys.argv[1])
