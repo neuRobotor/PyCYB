@@ -9,6 +9,7 @@ from typing import List, Dict, Any, Callable, Union
 from abc import ABC, abstractmethod
 import os
 from functools import partial
+import pickle
 
 from utility.C3D import C3DServer
 
@@ -245,6 +246,10 @@ class MarkerSet(ABC):
             
         return
 
+    def save_pickle(self, save_path):
+        with open(save_path, 'wb') as handle:
+            pickle.dump(self, handle, protocol=pickle.HIGHEST_PROTOCOL)
+
     def marker_preproc(self):
         return
 
@@ -287,7 +292,8 @@ def worker(args_in, set_class, save_dir_path, verbose=True):
         print(multiprocessing.current_process().name + ' working on ' + args_in[0])
     ms: MarkerSet = set_class(*args_in)
     ms.proc_joints()
-    ms.save_json(os.path.join(save_dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
+    # ms.save_json(os.path.join(save_dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.json'))
+    ms.save_pickle(os.path.join(save_dir_path, os.path.splitext(os.path.basename(args_in[0]))[0] + '.pickle'))
 
 
 def parallel_proc(set_class: type, c3d_files, emg_files=None, dir_path='.'):

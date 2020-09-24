@@ -34,8 +34,8 @@ def main(data_dir=None, target_files=None, old_layers=None):
     gen_params = {
         'data_dir': data_dir,
         ###################
-        'window_size': 100,
-        'delay': 100,
+        'window_size': 1000,
+        'delay': 1000,
         'gap_windows': None,
         ###################
         'stride': 20,

@@ -3,6 +3,11 @@ import json
 from tensorflow.keras.utils import Sequence, to_categorical
 import copy
 import os
+import pickle
+
+from markersets.extendset import ExtendSet
+from markersets.cybset import CybSet
+from jcs import MarkerSet
 
 
 def _raise(ex):
@@ -13,11 +18,19 @@ def _pass(x, **kwargs):
     return x
 
 
+def read_pickle(file_in):
+    ms: MarkerSet = pickle.load(file_in)
+    dict_out = ms.dict_joint
+    dict_out['EMG'] = ms.dict_emg
+    return dict_out
+
+
 class TCNDataGenerator(Sequence):
     # Generates data for Keras
     def __init__(self, data_dir, file_names, window_size=32, stride=1, batch_size=32, freq_factor=20, delay=1,
                  dims=(0,), shuffle=True, joint_names=('LHip', 'RHip', 'LKnee', 'RKnee', 'LAnkle', 'RAnkle'),
-                 preproc=_pass, angproc=_pass, ppkwargs=None, gap_windows=None, channel_mask=None, time_step=1):
+                 preproc=_pass, angproc=_pass, ppkwargs=None, gap_windows=None, channel_mask=None, time_step=1,
+                 load_method=json.load):
 
         self.k_idx = list()
 
@@ -48,6 +61,8 @@ class TCNDataGenerator(Sequence):
         self.window_index_heads = list()
         self.emg_data = list()
         self.angle_data = list()
+        self.load_method = load_method
+
         self.load_files()
         if self.emg_data:
             self.n_channels = len(self.emg_data[0])
@@ -57,36 +72,43 @@ class TCNDataGenerator(Sequence):
 
         self.on_epoch_end()
 
+    def load_emg(self, dict_data):
+        if self.channel_mask is None:
+            if type(dict_data["EMG"]) is dict:
+                self.emg_data.append(self.preproc(np.array(list(dict_data["EMG"].values())), **self.ppkwargs))
+            else:
+                self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
+        else:
+            self.emg_data.append(
+                self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
+        self.window_index_heads.append((self.n_windows,
+                                        self.n_windows +
+                                        int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
+        self.n_windows = self.window_index_heads[-1][1]
+
+    def load_angle(self, dict_data):
+        angles = list()
+        for joint in self.joint_names:
+            xp = np.arange(len(dict_data[joint])) * self.freq_factor
+            x = np.arange(0, len(dict_data[joint]) * self.freq_factor + self.delay)
+
+            def interp_f(data):
+                return np.interp(x, xp, data)
+
+            upsampled = np.apply_along_axis(interp_f, 0, self.angproc(dict_data[joint]))
+            angles.append(upsampled)
+        self.angle_data.append(np.array(angles))
+
     def load_files(self):
         self.emg_data = list()
-        self.angle_data = list()
         self.window_index_heads = list()
+        self.angle_data = list()
         for file in self.file_names:
-            with open(os.path.join(self.data_dir, file)) as json_file:
-                dict_data = json.load(json_file)
-                if self.channel_mask is None:
-                    if type(dict_data["EMG"]) is dict:
-                        self.emg_data.append(self.preproc(np.array(list(dict_data["EMG"].values())), **self.ppkwargs))
-                    else:
-                        self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
-                else:
-                    self.emg_data.append(
-                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
-                self.window_index_heads.append((self.n_windows,
-                                                self.n_windows +
-                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
-                self.n_windows = self.window_index_heads[-1][1]
-                angles = list()
-                for joint in self.joint_names:
-                    xp = np.arange(len(dict_data[joint])) * self.freq_factor
-                    x = np.arange(0, len(dict_data[joint]) * self.freq_factor + self.delay)
+            with open(os.path.join(self.data_dir, file), 'rb') as cur_file:
+                dict_data = self.load_method(cur_file)
+                self.load_angle(dict_data)
+                self.load_emg(dict_data)
 
-                    def interp_f(data):
-                        return np.interp(x, xp, data)
-
-                    upsampled = np.apply_along_axis(interp_f, 0, self.angproc(dict_data[joint]))
-                    angles.append(upsampled)
-                self.angle_data.append(np.array(angles))
         self.on_epoch_end()
         return
 
@@ -159,10 +181,10 @@ class TCNDataGenerator(Sequence):
                 np.random.shuffle(file_idx)
             self.k_idx = np.array_split(file_idx, k)
             for i in range(len(self.k_idx)):
-                buff = np.array([])
+                buff = np.array([], dtype=int)
                 for j in range(len(self.k_idx[i])):
                     buff = np.append(buff, np.arange(*self.k_idx[i][j]))
-                self.k_idx[i] = buff.astype(int)
+                self.k_idx[i] = buff
 
     def get_k(self, cur_k, k=2, **kwargs):
         if not self.k_idx:
@@ -185,61 +207,6 @@ class TCNDataGenerator(Sequence):
         plt.show()
 
 
-class EDTCNGenerator(TCNDataGenerator):
-
-    def __init__(self, decode_length=400, **kwargs):
-        self.decode_length = decode_length
-        super(EDTCNGenerator, self).__init__(**kwargs)
-
-    def load_files(self):
-        self.emg_data = list()
-        self.angle_data = list()
-        for file in self.file_names:
-            with open(os.path.join(self.data_dir, file)) as json_file:
-                dict_data = json.load(json_file)
-                if self.channel_mask is None:
-                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
-                else:
-                    self.emg_data.append(
-                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
-                self.window_index_heads.append((self.n_windows,
-                                                self.n_windows +
-                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
-                self.n_windows = self.window_index_heads[-1][1]
-                angles = list()
-                for joint in self.joint_names:
-                    xp = np.arange(len(dict_data[joint])) * self.freq_factor
-                    x = np.arange(0, len(dict_data[joint]) * self.freq_factor + self.delay+self.decode_length)
-
-                    def interp_f(data):
-                        return np.interp(x, xp, data)
-
-                    upsampled = np.apply_along_axis(interp_f, 0, dict_data[joint])
-                    angles.append(self.angproc(upsampled))
-                self.angle_data.append(np.array(angles))
-        return
-
-    def data_generation(self, cur_indexes):
-        head_tails = self.window_index_heads
-        ids = [(file_id, cur_idx - head_tails[file_id][0])
-               for cur_idx in cur_indexes for file_id, head_tail in enumerate(head_tails)
-               if head_tail[0] <= cur_idx < head_tail[1]]
-
-        X = np.array(
-            [self.emg_data[file_id][:, win_id * self.stride:
-                                       win_id * self.stride + self.window_size:self.time_step].transpose()
-             for file_id, win_id in ids])
-        Y = np.array(
-            [np.squeeze(self.angle_data[file_id][:, win_id * self.stride + self.delay:
-                                                    win_id * self.stride + self.delay + self.decode_length:
-                                                    self.stride,
-                                                    list(self.dims)].flatten())
-             for file_id, win_id in ids])
-        if self.gap_windows is not None:
-            return [X[:, :self.gap_windows[0], :], X[:, -self.gap_windows[1]:, :]], Y
-        return X, Y
-
-
 class TCNClassGenerator(TCNDataGenerator):
     def __init__(self, class_enum=('Walk', 'Sit', 'Stair'), **kwargs):
         self.class_enum = class_enum
@@ -248,18 +215,11 @@ class TCNClassGenerator(TCNDataGenerator):
     def load_files(self):
         self.emg_data = list()
         self.angle_data = list()
+        self.window_index_heads = list()
         for file in self.file_names:
             with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
-                if self.channel_mask is None:
-                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
-                else:
-                    self.emg_data.append(
-                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
-                self.window_index_heads.append((self.n_windows,
-                                                self.n_windows +
-                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
-                self.n_windows = self.window_index_heads[-1][1]
+                self.load_emg(dict_data)
         return
 
     def data_generation(self, cur_indexes):
@@ -287,18 +247,11 @@ class StepTCNGenerator(TCNDataGenerator):
     def load_files(self):
         self.emg_data = list()
         self.angle_data = list()
+        self.window_index_heads = list()
         for file in self.file_names:
             with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
-                if self.channel_mask is None:
-                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
-                else:
-                    self.emg_data.append(
-                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
-                self.window_index_heads.append((self.n_windows,
-                                                self.n_windows +
-                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
-                self.n_windows = self.window_index_heads[-1][1]
+                self.load_emg(dict_data)
 
                 step_class = np.repeat(dict_data["step_class"], self.freq_factor)
                 step_class = np.append(step_class, [step_class[-1]]*max(self.delay-self.window_size+1, 0))
@@ -332,19 +285,11 @@ class ParamTCNGenerator(TCNDataGenerator):
     def load_files(self):
         self.emg_data = list()
         self.angle_data = list()
+        self.window_index_heads = list()
         for file in self.file_names:
             with open(os.path.join(self.data_dir, file)) as json_file:
                 dict_data = json.load(json_file)
-                if self.channel_mask is None:
-                    self.emg_data.append(self.preproc(np.array(dict_data["EMG"]), **self.ppkwargs))
-                else:
-                    self.emg_data.append(
-                        self.preproc(np.array([dict_data["EMG"][i] for i in self.channel_mask]), **self.ppkwargs))
-                self.window_index_heads.append((self.n_windows,
-                                                self.n_windows +
-                                                int((len(self.emg_data[-1][0]) - self.window_size + 1) / self.stride)))
-                self.n_windows = self.window_index_heads[-1][1]
-
+                self.load_emg(dict_data)
                 cur_params = list()
                 for p in self.params:
                     cur_value = np.array(dict_data[p])
